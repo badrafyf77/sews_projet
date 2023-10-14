@@ -1,11 +1,13 @@
 import 'dart:io';
 import 'dart:typed_data';
 
+// ignore: depend_on_referenced_packages
 import 'package:bloc/bloc.dart';
 import 'package:excel/excel.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:firedart/firedart.dart';
 import 'package:intl/intl.dart';
+// ignore: depend_on_referenced_packages
 import 'package:meta/meta.dart';
 import 'package:uuid/uuid.dart';
 
@@ -93,6 +95,7 @@ class ExcelImportBloc extends Bloc<ExcelImportEvent, ExcelImportState> {
                     );
                     nSerie.add(rowdetail[i]);
                   }
+                  
                   rowdetail.clear();
                   userdetail.clear();
                   int k = 7;

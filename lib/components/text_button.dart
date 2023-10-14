@@ -1,3 +1,4 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 
 import '../constants.dart';
@@ -5,10 +6,12 @@ import '../constants.dart';
 class MyTextButton extends StatelessWidget {
   final Function()? onPressed;
   final String text;
+  final double size;
   const MyTextButton({
     Key? key,
     required this.onPressed,
     required this.text,
+    this.size = 15,
   }) : super(key: key);
 
   @override
@@ -36,8 +39,8 @@ class MyTextButton extends StatelessWidget {
         padding: const EdgeInsets.all(8),
         child: Text(
           text,
-          style: const TextStyle(
-            fontSize: 15,
+          style: TextStyle(
+            fontSize: size,
           ),
         ),
       ),

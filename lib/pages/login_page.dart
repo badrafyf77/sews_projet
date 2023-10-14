@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:sews_projet/components/button.dart';
 import 'package:sews_projet/components/custom_appbar.dart';
 import 'package:sews_projet/components/loading_circle.dart';
+import 'package:sews_projet/components/text_button.dart';
 import 'package:sews_projet/components/text_field.dart';
 import 'package:sews_projet/constants.dart';
 import 'package:sews_projet/pages/forgetpass_page.dart';
@@ -10,15 +11,10 @@ import 'package:sews_projet/pages/home_page.dart';
 import 'package:sews_projet/services/auth_api.dart';
 import 'package:lottie/lottie.dart';
 
-class LoginPage extends StatefulWidget {
+class LoginPage extends StatelessWidget {
   const LoginPage({super.key});
   static String id = '/';
 
-  @override
-  State<LoginPage> createState() => _LoginPageState();
-}
-
-class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -155,23 +151,23 @@ class _LoginPageState extends State<LoginPage> {
                                     Get.to(
                                         () => HomePage(updateCallback: () {}));
                                   } catch (e) {
-                                    myShowToast(
-                                        context, e.toString(), Colors.red);
-                                    Navigator.of(context).pop();
+                                    if (context.mounted) {
+                                      myShowToast(
+                                          context, e.toString(), Colors.red);
+                                      Navigator.of(context).pop();
+                                    }
                                   }
                                 }
                               },
                               textButton: 'Se connectez'),
-                          TextButton(
+                          MyTextButton(
                             onPressed: () {
                               Get.to(() => const Forgetpassword(),
                                   arguments: emailController.text,
                                   transition: Transition.downToUp);
                             },
-                            child: const Text(
-                              'oublier mot de passe?',
-                              style: TextStyle(color: kPrimaryColor),
-                            ),
+                            text: 'oublier mot de passe?',
+                            size: 14,
                           ),
                         ],
                       ),
