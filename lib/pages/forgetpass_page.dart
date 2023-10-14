@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
 import 'package:sews_projet/components/button.dart';
+import 'package:sews_projet/components/loading_circle.dart';
 import 'package:sews_projet/components/text_field.dart';
 import 'package:sews_projet/constants.dart';
 import 'package:sews_projet/pages/login_page.dart';
 import 'package:flutter_styled_toast/flutter_styled_toast.dart';
 import '../components/custom_appbar.dart';
 import '../services/auth_api.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 class Forgetpassword extends StatelessWidget {
   const Forgetpassword({super.key});
@@ -98,12 +98,7 @@ class Forgetpassword extends StatelessWidget {
                       showDialog(
                         context: context,
                         builder: (BuildContext context) {
-                          return const Center(
-                            child: CircularProgressIndicator(
-                              color: kPrimaryColor,
-                              strokeWidth: 6,
-                            ),
-                          );
+                          return const LoadingAnimation();
                         },
                       );
                       await resetPassword(controller.text);

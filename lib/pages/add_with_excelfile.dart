@@ -9,6 +9,7 @@ import 'package:sews_projet/blocs/excel_import_bloc/excel_import_bloc.dart';
 import 'package:sews_projet/components/button.dart';
 import 'package:sews_projet/components/date_picker.dart';
 import 'package:sews_projet/components/drop_down_field.dart';
+import 'package:sews_projet/components/loading_circle.dart';
 import 'package:sews_projet/constants.dart';
 
 import '../components/custom_appbar.dart';
@@ -28,8 +29,6 @@ class _AddExcelFilePageState extends State<AddExcelFilePage> {
   List<DateTime?> finLocation = [
     DateTime.now(),
   ];
-
-  bool isLoading = false;
 
   final List<String> siteItems = [
     'Site Ain Harouda',
@@ -74,18 +73,19 @@ class _AddExcelFilePageState extends State<AddExcelFilePage> {
     return BlocConsumer<ExcelImportBloc, ExcelImportState>(
       listener: (context, state) {
         if (state is ExcelImportLoading) {
-          setState(() {
-            isLoading = true;
-          });
+          showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return const LoadingAnimation();
+              });
         }
         if (state is ExcelImportSuccess) {
           Future.delayed(
             const Duration(seconds: 1),
             () {
-              setState(() {
-                isLoading = false;
-              });
+              Navigator.of(context).pop();
               myShowToast(context, 'Succes', Colors.green);
+              Navigator.of(context).pop();
             },
           );
         }
@@ -93,10 +93,9 @@ class _AddExcelFilePageState extends State<AddExcelFilePage> {
           Future.delayed(
             const Duration(seconds: 1),
             () {
-              setState(() {
-                isLoading = false;
-              });
-              myShowToast(context, 'Erreur', Colors.red);
+              Navigator.of(context).pop();
+              myShowToast(context, state.errorMessage, Colors.red);
+              Navigator.of(context).pop();
             },
           );
         }
@@ -292,32 +291,24 @@ class _AddExcelFilePageState extends State<AddExcelFilePage> {
                       MyButton(
                         onPressed: () async {
                           if (_formKey.currentState!.validate()) {
-                            BlocProvider.of<ExcelImportBloc>(context)
-                                .add(ImportEvent(
-                              selectedSite: selectedSite!,
-                              selectedAppareil: selectedAppareil!,
-                              debutContratDate: _getValueText(
-                                config.calendarType,
-                                debutLocation,
+                            BlocProvider.of<ExcelImportBloc>(context).add(
+                              ImportEvent(
+                                selectedSite: selectedSite!,
+                                selectedAppareil: selectedAppareil!,
+                                debutContratDate: _getValueText(
+                                  config.calendarType,
+                                  debutLocation,
+                                ),
+                                finContratDate: _getValueText(
+                                  config.calendarType,
+                                  finLocation,
+                                ),
                               ),
-                              finContratDate: _getValueText(
-                                config.calendarType,
-                                finLocation,
-                              ),
-                            ));
+                            );
                           }
                         },
                         textButton: 'Importer Excel fichier',
                       ),
-                      isLoading
-                          ? const UnconstrainedBox(
-                              child: SizedBox(
-                                  width: 30,
-                                  height: 30,
-                                  child: CircularProgressIndicator(
-                                    color: kPrimaryColor,
-                                  )))
-                          : const SizedBox(),
                       const Align(
                         alignment: Alignment.center,
                         child: Padding(

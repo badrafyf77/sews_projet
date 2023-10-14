@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sews_projet/components/button.dart';
 import 'package:sews_projet/components/custom_appbar.dart';
+import 'package:sews_projet/components/loading_circle.dart';
 import 'package:sews_projet/components/text_field.dart';
 import 'package:sews_projet/constants.dart';
 import 'package:sews_projet/pages/forgetpass_page.dart';
@@ -143,12 +144,7 @@ class _LoginPageState extends State<LoginPage> {
                                     showDialog(
                                       context: context,
                                       builder: (BuildContext context) {
-                                        return const Center(
-                                          child: CircularProgressIndicator(
-                                            color: kPrimaryColor,
-                                            strokeWidth: 6,
-                                          ),
-                                        );
+                                        return const LoadingAnimation();
                                       },
                                     );
                                     await signIn(emailController.text,
