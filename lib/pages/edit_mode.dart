@@ -8,6 +8,7 @@ import 'package:sews_projet/components/custom_appbar.dart';
 import 'package:sews_projet/components/line.dart';
 import 'package:sews_projet/components/listview_body.dart';
 import 'package:sews_projet/components/listview_header.dart';
+import 'package:sews_projet/components/loading_circle.dart';
 import 'package:sews_projet/pages/recherche_page.dart';
 import 'package:uuid/uuid.dart';
 import '../components/drop_down_field.dart';
@@ -538,11 +539,9 @@ class _EditPageState extends State<EditPage> {
             );
           }
           return const Scaffold(
-            body: Center(
-              child: Text(
-                'Chargement....',
-                style: TextStyle(color: kPrimaryColor),
-              ),
+            body: LoadingAnimation(
+              color: kPrimaryColor,
+              size: 60,
             ),
           );
         },

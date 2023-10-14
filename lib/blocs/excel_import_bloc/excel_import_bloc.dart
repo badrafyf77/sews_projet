@@ -102,12 +102,15 @@ class ExcelImportBloc extends Bloc<ExcelImportEvent, ExcelImportState> {
                         rowdetail.add(row.elementAt(i)!.value.toString());
                       }
                       for (int j = 1, c = 0; j < rowdetail.length; j++, c++) {
-                        sewsDatabase.document(nSerie[c]).update(
-                          {
-                            'a${k.toString()}':
-                                '${rowdetail[0]} : ${rowdetail[j]}',
-                          },
-                        );
+                        if (rowdetail[0].isNotEmpty &&
+                            rowdetail[j].isNotEmpty) {
+                          sewsDatabase.document(nSerie[c]).update(
+                            {
+                              'a${k.toString()}':
+                                  '${rowdetail[0]} : ${rowdetail[j]}',
+                            },
+                          );
+                        }
                       }
                       rowdetail.clear();
                       k++;

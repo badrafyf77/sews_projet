@@ -2,6 +2,7 @@ import 'package:firedart/firedart.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sews_projet/components/custom_appbar.dart';
+import 'package:sews_projet/components/loading_circle.dart';
 import 'package:sews_projet/components/no_result.dart';
 import 'package:sews_projet/models/model.dart';
 import '../constants.dart';
@@ -498,11 +499,9 @@ class _HistoriquePageState extends State<HistoriquePage> {
           );
         }
         return const Scaffold(
-          body: Center(
-            child: Text(
-              'Chargement....',
-              style: TextStyle(color: kPrimaryColor),
-            ),
+          body: LoadingAnimation(
+            color: kPrimaryColor,
+            size: 60,
           ),
         );
       },
