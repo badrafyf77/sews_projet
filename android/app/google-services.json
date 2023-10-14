@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "909481106338",
+    "project_id": "sews-projet",
+    "storage_bucket": "sews-projet.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:909481106338:android:44a4227d3a086819afb0fb",
+        "android_client_info": {
+          "package_name": "com.example.sews_projet"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "909481106338-oekqjajhfmbtjc18of7rvaij5a7ta50k.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.sews_projet",
+            "certificate_hash": "da39a3ee5e6b4b0d3255bfef95601890afd80709"
+          }
+        },
+        {
+          "client_id": "909481106338-3l7rphdlear2mov96e8ajebegq8t7sbn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBvm6N9bEOBVYJsCPEZQ79VVIKxgT8tMAM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "909481106338-3l7rphdlear2mov96e8ajebegq8t7sbn.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "909481106338-n466tn458nli8hf70pb65jnf9g2e4l54.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.sewsProjet"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
