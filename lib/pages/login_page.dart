@@ -1,3 +1,4 @@
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sews_projet/components/button.dart';
@@ -10,6 +11,7 @@ import 'package:sews_projet/pages/forgetpass_page.dart';
 import 'package:sews_projet/pages/home_page.dart';
 import 'package:sews_projet/services/auth_api.dart';
 import 'package:lottie/lottie.dart';
+import 'package:sews_projet/services/connectivity.dart';
 
 class LoginPage extends StatelessWidget {
   const LoginPage({super.key});
@@ -136,25 +138,37 @@ class LoginPage extends StatelessWidget {
                               padding: 8,
                               onPressed: () async {
                                 if (formKey.currentState!.validate()) {
-                                  try {
-                                    showDialog(
-                                      context: context,
-                                      builder: (BuildContext context) {
-                                        return const LoadingAnimation();
-                                      },
-                                    );
-                                    await signIn(emailController.text,
-                                        passwordController.text);
-                                    if (context.mounted) {
-                                      Navigator.of(context).pop();
-                                    }
-                                    Get.to(
-                                        () => HomePage(updateCallback: () {}));
-                                  } catch (e) {
+                                  if (await connectivityResult() ==
+                                      ConnectivityResult.none) {
                                     if (context.mounted) {
                                       myShowToast(
-                                          context, e.toString(), Colors.red);
-                                      Navigator.of(context).pop();
+                                          context,
+                                          'Pas de connexion internet',
+                                          Colors.grey);
+                                    }
+                                  } else {
+                                    try {
+                                      if (context.mounted) {
+                                        showDialog(
+                                          context: context,
+                                          builder: (BuildContext context) {
+                                            return const LoadingAnimation();
+                                          },
+                                        );
+                                      }
+                                      await signIn(emailController.text,
+                                          passwordController.text);
+                                      if (context.mounted) {
+                                        Navigator.of(context).pop();
+                                      }
+                                      Get.to(() =>
+                                          HomePage(updateCallback: () {}));
+                                    } catch (e) {
+                                      if (context.mounted) {
+                                        myShowToast(
+                                            context, e.toString(), Colors.red);
+                                        Navigator.of(context).pop();
+                                      }
                                     }
                                   }
                                 }

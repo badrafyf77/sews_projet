@@ -1,3 +1,4 @@
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
@@ -7,6 +8,7 @@ import 'package:sews_projet/components/text_field.dart';
 import 'package:sews_projet/constants.dart';
 import 'package:sews_projet/pages/login_page.dart';
 import 'package:flutter_styled_toast/flutter_styled_toast.dart';
+import 'package:sews_projet/services/connectivity.dart';
 import '../components/custom_appbar.dart';
 import '../services/auth_api.dart';
 
@@ -94,57 +96,69 @@ class Forgetpassword extends StatelessWidget {
                 padding: 15,
                 onPressed: () async {
                   if (formKey.currentState!.validate()) {
-                    try {
-                      showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return const LoadingAnimation();
-                        },
-                      );
-                      await resetPassword(controller.text);
-                      if (context.mounted) Navigator.of(context).pop();
+                    if (await connectivityResult() == ConnectivityResult.none) {
                       if (context.mounted) {
-                        showDialog(
+                        myShowToast(
+                            context, 'Pas de connexion internet', Colors.grey);
+                      }
+                    } else {
+                      try {
+                        if (context.mounted) {
+                          showDialog(
                             context: context,
                             builder: (BuildContext context) {
-                              return AlertDialog(
-                                content: SizedBox(
-                                  height: size.height * 0.3,
-                                  width: size.width * 0.3,
-                                  child: Column(
-                                    children: [
-                                      SizedBox(
-                                        height: size.height * 0.2,
-                                        width: size.width * 0.2,
-                                        child: Image.asset(
-                                            'assets/images/like.png'),
-                                      ),
-                                      const SizedBox(
-                                        height: 10,
-                                      ),
-                                      MyButton(
-                                          padding: 8,
-                                          onPressed: () {
-                                            Get.off(() => const LoginPage(),
-                                                arguments: controller.text,
-                                                transition:
-                                                    Transition.leftToRight);
-                                          },
-                                          textButton: 'à la page de connexion')
-                                    ],
+                              return const LoadingAnimation();
+                            },
+                          );
+                        }
+                        await resetPassword(controller.text);
+                        if (context.mounted) Navigator.of(context).pop();
+                        if (context.mounted) {
+                          showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AlertDialog(
+                                  content: SizedBox(
+                                    height: size.height * 0.3,
+                                    width: size.width * 0.3,
+                                    child: Column(
+                                      children: [
+                                        SizedBox(
+                                          height: size.height * 0.2,
+                                          width: size.width * 0.2,
+                                          child: Image.asset(
+                                              'assets/images/like.png'),
+                                        ),
+                                        const SizedBox(
+                                          height: 10,
+                                        ),
+                                        MyButton(
+                                            padding: 8,
+                                            onPressed: () {
+                                              Get.off(() => const LoginPage(),
+                                                  arguments: controller.text,
+                                                  transition:
+                                                      Transition.leftToRight);
+                                            },
+                                            textButton:
+                                                'à la page de connexion')
+                                      ],
+                                    ),
                                   ),
-                                ),
-                              );
-                            });
+                                );
+                              });
+                        }
+                      } catch (e) {
+                        if (context.mounted) {
+                          Navigator.of(context).pop();
+                          showToast(
+                            e.toString(),
+                            context: context,
+                            animation: StyledToastAnimation.sizeFade,
+                            backgroundColor: Colors.red,
+                          );
+                        }
                       }
-                    } catch (e) {
-                      Navigator.of(context).pop();
-                      showToast(
-                        e.toString(),
-                        context: context,
-                        animation: StyledToastAnimation.sizeFade,
-                        backgroundColor: Colors.red,
-                      );
                     }
                   }
                 },
