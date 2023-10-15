@@ -1,4 +1,5 @@
 import 'package:calendar_date_picker2/calendar_date_picker2.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:firedart/firedart.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -8,6 +9,7 @@ import 'package:sews_projet/components/date_picker.dart';
 import 'package:sews_projet/components/drop_down_field.dart';
 import 'package:sews_projet/components/line.dart';
 import 'package:sews_projet/components/text_field.dart';
+import 'package:sews_projet/services/connectivity.dart';
 import 'package:uuid/uuid.dart';
 import '../components/button.dart';
 import '../constants.dart';
@@ -90,8 +92,15 @@ class _ManualAdditionPageState extends State<ManualAdditionPage> {
                   hoverColor: Colors.transparent,
                   splashColor: Colors.transparent,
                   highlightColor: Colors.transparent,
-                  onPressed: () {
-                    Get.back();
+                  onPressed: () async {
+                    if (await connectivityResult() == ConnectivityResult.none) {
+                      if (context.mounted) {
+                        myShowToast(
+                            context, 'Pas de connexion internet', Colors.grey);
+                      }
+                    } else {
+                      Get.back();
+                    }
                   },
                   icon: const Icon(Icons.arrow_back),
                   iconSize: 50,
@@ -120,82 +129,94 @@ class _ManualAdditionPageState extends State<ManualAdditionPage> {
                                     ),
                                   ),
                                   TextButton(
-                                      onPressed: () {
-                                        CollectionReference sewsDatabase =
-                                            Firestore.instance
-                                                .collection('sewsDatabase');
-                                        CollectionReference historique =
-                                            Firestore.instance
-                                                .collection('Historique');
-
-                                        sewsDatabase
-                                            .document(controllerId.text)
-                                            .set(
-                                          {
-                                            'a0': 'All',
-                                            'a00': 'All',
-                                            'a1': controllerId.text,
-                                            'a2': controllerUser.text,
-                                            'a3': selectedSite,
-                                            'a4': selectedAppareil,
-                                            'a5': _getValueText(
-                                              config.calendarType,
-                                              debutLocation,
-                                            ),
-                                            'a6': _getValueText(
-                                              config.calendarType,
-                                              finLocation,
-                                            ),
-                                            'a7': 'null',
-                                            'a8': 'null',
-                                            'a9': 'null',
-                                            'a10': 'null',
-                                            'a11': 'null',
-                                            'a12': 'null',
-                                            'a13': 'null',
-                                            'a14': 'null',
-                                            'a15': 'null',
-                                            'a16': 'null',
-                                            'a17': 'null',
-                                            'a18': 'null',
-                                            'a19': 'null',
-                                            'a20': 'null',
-                                          },
-                                        );
-
-                                        if (fields.isNotEmpty) {
-                                          for (int i = 0, j = 7;
-                                              i < fields.length;
-                                              i++, j++) {
-                                            sewsDatabase
-                                                .document(controllerId.text)
-                                                .update({
-                                              'a${j.toString()}':
-                                                  '${fields[i]} : ${valeurs[i]}'
-                                            });
+                                      onPressed: () async {
+                                        if (await connectivityResult() ==
+                                            ConnectivityResult.none) {
+                                          if (context.mounted) {
+                                            myShowToast(
+                                                context,
+                                                'Pas de connexion internet',
+                                                Colors.grey);
                                           }
-                                          fieldController.clear();
-                                          valueController.clear();
-                                          fields.clear();
-                                          valeurs.clear();
+                                        } else {
+                                          CollectionReference sewsDatabase =
+                                              Firestore.instance
+                                                  .collection('sewsDatabase');
+                                          CollectionReference historique =
+                                              Firestore.instance
+                                                  .collection('Historique');
+
+                                          sewsDatabase
+                                              .document(controllerId.text)
+                                              .set(
+                                            {
+                                              'a0': 'All',
+                                              'a00': 'All',
+                                              'a1': controllerId.text,
+                                              'a2': controllerUser.text,
+                                              'a3': selectedSite,
+                                              'a4': selectedAppareil,
+                                              'a5': _getValueText(
+                                                config.calendarType,
+                                                debutLocation,
+                                              ),
+                                              'a6': _getValueText(
+                                                config.calendarType,
+                                                finLocation,
+                                              ),
+                                              'a7': 'null',
+                                              'a8': 'null',
+                                              'a9': 'null',
+                                              'a10': 'null',
+                                              'a11': 'null',
+                                              'a12': 'null',
+                                              'a13': 'null',
+                                              'a14': 'null',
+                                              'a15': 'null',
+                                              'a16': 'null',
+                                              'a17': 'null',
+                                              'a18': 'null',
+                                              'a19': 'null',
+                                              'a20': 'null',
+                                            },
+                                          );
+
+                                          if (fields.isNotEmpty) {
+                                            for (int i = 0, j = 7;
+                                                i < fields.length;
+                                                i++, j++) {
+                                              sewsDatabase
+                                                  .document(controllerId.text)
+                                                  .update({
+                                                'a${j.toString()}':
+                                                    '${fields[i]} : ${valeurs[i]}'
+                                              });
+                                            }
+                                            fieldController.clear();
+                                            valueController.clear();
+                                            fields.clear();
+                                            valeurs.clear();
+                                          }
+                                          controllerId.clear();
+                                          controllerUser.clear();
+                                          mySetState();
+                                          var id = const Uuid().v4();
+                                          historique.document(id).set({
+                                            'Type': 'Ajouter manuellement',
+                                            'Nombre de pieces': 1,
+                                            'Date': DateTime.now(),
+                                            'Time': DateFormat.jm()
+                                                .format(DateTime.now())
+                                                .toLowerCase(),
+                                            'Icon': 'add.png',
+                                            'Id': id,
+                                          });
+                                          if (context.mounted) {
+                                            myShowToast(context, 'succes',
+                                                Colors.green);
+                                            Navigator.pop(context);
+                                          }
                                         }
-                                        controllerId.clear();
-                                        controllerUser.clear();
-                                        mySetState();
-                                        var id = const Uuid().v4();
-                                        historique.document(id).set({
-                                          'Type': 'Ajouter manuellement',
-                                          'Nombre de pieces': 1,
-                                          'Date': DateTime.now(),
-                                          'Time': DateFormat.jm()
-                                              .format(DateTime.now())
-                                              .toLowerCase(),
-                                          'Icon': 'add.png',
-                                          'Id': id,
-                                        });
-                                        myShowToast(
-                                            context, 'succes', Colors.green);
-                                        Navigator.pop(context);
                                       },
                                       child: const Text(
                                         'Ajoute',

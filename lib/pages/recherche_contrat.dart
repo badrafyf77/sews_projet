@@ -1,4 +1,5 @@
 import 'package:calendar_date_picker2/calendar_date_picker2.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:firedart/firedart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_swipe_action_cell/core/cell.dart';
@@ -13,6 +14,7 @@ import 'package:sews_projet/components/listview_header.dart';
 import 'package:sews_projet/components/loading_circle.dart';
 import 'package:sews_projet/components/no_result.dart';
 import 'package:sews_projet/pages/recherche_page.dart';
+import 'package:sews_projet/services/connectivity.dart';
 import 'package:uuid/uuid.dart';
 
 import '../components/date_picker.dart';
@@ -131,8 +133,16 @@ class _ContratRechercheState extends State<ContratRecherche> {
                           hoverColor: Colors.transparent,
                           splashColor: Colors.transparent,
                           highlightColor: Colors.transparent,
-                          onPressed: () {
-                            Get.back();
+                          onPressed: () async {
+                            if (await connectivityResult() ==
+                                ConnectivityResult.none) {
+                              if (context.mounted) {
+                                myShowToast(context,
+                                    'Pas de connexion internet', Colors.grey);
+                              }
+                            } else {
+                              Get.back();
+                            }
                           },
                           icon: const Icon(Icons.arrow_back),
                           iconSize: 50,

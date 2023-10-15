@@ -1,5 +1,6 @@
 import 'dart:typed_data';
 
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:calendar_date_picker2/calendar_date_picker2.dart';
@@ -11,6 +12,7 @@ import 'package:sews_projet/components/date_picker.dart';
 import 'package:sews_projet/components/drop_down_field.dart';
 import 'package:sews_projet/components/loading_circle.dart';
 import 'package:sews_projet/constants.dart';
+import 'package:sews_projet/services/connectivity.dart';
 
 import '../components/custom_appbar.dart';
 
@@ -115,8 +117,16 @@ class _AddExcelFilePageState extends State<AddExcelFilePage> {
                       hoverColor: Colors.transparent,
                       splashColor: Colors.transparent,
                       highlightColor: Colors.transparent,
-                      onPressed: () {
-                        Get.back();
+                      onPressed: () async {
+                        if (await connectivityResult() ==
+                            ConnectivityResult.none) {
+                          if (context.mounted) {
+                            myShowToast(context, 'Pas de connexion internet',
+                                Colors.grey);
+                          }
+                        } else {
+                          Get.back();
+                        }
                       },
                       icon: const Icon(Icons.arrow_back),
                       iconSize: 50,

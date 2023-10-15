@@ -1,4 +1,5 @@
 import 'package:bitsdojo_window/bitsdojo_window.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:firedart/firedart.dart';
 import 'package:flutter/material.dart';
@@ -15,6 +16,7 @@ import 'package:sews_projet/pages/historique_page.dart';
 import 'package:sews_projet/pages/manual_addition_page.dart';
 import 'package:sews_projet/pages/recherche_contrat.dart';
 import 'package:sews_projet/pages/recherche_page.dart';
+import 'package:sews_projet/services/connectivity.dart';
 import 'add_with_excelfile.dart';
 import 'edit_mode.dart';
 
@@ -196,11 +198,19 @@ class _HomePageState extends State<HomePage> {
                         height: size.height * 0.01,
                       ),
                       MyButton(
-                        onPressed: () {
+                        onPressed: () async {
                           if (formKey.currentState!.validate()) {
-                            Get.to(() => const RecherchePage(),
-                                arguments: controller.text,
-                                transition: Transition.downToUp);
+                            if (await connectivityResult() ==
+                                ConnectivityResult.none) {
+                              if (context.mounted) {
+                                myShowToast(context,
+                                    'Pas de connexion internet', Colors.grey);
+                              }
+                            } else {
+                              Get.to(() => const RecherchePage(),
+                                  arguments: controller.text,
+                                  transition: Transition.downToUp);
+                            }
                           }
                         },
                         textButton: 'Rechercher',
@@ -572,18 +582,31 @@ class _HomePageState extends State<HomePage> {
                                             ),
                                           ),
                                           onPressed: () async {
-                                            await Get.to(() => const EditPage(),
-                                                arguments: EditArguments(
-                                                  fieldIndexSite,
-                                                  fieldValueSite,
-                                                  fieldIndexAppareil,
-                                                  fieldValueAppareil,
-                                                ),
-                                                transition:
-                                                    Transition.cupertino);
+                                            if (await connectivityResult() ==
+                                                ConnectivityResult.none) {
+                                              if (context.mounted) {
+                                                myShowToast(
+                                                    context,
+                                                    'Pas de connexion internet',
+                                                    Colors.grey);
+                                              }
+                                            } else {
+                                              await Get.to(
+                                                  () => const EditPage(),
+                                                  arguments: EditArguments(
+                                                    fieldIndexSite,
+                                                    fieldValueSite,
+                                                    fieldIndexAppareil,
+                                                    fieldValueAppareil,
+                                                  ),
+                                                  transition:
+                                                      Transition.cupertino);
 
-                                            widget.updateCallback();
-                                            Navigator.of(context).pop();
+                                              widget.updateCallback();
+                                              if (context.mounted) {
+                                                Navigator.of(context).pop();
+                                              }
+                                            }
                                           },
                                         ),
                                       ],
@@ -597,9 +620,20 @@ class _HomePageState extends State<HomePage> {
                               children: [
                                 MyTextButton(
                                   onPressed: () async {
-                                    await Get.to(() => const ContratRecherche(),
-                                        transition: Transition.cupertino);
-                                    widget.updateCallback();
+                                    if (await connectivityResult() ==
+                                        ConnectivityResult.none) {
+                                      if (context.mounted) {
+                                        myShowToast(
+                                            context,
+                                            'Pas de connexion internet',
+                                            Colors.grey);
+                                      }
+                                    } else {
+                                      await Get.to(
+                                          () => const ContratRecherche(),
+                                          transition: Transition.cupertino);
+                                      widget.updateCallback();
+                                    }
                                   },
                                   text:
                                       '- Afficher tous les appareils d\'un contrat',
@@ -610,10 +644,20 @@ class _HomePageState extends State<HomePage> {
                               children: [
                                 MyTextButton(
                                   onPressed: () async {
-                                    await Get.to(() => const HistoriquePage(),
-                                        transition: Transition.cupertino);
+                                    if (await connectivityResult() ==
+                                        ConnectivityResult.none) {
+                                      if (context.mounted) {
+                                        myShowToast(
+                                            context,
+                                            'Pas de connexion internet',
+                                            Colors.grey);
+                                      }
+                                    } else {
+                                      await Get.to(() => const HistoriquePage(),
+                                          transition: Transition.cupertino);
 
-                                    widget.updateCallback();
+                                      widget.updateCallback();
+                                    }
                                   },
                                   text: '- Historique',
                                 ),

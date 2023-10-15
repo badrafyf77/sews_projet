@@ -1,3 +1,4 @@
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:firedart/firedart.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -5,6 +6,7 @@ import 'package:sews_projet/components/custom_appbar.dart';
 import 'package:sews_projet/components/loading_circle.dart';
 import 'package:sews_projet/components/no_result.dart';
 import 'package:sews_projet/models/model.dart';
+import 'package:sews_projet/services/connectivity.dart';
 import '../constants.dart';
 
 class HistoriquePage extends StatefulWidget {
@@ -55,8 +57,16 @@ class _HistoriquePageState extends State<HistoriquePage> {
                           hoverColor: Colors.transparent,
                           splashColor: Colors.transparent,
                           highlightColor: Colors.transparent,
-                          onPressed: () {
-                            Get.back();
+                          onPressed: () async {
+                            if (await connectivityResult() ==
+                                ConnectivityResult.none) {
+                              if (context.mounted) {
+                                myShowToast(context,
+                                    'Pas de connexion internet', Colors.grey);
+                              }
+                            } else {
+                              Get.back();
+                            }
                           },
                           icon: const Icon(Icons.arrow_back),
                           iconSize: 50,
