@@ -4,15 +4,15 @@ import 'package:firedart/firedart.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:sews_projet/components/custom_appbar.dart';
-import 'package:sews_projet/components/date_picker.dart';
-import 'package:sews_projet/components/drop_down_field.dart';
-import 'package:sews_projet/components/line.dart';
-import 'package:sews_projet/components/text_field.dart';
-import 'package:sews_projet/services/connectivity.dart';
+import 'package:sews_projet/views/widgets/custom_appbar.dart';
+import 'package:sews_projet/views/widgets/date_picker.dart';
+import 'package:sews_projet/views/widgets/drop_down_field.dart';
+import 'package:sews_projet/views/widgets/line.dart';
+import 'package:sews_projet/views/widgets/text_field.dart';
+import 'package:sews_projet/model/services/connectivity.dart';
 import 'package:uuid/uuid.dart';
-import '../components/button.dart';
-import '../constants.dart';
+import '../widgets/button.dart';
+import '../../constants.dart';
 
 class ManualAdditionPage extends StatefulWidget {
   const ManualAdditionPage({super.key});

@@ -2,11 +2,11 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:firedart/firedart.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:sews_projet/components/no_result.dart';
-import 'package:sews_projet/services/connectivity.dart';
-import '../components/custom_appbar.dart';
-import '../constants.dart';
-import '../models/model.dart';
+import 'package:sews_projet/views/widgets/no_result.dart';
+import 'package:sews_projet/model/services/connectivity.dart';
+import '../widgets/custom_appbar.dart';
+import '../../constants.dart';
+import '../../model/models/model.dart';
 
 class RecherchePage extends StatelessWidget {
   const RecherchePage({super.key});

@@ -6,15 +6,15 @@ import 'package:get/get.dart';
 import 'package:calendar_date_picker2/calendar_date_picker2.dart';
 import 'package:excel/excel.dart';
 import 'package:flutter/material.dart';
-import 'package:sews_projet/blocs/excel_import_bloc/excel_import_bloc.dart';
-import 'package:sews_projet/components/button.dart';
-import 'package:sews_projet/components/date_picker.dart';
-import 'package:sews_projet/components/drop_down_field.dart';
-import 'package:sews_projet/components/loading_circle.dart';
+import 'package:sews_projet/view_model/blocs/excel_import_bloc/excel_import_bloc.dart';
+import 'package:sews_projet/views/widgets/button.dart';
+import 'package:sews_projet/views/widgets/date_picker.dart';
+import 'package:sews_projet/views/widgets/drop_down_field.dart';
+import 'package:sews_projet/views/widgets/loading_circle.dart';
 import 'package:sews_projet/constants.dart';
-import 'package:sews_projet/services/connectivity.dart';
+import 'package:sews_projet/model/services/connectivity.dart';
 
-import '../components/custom_appbar.dart';
+import '../widgets/custom_appbar.dart';
 
 class AddExcelFilePage extends StatefulWidget {
   const AddExcelFilePage({super.key});

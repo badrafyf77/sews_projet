@@ -1,17 +1,17 @@
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:sews_projet/components/button.dart';
-import 'package:sews_projet/components/custom_appbar.dart';
-import 'package:sews_projet/components/loading_circle.dart';
-import 'package:sews_projet/components/text_button.dart';
-import 'package:sews_projet/components/text_field.dart';
+import 'package:sews_projet/views/widgets/button.dart';
+import 'package:sews_projet/views/widgets/custom_appbar.dart';
+import 'package:sews_projet/views/widgets/loading_circle.dart';
+import 'package:sews_projet/views/widgets/text_button.dart';
+import 'package:sews_projet/views/widgets/text_field.dart';
 import 'package:sews_projet/constants.dart';
-import 'package:sews_projet/pages/forgetpass_page.dart';
-import 'package:sews_projet/pages/home_page.dart';
-import 'package:sews_projet/services/auth_api.dart';
+import 'package:sews_projet/views/pages/forgetpass_page.dart';
+import 'package:sews_projet/views/pages/home_page.dart';
+import 'package:sews_projet/model/services/auth_api.dart';
 import 'package:lottie/lottie.dart';
-import 'package:sews_projet/services/connectivity.dart';
+import 'package:sews_projet/model/services/connectivity.dart';
 
 class LoginPage extends StatelessWidget {
   const LoginPage({super.key});

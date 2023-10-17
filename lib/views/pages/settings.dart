@@ -1,9 +1,9 @@
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:sews_projet/components/custom_appbar.dart';
+import 'package:sews_projet/views/widgets/custom_appbar.dart';
 import 'package:sews_projet/constants.dart';
-import 'package:sews_projet/services/connectivity.dart';
+import 'package:sews_projet/model/services/connectivity.dart';
 
 class SettingsPage extends StatelessWidget {
   const SettingsPage({super.key});

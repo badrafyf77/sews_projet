@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 
-Future<void> signIn(String email, String password) async {
+Future<Map<String, dynamic>> signIn(String email, String password) async {
   const apiKey = 'AIzaSyC6uv_zv5nnu9to07xlKHPl1fCrGur2YyI';
   const url =
       'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=$apiKey';
@@ -17,9 +17,9 @@ Future<void> signIn(String email, String password) async {
 
   final response =
       await http.post(Uri.parse(url), headers: header, body: json.encode(body));
+  final Map<String, dynamic> data = json.decode(response.body);
 
   if (response.statusCode != 200) {
-    final Map<String, dynamic> data = json.decode(response.body);
     if (data['error']['message'] == 'INVALID_PASSWORD') {
       throw 'Incorrect mot de passe';
     } else if (data['error']['message'] == 'EMAIL_NOT_FOUND') {
@@ -31,6 +31,7 @@ Future<void> signIn(String email, String password) async {
       throw data['error']['message'];
     }
   }
+  return data;
 }
 
 Future<void> resetPassword(String email) async {

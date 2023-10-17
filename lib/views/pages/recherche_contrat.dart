@@ -6,21 +6,21 @@ import 'package:flutter_swipe_action_cell/core/cell.dart';
 import 'package:flutter_swipe_action_cell/core/controller.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:sews_projet/components/button.dart';
-import 'package:sews_projet/components/custom_appbar.dart';
-import 'package:sews_projet/components/drop_down_field.dart';
-import 'package:sews_projet/components/listview_body.dart';
-import 'package:sews_projet/components/listview_header.dart';
-import 'package:sews_projet/components/loading_circle.dart';
-import 'package:sews_projet/components/no_result.dart';
-import 'package:sews_projet/pages/recherche_page.dart';
-import 'package:sews_projet/services/connectivity.dart';
+import 'package:sews_projet/views/widgets/button.dart';
+import 'package:sews_projet/views/widgets/custom_appbar.dart';
+import 'package:sews_projet/views/widgets/drop_down_field.dart';
+import 'package:sews_projet/views/widgets/listview_body.dart';
+import 'package:sews_projet/views/widgets/listview_header.dart';
+import 'package:sews_projet/views/widgets/loading_circle.dart';
+import 'package:sews_projet/views/widgets/no_result.dart';
+import 'package:sews_projet/views/pages/recherche_page.dart';
+import 'package:sews_projet/model/services/connectivity.dart';
 import 'package:uuid/uuid.dart';
 
-import '../components/date_picker.dart';
-import '../components/text_field.dart';
-import '../constants.dart';
-import '../models/model.dart';
+import '../widgets/date_picker.dart';
+import '../widgets/text_field.dart';
+import '../../constants.dart';
+import '../../model/models/model.dart';
 
 class ContratRecherche extends StatefulWidget {
   const ContratRecherche({super.key});

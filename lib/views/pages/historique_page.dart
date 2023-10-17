@@ -2,12 +2,12 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:firedart/firedart.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:sews_projet/components/custom_appbar.dart';
-import 'package:sews_projet/components/loading_circle.dart';
-import 'package:sews_projet/components/no_result.dart';
-import 'package:sews_projet/models/model.dart';
-import 'package:sews_projet/services/connectivity.dart';
-import '../constants.dart';
+import 'package:sews_projet/views/widgets/custom_appbar.dart';
+import 'package:sews_projet/views/widgets/loading_circle.dart';
+import 'package:sews_projet/views/widgets/no_result.dart';
+import 'package:sews_projet/model/models/model.dart';
+import 'package:sews_projet/model/services/connectivity.dart';
+import '../../constants.dart';
 
 class HistoriquePage extends StatefulWidget {
   const HistoriquePage({super.key});

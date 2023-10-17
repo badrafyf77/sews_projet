@@ -3,19 +3,19 @@ import 'package:firedart/firedart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
-import 'package:sews_projet/blocs/auth_bloc/auth_bloc.dart';
-import 'package:sews_projet/blocs/excel_import_bloc/excel_import_bloc.dart';
+import 'package:sews_projet/view_model/blocs/auth_bloc/auth_bloc.dart';
+import 'package:sews_projet/view_model/blocs/excel_import_bloc/excel_import_bloc.dart';
 import 'package:sews_projet/constants.dart';
-import 'package:sews_projet/pages/add_with_excelfile.dart';
-import 'package:sews_projet/pages/edit_mode.dart';
-import 'package:sews_projet/pages/forgetpass_page.dart';
-import 'package:sews_projet/pages/historique_page.dart';
-import 'package:sews_projet/pages/home_page.dart';
-import 'package:sews_projet/pages/login_page.dart';
-import 'package:sews_projet/pages/manual_addition_page.dart';
-import 'package:sews_projet/pages/recherche_contrat.dart';
-import 'package:sews_projet/pages/recherche_page.dart';
-import 'package:sews_projet/pages/settings.dart';
+import 'package:sews_projet/views/pages/add_with_excelfile.dart';
+import 'package:sews_projet/views/pages/edit_mode.dart';
+import 'package:sews_projet/views/pages/forgetpass_page.dart';
+import 'package:sews_projet/views/pages/historique_page.dart';
+import 'package:sews_projet/views/pages/home_page.dart';
+import 'package:sews_projet/views/pages/login_page.dart';
+import 'package:sews_projet/views/pages/manual_addition_page.dart';
+import 'package:sews_projet/views/pages/recherche_contrat.dart';
+import 'package:sews_projet/views/pages/recherche_page.dart';
+import 'package:sews_projet/views/pages/settings.dart';
 
 class MyBehavior extends ScrollBehavior {
   @override
