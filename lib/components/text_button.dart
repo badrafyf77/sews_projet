@@ -21,11 +21,17 @@ class MyTextButton extends StatelessWidget {
       style: ButtonStyle(
         foregroundColor: MaterialStateProperty.resolveWith<Color>(
           (Set<MaterialState> states) {
+            if (states.contains(MaterialState.hovered)) {
+              return Colors.white;
+            }
             return kPrimaryColor;
           },
         ),
         backgroundColor: MaterialStateProperty.resolveWith<Color>(
           (Set<MaterialState> states) {
+            if (states.contains(MaterialState.hovered)) {
+              return kPrimaryColor;
+            }
             return Colors.white;
           },
         ),

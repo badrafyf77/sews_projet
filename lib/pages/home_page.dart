@@ -16,6 +16,7 @@ import 'package:sews_projet/pages/historique_page.dart';
 import 'package:sews_projet/pages/manual_addition_page.dart';
 import 'package:sews_projet/pages/recherche_contrat.dart';
 import 'package:sews_projet/pages/recherche_page.dart';
+import 'package:sews_projet/pages/settings.dart';
 import 'package:sews_projet/services/connectivity.dart';
 import 'add_with_excelfile.dart';
 import 'edit_mode.dart';
@@ -246,172 +247,23 @@ class _HomePageState extends State<HomePage> {
                                 text: '- Ajouter par un fichier excel'),
                           ),
                           MyContainer(
-                            label: 'Autre',
-                            widget1: MyTextButton(
-                              onPressed: () {
-                                showDialog(
-                                  context: context,
-                                  builder: (BuildContext context) {
-                                    return AlertDialog(
-                                      title: const Text('Select options'),
-                                      content: SizedBox(
-                                        height: size.height * 0.3,
-                                        width: size.width * 0.4,
-                                        child: Center(
-                                          child: Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            children: [
-                                              Column(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.start,
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  const Padding(
-                                                    padding: EdgeInsets.all(8),
-                                                    child: Text(
-                                                      'le Site',
-                                                      style: TextStyle(
-                                                        color: kPrimaryColor,
-                                                        fontSize: 16,
-                                                      ),
-                                                    ),
-                                                  ),
-                                                  UnconstrainedBox(
-                                                    child: SizedBox(
-                                                      width: size.width * 0.35,
-                                                      child:
-                                                          DropdownButtonFormField2<
-                                                              String>(
-                                                        value: 'All',
-                                                        isExpanded: true,
-                                                        hint: const Text(
-                                                          'Selectionner le Site',
-                                                          style: TextStyle(
-                                                              fontSize: 14),
-                                                        ),
-                                                        items: siteItems
-                                                            .map((item) =>
-                                                                DropdownMenuItem<
-                                                                    String>(
-                                                                  value: item,
-                                                                  child: Text(
-                                                                    item,
-                                                                    style: const TextStyle(
-                                                                        color: Colors
-                                                                            .black),
-                                                                  ),
-                                                                ))
-                                                            .toList(),
-                                                        validator: (value) {
-                                                          if (value == null) {
-                                                            return 'Veuillez choisir une option.';
-                                                          }
-                                                          return null;
-                                                        },
-                                                        onChanged: (value) {
-                                                          if (value == 'All') {
-                                                            fieldIndexSite =
-                                                                'a0';
-                                                            fieldValueSite =
-                                                                'All';
-                                                          } else {
-                                                            fieldIndexSite =
-                                                                'a3';
-                                                            fieldValueSite =
-                                                                value!;
-                                                          }
-                                                        },
-                                                        decoration:
-                                                            const InputDecoration(
-                                                          contentPadding:
-                                                              EdgeInsets
-                                                                  .symmetric(
-                                                                      vertical:
-                                                                          16),
-                                                          enabledBorder:
-                                                              OutlineInputBorder(
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .all(Radius
-                                                                        .circular(
-                                                                            25)),
-                                                            borderSide:
-                                                                BorderSide(
-                                                              width: 1.5,
-                                                              color:
-                                                                  kPrimaryColor,
-                                                            ),
-                                                          ),
-                                                          focusedBorder:
-                                                              OutlineInputBorder(
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .all(Radius
-                                                                        .circular(
-                                                                            25)),
-                                                            borderSide:
-                                                                BorderSide(
-                                                              width: 1.5,
-                                                              color:
-                                                                  kPrimaryColor,
-                                                            ),
-                                                          ),
-                                                          errorBorder:
-                                                              OutlineInputBorder(
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .all(Radius
-                                                                        .circular(
-                                                                            25)),
-                                                            borderSide:
-                                                                BorderSide(
-                                                              width: 1.5,
-                                                              color: Colors.red,
-                                                            ),
-                                                          ),
-                                                        ),
-                                                        buttonStyleData:
-                                                            const ButtonStyleData(
-                                                          padding:
-                                                              EdgeInsets.only(
-                                                                  right: 8),
-                                                        ),
-                                                        iconStyleData:
-                                                            const IconStyleData(
-                                                          icon: Icon(
-                                                            Icons
-                                                                .arrow_drop_down,
-                                                            color:
-                                                                kPrimaryColor,
-                                                          ),
-                                                          iconSize: 24,
-                                                        ),
-                                                        dropdownStyleData:
-                                                            DropdownStyleData(
-                                                          decoration:
-                                                              BoxDecoration(
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        15),
-                                                          ),
-                                                        ),
-                                                        menuItemStyleData:
-                                                            const MenuItemStyleData(
-                                                          padding: EdgeInsets
-                                                              .symmetric(
-                                                                  horizontal:
-                                                                      16),
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                              Center(
-                                                child: Column(
+                              label: 'Autre',
+                              widget1: MyTextButton(
+                                onPressed: () {
+                                  showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                        title: const Text('Select options'),
+                                        content: SizedBox(
+                                          height: size.height * 0.3,
+                                          width: size.width * 0.4,
+                                          child: Center(
+                                            child: Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: [
+                                                Column(
                                                   mainAxisAlignment:
                                                       MainAxisAlignment.start,
                                                   crossAxisAlignment:
@@ -421,7 +273,7 @@ class _HomePageState extends State<HomePage> {
                                                       padding:
                                                           EdgeInsets.all(8),
                                                       child: Text(
-                                                        'l\'appareil',
+                                                        'le Site',
                                                         style: TextStyle(
                                                           color: kPrimaryColor,
                                                           fontSize: 16,
@@ -437,7 +289,12 @@ class _HomePageState extends State<HomePage> {
                                                                 String>(
                                                           value: 'All',
                                                           isExpanded: true,
-                                                          items: appareilItems
+                                                          hint: const Text(
+                                                            'Selectionner le Site',
+                                                            style: TextStyle(
+                                                                fontSize: 14),
+                                                          ),
+                                                          items: siteItems
                                                               .map((item) =>
                                                                   DropdownMenuItem<
                                                                       String>(
@@ -459,14 +316,14 @@ class _HomePageState extends State<HomePage> {
                                                           onChanged: (value) {
                                                             if (value ==
                                                                 'All') {
-                                                              fieldIndexAppareil =
-                                                                  'a00';
-                                                              fieldValueAppareil =
+                                                              fieldIndexSite =
+                                                                  'a0';
+                                                              fieldValueSite =
                                                                   'All';
                                                             } else {
-                                                              fieldIndexAppareil =
-                                                                  'a4';
-                                                              fieldValueAppareil =
+                                                              fieldIndexSite =
+                                                                  'a3';
+                                                              fieldValueSite =
                                                                   value!;
                                                             }
                                                           },
@@ -555,115 +412,277 @@ class _HomePageState extends State<HomePage> {
                                                     ),
                                                   ],
                                                 ),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      ),
-                                      actions: <Widget>[
-                                        TextButton(
-                                          child: const Text(
-                                            'concel',
-                                            style: TextStyle(
-                                              color: kPrimaryColor,
-                                              fontSize: 16,
-                                            ),
-                                          ),
-                                          onPressed: () {
-                                            Navigator.of(context).pop();
-                                          },
-                                        ),
-                                        TextButton(
-                                          child: const Text(
-                                            'continue',
-                                            style: TextStyle(
-                                              color: kPrimaryColor,
-                                              fontSize: 16,
-                                            ),
-                                          ),
-                                          onPressed: () async {
-                                            if (await connectivityResult() ==
-                                                ConnectivityResult.none) {
-                                              if (context.mounted) {
-                                                myShowToast(
-                                                    context,
-                                                    'Pas de connexion internet',
-                                                    Colors.grey);
-                                              }
-                                            } else {
-                                              await Get.to(
-                                                  () => const EditPage(),
-                                                  arguments: EditArguments(
-                                                    fieldIndexSite,
-                                                    fieldValueSite,
-                                                    fieldIndexAppareil,
-                                                    fieldValueAppareil,
+                                                Center(
+                                                  child: Column(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment.start,
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    children: [
+                                                      const Padding(
+                                                        padding:
+                                                            EdgeInsets.all(8),
+                                                        child: Text(
+                                                          'l\'appareil',
+                                                          style: TextStyle(
+                                                            color:
+                                                                kPrimaryColor,
+                                                            fontSize: 16,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                      UnconstrainedBox(
+                                                        child: SizedBox(
+                                                          width:
+                                                              size.width * 0.35,
+                                                          child:
+                                                              DropdownButtonFormField2<
+                                                                  String>(
+                                                            value: 'All',
+                                                            isExpanded: true,
+                                                            items: appareilItems
+                                                                .map((item) =>
+                                                                    DropdownMenuItem<
+                                                                        String>(
+                                                                      value:
+                                                                          item,
+                                                                      child:
+                                                                          Text(
+                                                                        item,
+                                                                        style: const TextStyle(
+                                                                            color:
+                                                                                Colors.black),
+                                                                      ),
+                                                                    ))
+                                                                .toList(),
+                                                            validator: (value) {
+                                                              if (value ==
+                                                                  null) {
+                                                                return 'Veuillez choisir une option.';
+                                                              }
+                                                              return null;
+                                                            },
+                                                            onChanged: (value) {
+                                                              if (value ==
+                                                                  'All') {
+                                                                fieldIndexAppareil =
+                                                                    'a00';
+                                                                fieldValueAppareil =
+                                                                    'All';
+                                                              } else {
+                                                                fieldIndexAppareil =
+                                                                    'a4';
+                                                                fieldValueAppareil =
+                                                                    value!;
+                                                              }
+                                                            },
+                                                            decoration:
+                                                                const InputDecoration(
+                                                              contentPadding:
+                                                                  EdgeInsets
+                                                                      .symmetric(
+                                                                          vertical:
+                                                                              16),
+                                                              enabledBorder:
+                                                                  OutlineInputBorder(
+                                                                borderRadius: BorderRadius
+                                                                    .all(Radius
+                                                                        .circular(
+                                                                            25)),
+                                                                borderSide:
+                                                                    BorderSide(
+                                                                  width: 1.5,
+                                                                  color:
+                                                                      kPrimaryColor,
+                                                                ),
+                                                              ),
+                                                              focusedBorder:
+                                                                  OutlineInputBorder(
+                                                                borderRadius: BorderRadius
+                                                                    .all(Radius
+                                                                        .circular(
+                                                                            25)),
+                                                                borderSide:
+                                                                    BorderSide(
+                                                                  width: 1.5,
+                                                                  color:
+                                                                      kPrimaryColor,
+                                                                ),
+                                                              ),
+                                                              errorBorder:
+                                                                  OutlineInputBorder(
+                                                                borderRadius: BorderRadius
+                                                                    .all(Radius
+                                                                        .circular(
+                                                                            25)),
+                                                                borderSide:
+                                                                    BorderSide(
+                                                                  width: 1.5,
+                                                                  color: Colors
+                                                                      .red,
+                                                                ),
+                                                              ),
+                                                            ),
+                                                            buttonStyleData:
+                                                                const ButtonStyleData(
+                                                              padding: EdgeInsets
+                                                                  .only(
+                                                                      right: 8),
+                                                            ),
+                                                            iconStyleData:
+                                                                const IconStyleData(
+                                                              icon: Icon(
+                                                                Icons
+                                                                    .arrow_drop_down,
+                                                                color:
+                                                                    kPrimaryColor,
+                                                              ),
+                                                              iconSize: 24,
+                                                            ),
+                                                            dropdownStyleData:
+                                                                DropdownStyleData(
+                                                              decoration:
+                                                                  BoxDecoration(
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                            15),
+                                                              ),
+                                                            ),
+                                                            menuItemStyleData:
+                                                                const MenuItemStyleData(
+                                                              padding: EdgeInsets
+                                                                  .symmetric(
+                                                                      horizontal:
+                                                                          16),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ],
                                                   ),
-                                                  transition:
-                                                      Transition.cupertino);
-
-                                              widget.updateCallback();
-                                              if (context.mounted) {
-                                                Navigator.of(context).pop();
-                                              }
-                                            }
-                                          },
+                                                ),
+                                              ],
+                                            ),
+                                          ),
                                         ),
-                                      ],
-                                    );
-                                  },
-                                );
-                              },
-                              text: '- Edit mode',
-                            ),
-                            widget2: Column(
-                              children: [
-                                MyTextButton(
-                                  onPressed: () async {
-                                    if (await connectivityResult() ==
-                                        ConnectivityResult.none) {
-                                      if (context.mounted) {
-                                        myShowToast(
-                                            context,
-                                            'Pas de connexion internet',
-                                            Colors.grey);
-                                      }
-                                    } else {
-                                      await Get.to(
-                                          () => const ContratRecherche(),
-                                          transition: Transition.cupertino);
-                                      widget.updateCallback();
-                                    }
-                                  },
-                                  text:
-                                      '- Afficher tous les appareils d\'un contrat',
-                                ),
-                              ],
-                            ),
-                            widget3: Column(
-                              children: [
-                                MyTextButton(
-                                  onPressed: () async {
-                                    if (await connectivityResult() ==
-                                        ConnectivityResult.none) {
-                                      if (context.mounted) {
-                                        myShowToast(
-                                            context,
-                                            'Pas de connexion internet',
-                                            Colors.grey);
-                                      }
-                                    } else {
-                                      await Get.to(() => const HistoriquePage(),
-                                          transition: Transition.cupertino);
+                                        actions: <Widget>[
+                                          TextButton(
+                                            child: const Text(
+                                              'concel',
+                                              style: TextStyle(
+                                                color: kPrimaryColor,
+                                                fontSize: 16,
+                                              ),
+                                            ),
+                                            onPressed: () {
+                                              Navigator.of(context).pop();
+                                            },
+                                          ),
+                                          TextButton(
+                                            child: const Text(
+                                              'continue',
+                                              style: TextStyle(
+                                                color: kPrimaryColor,
+                                                fontSize: 16,
+                                              ),
+                                            ),
+                                            onPressed: () async {
+                                              if (await connectivityResult() ==
+                                                  ConnectivityResult.none) {
+                                                if (context.mounted) {
+                                                  myShowToast(
+                                                      context,
+                                                      'Pas de connexion internet',
+                                                      Colors.grey);
+                                                }
+                                              } else {
+                                                await Get.to(
+                                                    () => const EditPage(),
+                                                    arguments: EditArguments(
+                                                      fieldIndexSite,
+                                                      fieldValueSite,
+                                                      fieldIndexAppareil,
+                                                      fieldValueAppareil,
+                                                    ),
+                                                    transition:
+                                                        Transition.cupertino);
 
-                                      widget.updateCallback();
+                                                widget.updateCallback();
+                                                if (context.mounted) {
+                                                  Navigator.of(context).pop();
+                                                }
+                                              }
+                                            },
+                                          ),
+                                        ],
+                                      );
+                                    },
+                                  );
+                                },
+                                text: '- Mode édition',
+                              ),
+                              widget2: Column(
+                                children: [
+                                  MyTextButton(
+                                    onPressed: () async {
+                                      if (await connectivityResult() ==
+                                          ConnectivityResult.none) {
+                                        if (context.mounted) {
+                                          myShowToast(
+                                              context,
+                                              'Pas de connexion internet',
+                                              Colors.grey);
+                                        }
+                                      } else {
+                                        await Get.to(
+                                            () => const ContratRecherche(),
+                                            transition: Transition.cupertino);
+                                        widget.updateCallback();
+                                      }
+                                    },
+                                    text:
+                                        '- Afficher tous les appareils d\'un contrat',
+                                  ),
+                                ],
+                              ),
+                              widget3: MyTextButton(
+                                onPressed: () async {
+                                  if (await connectivityResult() ==
+                                      ConnectivityResult.none) {
+                                    if (context.mounted) {
+                                      myShowToast(
+                                          context,
+                                          'Pas de connexion internet',
+                                          Colors.grey);
                                     }
-                                  },
-                                  text: '- Historique',
-                                ),
-                              ],
-                            ),
-                          )
+                                  } else {
+                                    await Get.to(() => const HistoriquePage(),
+                                        transition: Transition.cupertino);
+
+                                    widget.updateCallback();
+                                  }
+                                },
+                                text: '- Historique',
+                              ),
+                              widget4: MyTextButton(
+                                  onPressed: () async{
+                                    if (await connectivityResult() ==
+                                      ConnectivityResult.none) {
+                                    if (context.mounted) {
+                                      myShowToast(
+                                          context,
+                                          'Pas de connexion internet',
+                                          Colors.grey);
+                                    }
+                                  } else {
+                                    await Get.to(() => const SettingsPage(),
+                                        transition: Transition.cupertino);
+
+                                    widget.updateCallback();
+                                  }
+                                  }, text: "- Paramétres"))
                         ],
                       ),
                     ],

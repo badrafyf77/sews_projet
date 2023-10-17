@@ -161,7 +161,7 @@ class LoginPage extends StatelessWidget {
                                       if (context.mounted) {
                                         Navigator.of(context).pop();
                                       }
-                                      Get.to(() =>
+                                      Get.offAll(() =>
                                           HomePage(updateCallback: () {}));
                                     } catch (e) {
                                       if (context.mounted) {

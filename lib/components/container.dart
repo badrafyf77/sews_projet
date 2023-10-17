@@ -9,6 +9,7 @@ class MyContainer extends StatelessWidget {
   final Widget widget1;
   final Widget widget2;
   final Widget? widget3;
+  final Widget? widget4;
 
   const MyContainer({
     Key? key,
@@ -16,6 +17,7 @@ class MyContainer extends StatelessWidget {
     required this.widget1,
     required this.widget2,
     this.widget3,
+    this.widget4,
   }) : super(key: key);
 
   @override
@@ -55,6 +57,10 @@ class MyContainer extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.all(8),
             child: widget3,
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8),
+            child: widget4,
           ),
         ],
       ),
