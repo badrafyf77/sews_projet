@@ -82,6 +82,7 @@ class _HomePageState extends State<HomePage> {
             if (snapshot.hasData) {
               return Scaffold(
                 appBar: AppBar(
+                  automaticallyImplyLeading: false,
                   elevation: 0,
                   bottom: PreferredSize(
                     preferredSize: const Size.fromHeight(0.0),
@@ -724,8 +725,11 @@ class _HomePageState extends State<HomePage> {
                                           }
                                         } else {
                                           await Get.to(
-                                              () => const SettingsPage(),
-                                              transition: Transition.cupertino);
+                                              () =>  SettingsPage(
+                                                args: args,
+                                              ),
+                                              transition: Transition.cupertino,
+                                              );
 
                                           widget.updateCallback();
                                         }

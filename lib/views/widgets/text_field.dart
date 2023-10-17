@@ -6,18 +6,24 @@ import '../../constants.dart';
 class MyTextField extends StatefulWidget {
   final FocusNode? focusNode;
   final String? Function(String?)? validator;
+  void Function(String)? onChanged;
   final String label;
   final TextEditingController controller;
   final bool obscureText;
   final bool showPasswordIcon;
-  const MyTextField({
+  final double radius;
+  final bool enable;
+  MyTextField({
     Key? key,
     this.focusNode,
     required this.validator,
+    this.onChanged,
     required this.label,
     required this.controller,
     this.obscureText = false,
     this.showPasswordIcon = false,
+    this.radius = 25.0,
+    this.enable = true,
   }) : super(key: key);
 
   @override
@@ -41,12 +47,14 @@ class _MyTextFieldState extends State<MyTextField> {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      enabled: widget.enable,
       obscureText: showPassword,
       enableSuggestions: !showPassword,
       autocorrect: !showPassword,
       focusNode: widget.focusNode,
       validator: widget.validator,
       controller: widget.controller,
+      onChanged: widget.onChanged,
       decoration: InputDecoration(
         suffixIcon: widget.showPasswordIcon
             ? IconButton(
@@ -64,37 +72,37 @@ class _MyTextFieldState extends State<MyTextField> {
           color: Colors.grey,
           fontSize: 14,
         ),
-        disabledBorder: const OutlineInputBorder(
-          borderRadius: BorderRadius.all(Radius.circular(25)),
-          borderSide: BorderSide(
+        disabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.all(Radius.circular(widget.radius)),
+          borderSide: const BorderSide(
             width: 1.5,
             color: kPrimaryColor,
           ),
         ),
-        enabledBorder: const OutlineInputBorder(
-          borderRadius: BorderRadius.all(Radius.circular(25)),
-          borderSide: BorderSide(
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.all(Radius.circular(widget.radius)),
+          borderSide: const BorderSide(
             width: 1.5,
             color: kPrimaryColor,
           ),
         ),
-        errorBorder: const OutlineInputBorder(
-          borderRadius: BorderRadius.all(Radius.circular(25)),
-          borderSide: BorderSide(
+        errorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.all(Radius.circular(widget.radius)),
+          borderSide: const BorderSide(
             width: 1.5,
             color: Colors.red,
           ),
         ),
-        border: const OutlineInputBorder(
-          borderRadius: BorderRadius.all(Radius.circular(25)),
-          borderSide: BorderSide(
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.all(Radius.circular(widget.radius)),
+          borderSide: const BorderSide(
             width: 1.5,
             color: Colors.red,
           ),
         ),
-        focusedBorder: const OutlineInputBorder(
-          borderRadius: BorderRadius.all(Radius.circular(25)),
-          borderSide: BorderSide(
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.all(Radius.circular(widget.radius)),
+          borderSide: const BorderSide(
             width: 1.5,
             color: kPrimaryColor,
           ),

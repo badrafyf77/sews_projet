@@ -3,6 +3,7 @@ import 'package:firedart/firedart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
+import 'package:sews_projet/model/models/models.dart';
 import 'package:sews_projet/view_model/blocs/auth_bloc/auth_bloc.dart';
 import 'package:sews_projet/view_model/blocs/excel_import_bloc/excel_import_bloc.dart';
 import 'package:sews_projet/constants.dart';
@@ -94,7 +95,7 @@ class _MyAppState extends State<MyApp> {
           GetPage(name: HistoriquePage.id, page: () => const HistoriquePage()),
           GetPage(name: RecherchePage.id, page: () => const RecherchePage()),
           GetPage(name: Forgetpassword.id, page: () => const Forgetpassword()),
-          GetPage(name: SettingsPage.id, page: () => const SettingsPage()),
+          GetPage(name: SettingsPage.id, page: () =>  SettingsPage(args: ModalRoute.of(context)!.settings.arguments as UserInfo)),
         ],
       ),
     );

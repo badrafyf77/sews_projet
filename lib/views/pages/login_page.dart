@@ -164,12 +164,10 @@ class LoginPage extends StatelessWidget {
                                         Navigator.of(context).pop();
                                       }
 
-                                      Get.offAll(
+                                      Get.off(
                                         () => HomePage(updateCallback: () {}),
-                                        arguments: UserInfo(
-                                          data['displayName'],
-                                          data['idToken'],
-                                        ),
+                                        arguments: UserInfo(data['displayName'],
+                                            data['idToken'], data['email']),
                                       );
                                     } catch (e) {
                                       if (context.mounted) {

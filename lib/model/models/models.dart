@@ -117,9 +117,11 @@ class EditArguments {
 class UserInfo {
   final String displayName;
   final String idToken;
+  final String email;
 
   UserInfo(
     this.displayName,
     this.idToken,
+    this.email,
   );
 }

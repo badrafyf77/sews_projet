@@ -4,11 +4,13 @@ import 'package:flutter/material.dart';
 import '../../constants.dart';
 
 class MyButton extends StatelessWidget {
+  final bool enable;
   final Function()? onPressed;
   final String textButton;
   final double padding;
   const MyButton({
     Key? key,
+    this.enable = true,
     required this.onPressed,
     required this.textButton,
     this.padding = 1,
@@ -18,9 +20,10 @@ class MyButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return UnconstrainedBox(
       child: ElevatedButton(
-        onPressed: onPressed,
+        onPressed: enable ? onPressed : null,
         style: ButtonStyle(
-          backgroundColor: const MaterialStatePropertyAll(kPrimaryColor),
+          backgroundColor:
+              MaterialStatePropertyAll(enable ? kPrimaryColor : Colors.grey),
           foregroundColor: const MaterialStatePropertyAll(Colors.white),
           shape: MaterialStateProperty.all<RoundedRectangleBorder>(
             RoundedRectangleBorder(
