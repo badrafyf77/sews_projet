@@ -1,6 +1,7 @@
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:sews_projet/model/models/models.dart';
 import 'package:sews_projet/views/widgets/button.dart';
 import 'package:sews_projet/views/widgets/custom_appbar.dart';
 import 'package:sews_projet/views/widgets/loading_circle.dart';
@@ -156,13 +157,20 @@ class LoginPage extends StatelessWidget {
                                           },
                                         );
                                       }
-                                      await signIn(emailController.text,
+                                      Map<String, dynamic> data = await signIn(
+                                          emailController.text,
                                           passwordController.text);
                                       if (context.mounted) {
                                         Navigator.of(context).pop();
                                       }
-                                      Get.offAll(() =>
-                                          HomePage(updateCallback: () {}));
+
+                                      Get.offAll(
+                                        () => HomePage(updateCallback: () {}),
+                                        arguments: UserInfo(
+                                          data['displayName'],
+                                          data['idToken'],
+                                        ),
+                                      );
                                     } catch (e) {
                                       if (context.mounted) {
                                         myShowToast(

@@ -113,3 +113,13 @@ class EditArguments {
     this.appareilValue,
   );
 }
+
+class UserInfo {
+  final String displayName;
+  final String idToken;
+
+  UserInfo(
+    this.displayName,
+    this.idToken,
+  );
+}

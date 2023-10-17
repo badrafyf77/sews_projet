@@ -20,7 +20,7 @@ import 'package:uuid/uuid.dart';
 import '../widgets/date_picker.dart';
 import '../widgets/text_field.dart';
 import '../../constants.dart';
-import '../../model/models/model.dart';
+import '../../model/models/models.dart';
 
 class ContratRecherche extends StatefulWidget {
   const ContratRecherche({super.key});
@@ -221,12 +221,8 @@ class _ContratRechercheState extends State<ContratRecherche> {
                                 tooltip: 'actualiser',
                                 onPressed: () {
                                   setState(() {});
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    const SnackBar(
-                                      content: Text('actualiser'),
-                                      duration: Duration(milliseconds: 500),
-                                    ),
-                                  );
+                                  myShowToast(
+                                      context, 'actualiser', Colors.grey);
                                 },
                                 icon: const Icon(
                                   Icons.refresh,

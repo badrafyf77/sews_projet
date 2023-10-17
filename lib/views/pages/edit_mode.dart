@@ -16,7 +16,7 @@ import 'package:uuid/uuid.dart';
 import '../widgets/drop_down_field.dart';
 import '../widgets/text_field.dart';
 import '../../constants.dart';
-import '../../model/models/model.dart';
+import '../../model/models/models.dart';
 
 class EditPage extends StatefulWidget {
   const EditPage({super.key});
@@ -134,12 +134,8 @@ class _EditPageState extends State<EditPage> {
                                   tooltip: 'actualiser',
                                   onPressed: () {
                                     setState(() {});
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      const SnackBar(
-                                        content: Text('actualiser'),
-                                        duration: Duration(milliseconds: 500),
-                                      ),
-                                    );
+                                    myShowToast(
+                                        context, 'actualiser', Colors.grey);
                                   },
                                   icon: const Icon(
                                     Icons.refresh,

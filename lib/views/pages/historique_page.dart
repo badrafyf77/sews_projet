@@ -5,7 +5,7 @@ import 'package:get/get.dart';
 import 'package:sews_projet/views/widgets/custom_appbar.dart';
 import 'package:sews_projet/views/widgets/loading_circle.dart';
 import 'package:sews_projet/views/widgets/no_result.dart';
-import 'package:sews_projet/model/models/model.dart';
+import 'package:sews_projet/model/models/models.dart';
 import 'package:sews_projet/model/services/connectivity.dart';
 import '../../constants.dart';
 
@@ -152,12 +152,7 @@ class _HistoriquePageState extends State<HistoriquePage> {
                           tooltip: 'actualiser',
                           onPressed: () {
                             setState(() {});
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                content: Text('actualiser'),
-                                duration: Duration(milliseconds: 500),
-                              ),
-                            );
+                            myShowToast(context, 'actualiser', Colors.grey);
                           },
                           icon: const Icon(
                             Icons.refresh,

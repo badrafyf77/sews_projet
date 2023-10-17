@@ -8,7 +8,7 @@ void myShowToast(BuildContext context, String text, Color color) {
   showToast(
     text,
     context: context,
-    animation: StyledToastAnimation.sizeFade,
+    animation: StyledToastAnimation.fade,
     backgroundColor: color,
   );
 }

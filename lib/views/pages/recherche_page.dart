@@ -6,7 +6,7 @@ import 'package:sews_projet/views/widgets/no_result.dart';
 import 'package:sews_projet/model/services/connectivity.dart';
 import '../widgets/custom_appbar.dart';
 import '../../constants.dart';
-import '../../model/models/model.dart';
+import '../../model/models/models.dart';
 
 class RecherchePage extends StatelessWidget {
   const RecherchePage({super.key});
