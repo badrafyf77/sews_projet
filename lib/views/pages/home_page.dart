@@ -5,6 +5,7 @@ import 'package:firedart/firedart.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sews_projet/views/pages/login_page.dart';
+import 'package:sews_projet/views/pages/setting.dart';
 import 'package:sews_projet/views/widgets/button.dart';
 import 'package:sews_projet/views/widgets/container.dart';
 import 'package:sews_projet/views/widgets/custom_appbar.dart';
@@ -740,9 +741,8 @@ class _HomePageState extends State<HomePage> {
                                           }
                                         } else {
                                           await Get.to(
-                                            () => SettingsPage(
-                                              args: args,
-                                            ),
+                                            () => const SettingPage(),
+                                            arguments: args,
                                             transition: Transition.cupertino,
                                           );
 

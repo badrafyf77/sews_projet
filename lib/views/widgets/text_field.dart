@@ -6,14 +6,14 @@ import '../../constants.dart';
 class MyTextField extends StatefulWidget {
   final FocusNode? focusNode;
   final String? Function(String?)? validator;
-  void Function(String)? onChanged;
+  final void Function(String)? onChanged;
   final String label;
   final TextEditingController controller;
   final bool obscureText;
   final bool showPasswordIcon;
   final double radius;
   final bool enable;
-  MyTextField({
+  const MyTextField({
     Key? key,
     this.focusNode,
     required this.validator,

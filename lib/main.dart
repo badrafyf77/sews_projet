@@ -16,6 +16,7 @@ import 'package:sews_projet/views/pages/login_page.dart';
 import 'package:sews_projet/views/pages/manual_addition_page.dart';
 import 'package:sews_projet/views/pages/recherche_contrat.dart';
 import 'package:sews_projet/views/pages/recherche_page.dart';
+import 'package:sews_projet/views/pages/setting.dart';
 import 'package:sews_projet/views/pages/settings.dart';
 
 class MyBehavior extends ScrollBehavior {
@@ -95,7 +96,12 @@ class _MyAppState extends State<MyApp> {
           GetPage(name: HistoriquePage.id, page: () => const HistoriquePage()),
           GetPage(name: RecherchePage.id, page: () => const RecherchePage()),
           GetPage(name: Forgetpassword.id, page: () => const Forgetpassword()),
-          GetPage(name: SettingsPage.id, page: () =>  SettingsPage(args: ModalRoute.of(context)!.settings.arguments as UserInfo)),
+          GetPage(
+              name: SettingsPage.id,
+              page: () => SettingsPage(
+                  args:
+                      ModalRoute.of(context)!.settings.arguments as UserInfo)),
+          GetPage(name: SettingPage.id, page: () => const SettingPage()),
         ],
       ),
     );

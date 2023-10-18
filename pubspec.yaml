@@ -27,6 +27,7 @@ dependencies:
   intl: ^0.18.1
   lottie: ^2.6.0
   uuid: ^4.1.0
+  side_navigation: ^1.0.4
 
 dependency_overrides:
   win32: ^5.0.0
