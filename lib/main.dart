@@ -3,7 +3,6 @@ import 'package:firedart/firedart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
-import 'package:sews_projet/model/models/models.dart';
 import 'package:sews_projet/view_model/blocs/auth_bloc/auth_bloc.dart';
 import 'package:sews_projet/view_model/blocs/excel_import_bloc/excel_import_bloc.dart';
 import 'package:sews_projet/constants.dart';
@@ -17,7 +16,6 @@ import 'package:sews_projet/views/pages/manual_addition_page.dart';
 import 'package:sews_projet/views/pages/recherche_contrat.dart';
 import 'package:sews_projet/views/pages/recherche_page.dart';
 import 'package:sews_projet/views/pages/setting.dart';
-import 'package:sews_projet/views/pages/settings.dart';
 
 class MyBehavior extends ScrollBehavior {
   @override
@@ -96,11 +94,6 @@ class _MyAppState extends State<MyApp> {
           GetPage(name: HistoriquePage.id, page: () => const HistoriquePage()),
           GetPage(name: RecherchePage.id, page: () => const RecherchePage()),
           GetPage(name: Forgetpassword.id, page: () => const Forgetpassword()),
-          GetPage(
-              name: SettingsPage.id,
-              page: () => SettingsPage(
-                  args:
-                      ModalRoute.of(context)!.settings.arguments as UserInfo)),
           GetPage(name: SettingPage.id, page: () => const SettingPage()),
         ],
       ),
