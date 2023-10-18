@@ -3,7 +3,6 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:side_navigation/side_navigation.dart';
-
 import 'package:sews_projet/constants.dart';
 import 'package:sews_projet/model/models/models.dart';
 import 'package:sews_projet/model/services/auth_api.dart';
@@ -72,9 +71,14 @@ class _SettingPageState extends State<SettingPage> {
                           context, 'Pas de connexion internet', Colors.grey);
                     }
                   } else {
+                    setState(() {
+                      selectedIndex = 0;
+                    });
                     Get.off(
                         () => HomePage(updateCallback: () {
-                              setState(() {});
+                              if (context.mounted) {
+                                setState(() {});
+                              }
                             }),
                         arguments: args);
                   }
@@ -326,7 +330,42 @@ class _PasswordWidgetState extends State<PasswordWidget> {
                   child: MyButton(
                     enable: enablePassword,
                     onPressed: () async {
-                      if (formKeyPass.currentState!.validate()) {}
+                      if (formKeyPass.currentState!.validate()) {
+                        try {
+                          if (context.mounted) {
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return const LoadingAnimation();
+                              },
+                            );
+                          }
+                          var dataForIdToken = await signIn(
+                              widget.userInfo.email, widget.userInfo.password);
+                          var data = await updatePassword(
+                              newPassController.text,
+                              dataForIdToken['idToken']);
+                          if (context.mounted) {
+                            Navigator.of(context).pop();
+                          }
+                          if (context.mounted) {
+                            myShowToast(
+                                context, 'Mot de passe changee', Colors.green);
+                          }
+                          setState(() {
+                            widget.userInfo.password = newPassController.text;
+                            widget.userInfo.idToken = data['idToken'];
+                            enablePassword = false;
+                            oldPassController.clear();
+                            newPassController.clear();
+                            confirmPassController.clear();
+                          });
+                        } catch (e) {
+                          if (context.mounted) {
+                            myShowToast(context, e.toString(), Colors.red);
+                          }
+                        }
+                      }
                     },
                     textButton: 'Changer',
                     padding: 12,
@@ -588,13 +627,19 @@ class DashboardWidget extends StatelessWidget {
             children: [
               Row(
                 children: [
-                  const Text('Nom complete:'),
+                  Text(
+                    'Nom complete:',
+                    style: TextStyle(fontSize: size.width * 0.02),
+                  ),
                   const SizedBox(
                     width: 15,
                   ),
                   Text(
                     userInfo.displayName,
-                    style: const TextStyle(fontSize: 16),
+                    style: TextStyle(
+                      fontSize: size.width * 0.018,
+                      fontWeight: FontWeight.bold,
+                    ),
                   )
                 ],
               ),
@@ -603,31 +648,89 @@ class DashboardWidget extends StatelessWidget {
               ),
               Row(
                 children: [
-                  const Text('E-mail:'),
+                  Text(
+                    'E-mail:',
+                    style: TextStyle(fontSize: size.width * 0.02),
+                  ),
                   const SizedBox(
                     width: 15,
                   ),
                   Text(
                     userInfo.email,
-                    style: const TextStyle(fontSize: 16),
+                    style: TextStyle(
+                      fontSize: size.width * 0.018,
+                      fontWeight: FontWeight.bold,
+                    ),
                   )
                 ],
               ),
               const SizedBox(
                 height: 20,
               ),
-              const Row(
+              Row(
                 children: [
-                  Text('Site:'),
-                  SizedBox(
+                  Text(
+                    'Site:',
+                    style: TextStyle(fontSize: size.width * 0.02),
+                  ),
+                  const SizedBox(
                     width: 15,
                   ),
                   Text(
                     'Berrechid 1',
-                    style: TextStyle(fontSize: 16),
+                    style: TextStyle(
+                      fontSize: size.width * 0.018,
+                      fontWeight: FontWeight.bold,
+                    ),
                   )
                 ],
               ),
+              SizedBox(
+                height: size.height * 0.1,
+              ),
+              TextButton(
+                onPressed: () {
+                  Get.off(() => const LoginPage(),
+                      transition: Transition.leftToRight);
+                },
+                style: ButtonStyle(
+                  foregroundColor: MaterialStateProperty.resolveWith<Color>(
+                    (Set<MaterialState> states) {
+                      return Colors.white;
+                    },
+                  ),
+                  backgroundColor: MaterialStateProperty.resolveWith<Color>(
+                    (Set<MaterialState> states) {
+                      return kPrimaryColor;
+                    },
+                  ),
+                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                    RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                  ),
+                ),
+                child: const Padding(
+                  padding: EdgeInsets.all(8),
+                  child: SizedBox(
+                    width: 150,
+                    child: Row(
+                      children: [
+                        Text(
+                          'Se deconnecter',
+                          style: TextStyle(
+                            fontSize: 15,
+                          ),
+                        ),
+                        SizedBox(
+                          width: 5,
+                        ),
+                        Icon(Icons.logout)
+                      ],
+                    ),
+                  ),
+                ),
+              )
             ],
           ),
         )

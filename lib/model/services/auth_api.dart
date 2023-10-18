@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:http/http.dart' as http;
 
 Future<Map<String, dynamic>> signIn(String email, String password) async {
@@ -81,6 +80,35 @@ Future<Map<String, dynamic>> updateEmail(String email, String idToken) async {
     if (data['error']['message'] == 'EMAIL_EXISTS') {
       throw 'E-mail déja utilisé';
     } else if (data['error']['message'] == 'INVALID_ID_TOKEN') {
+      throw 'Id Token invalide';
+    } else {
+      throw data['error']['message'];
+    }
+  }
+  return data;
+}
+
+Future<Map<String, dynamic>> updatePassword(
+    String password, String idToken) async {
+  const apiKey = 'AIzaSyC6uv_zv5nnu9to07xlKHPl1fCrGur2YyI';
+  const url =
+      'https://identitytoolkit.googleapis.com/v1/accounts:update?key=$apiKey';
+  final header = {
+    'Content-Type': 'application/json',
+  };
+  final body = {
+    "idToken": idToken,
+    "password": password,
+    "returnSecureToken": true,
+  };
+
+  final response =
+      await http.post(Uri.parse(url), headers: header, body: json.encode(body));
+
+  final Map<String, dynamic> data = json.decode(response.body);
+
+  if (response.statusCode != 200) {
+    if (data['error']['message'] == 'INVALID_ID_TOKEN') {
       throw 'Id Token invalide';
     } else {
       throw data['error']['message'];
