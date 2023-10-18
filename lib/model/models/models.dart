@@ -115,13 +115,15 @@ class EditArguments {
 }
 
 class UserInfo {
-  final String displayName;
-  final String idToken;
-  final String email;
+  String displayName;
+  String idToken;
+  String email;
+  String password;
 
   UserInfo(
     this.displayName,
     this.idToken,
     this.email,
+    this.password,
   );
 }

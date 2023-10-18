@@ -4,6 +4,7 @@ import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:firedart/firedart.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:sews_projet/views/pages/login_page.dart';
 import 'package:sews_projet/views/widgets/button.dart';
 import 'package:sews_projet/views/widgets/container.dart';
 import 'package:sews_projet/views/widgets/custom_appbar.dart';
@@ -134,6 +135,20 @@ class _HomePageState extends State<HomePage> {
                             width: size.width * 0.043,
                             height: size.height * 0.043,
                           ),
+                          const MyVerticalLine(
+                            height: 20,
+                            color: kPrimaryColor,
+                          ),
+                          IconButton(
+                              tooltip: 'déconnectez-vous',
+                              onPressed: () {
+                                Get.off(() => const LoginPage(),
+                                    transition: Transition.leftToRight);
+                              },
+                              icon: const Icon(
+                                Icons.logout_rounded,
+                                color: kPrimaryColor,
+                              ))
                         ],
                       ),
                     ),
@@ -725,11 +740,11 @@ class _HomePageState extends State<HomePage> {
                                           }
                                         } else {
                                           await Get.to(
-                                              () =>  SettingsPage(
-                                                args: args,
-                                              ),
-                                              transition: Transition.cupertino,
-                                              );
+                                            () => SettingsPage(
+                                              args: args,
+                                            ),
+                                            transition: Transition.cupertino,
+                                          );
 
                                           widget.updateCallback();
                                         }

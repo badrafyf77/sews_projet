@@ -166,8 +166,11 @@ class LoginPage extends StatelessWidget {
 
                                       Get.off(
                                         () => HomePage(updateCallback: () {}),
-                                        arguments: UserInfo(data['displayName'],
-                                            data['idToken'], data['email']),
+                                        arguments: UserInfo(
+                                            data['displayName'],
+                                            data['idToken'],
+                                            data['email'],
+                                            passwordController.text),
                                       );
                                     } catch (e) {
                                       if (context.mounted) {

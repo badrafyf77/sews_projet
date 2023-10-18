@@ -2,6 +2,7 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:firedart/firedart.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:sews_projet/views/widgets/loading_circle.dart';
 import 'package:sews_projet/views/widgets/no_result.dart';
 import 'package:sews_projet/model/services/connectivity.dart';
 import '../widgets/custom_appbar.dart';
@@ -452,11 +453,9 @@ class RecherchePage extends StatelessWidget {
                         ));
             }
             return const Scaffold(
-              body: Center(
-                child: Text(
-                  'Chargement....',
-                  style: TextStyle(color: kPrimaryColor),
-                ),
+              body: LoadingAnimation(
+                color: kPrimaryColor,
+                size: 60,
               ),
             );
           });
