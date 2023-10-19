@@ -74,12 +74,7 @@ class _SettingPageState extends State<SettingPage> {
                     setState(() {
                       selectedIndex = 0;
                     });
-                    Get.off(
-                        () => HomePage(updateCallback: () {
-                              if (context.mounted) {
-                                setState(() {});
-                              }
-                            }),
+                    Get.off(() => HomePage(updateCallback: () {}),
                         arguments: args);
                   }
                 },
@@ -445,7 +440,8 @@ class _EmailWidgetState extends State<EmailWidget> {
                     ),
                     Text(
                       widget.userInfo.email,
-                      style: const TextStyle(fontSize: 16),
+                      style: const TextStyle(
+                          fontSize: 16, fontWeight: FontWeight.bold),
                     )
                   ],
                 ),
@@ -629,7 +625,7 @@ class DashboardWidget extends StatelessWidget {
                 children: [
                   Text(
                     'Nom complete:',
-                    style: TextStyle(fontSize: size.width * 0.02),
+                    style: TextStyle(fontSize: size.height * 0.024),
                   ),
                   const SizedBox(
                     width: 15,
@@ -637,7 +633,7 @@ class DashboardWidget extends StatelessWidget {
                   Text(
                     userInfo.displayName,
                     style: TextStyle(
-                      fontSize: size.width * 0.018,
+                      fontSize: size.height * 0.024,
                       fontWeight: FontWeight.bold,
                     ),
                   )
@@ -650,7 +646,7 @@ class DashboardWidget extends StatelessWidget {
                 children: [
                   Text(
                     'E-mail:',
-                    style: TextStyle(fontSize: size.width * 0.02),
+                    style: TextStyle(fontSize: size.height * 0.024),
                   ),
                   const SizedBox(
                     width: 15,
@@ -658,7 +654,7 @@ class DashboardWidget extends StatelessWidget {
                   Text(
                     userInfo.email,
                     style: TextStyle(
-                      fontSize: size.width * 0.018,
+                      fontSize: size.height * 0.024,
                       fontWeight: FontWeight.bold,
                     ),
                   )
@@ -671,15 +667,15 @@ class DashboardWidget extends StatelessWidget {
                 children: [
                   Text(
                     'Site:',
-                    style: TextStyle(fontSize: size.width * 0.02),
+                    style: TextStyle(fontSize: size.height * 0.024),
                   ),
                   const SizedBox(
                     width: 15,
                   ),
                   Text(
-                    'Berrechid 1',
+                    userInfo.site,
                     style: TextStyle(
-                      fontSize: size.width * 0.018,
+                      fontSize: size.height * 0.024,
                       fontWeight: FontWeight.bold,
                     ),
                   )

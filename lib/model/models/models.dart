@@ -116,12 +116,14 @@ class EditArguments {
 
 class UserInfo {
   String displayName;
+  String site;
   String idToken;
   String email;
   String password;
 
   UserInfo(
     this.displayName,
+    this.site,
     this.idToken,
     this.email,
     this.password,
