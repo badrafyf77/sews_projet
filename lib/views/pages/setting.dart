@@ -1,5 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:firedart/firedart.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:side_navigation/side_navigation.dart';
@@ -548,10 +549,25 @@ class _EmailWidgetState extends State<EmailWidget> {
                           if (context.mounted) {
                             Navigator.of(context).pop();
                           }
+
+                          CollectionReference updateUserInfo =
+                              Firestore.instance.collection('Users');
+
+                          await updateUserInfo
+                              .document(widget.userInfo.email)
+                              .delete();
+
+                          updateUserInfo.document(data['email']).set({
+                            'displayName': widget.userInfo.displayName,
+                            'email': data['email'],
+                            'site': widget.userInfo.site,
+                          });
+
                           if (context.mounted) {
                             myShowToast(
                                 context, 'E-mail changee', Colors.green);
                           }
+
                           setState(() {
                             widget.userInfo.email = data['email'];
                             widget.userInfo.idToken = data['idToken'];

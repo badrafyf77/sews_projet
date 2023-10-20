@@ -130,6 +130,10 @@ class _EditPageState extends State<EditPage> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
+                                Text(
+                                  '(${appareilList.length})',
+                                  style: const TextStyle(color: kPrimaryColor),
+                                ),
                                 IconButton(
                                   tooltip: 'actualiser',
                                   onPressed: () {

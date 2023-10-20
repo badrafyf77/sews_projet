@@ -217,6 +217,10 @@ class _ContratRechercheState extends State<ContratRecherche> {
                           ),
                           Row(
                             children: [
+                              Text(
+                                '(${appareilList.length})',
+                                style: const TextStyle(color: Colors.white),
+                              ),
                               IconButton(
                                 tooltip: 'actualiser',
                                 onPressed: () {
