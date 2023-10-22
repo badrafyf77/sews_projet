@@ -105,12 +105,14 @@ class EditArguments {
   final String siteValue;
   final String appareilIndex;
   final String appareilValue;
+  final String site;
 
   EditArguments(
     this.siteIndex,
     this.siteValue,
     this.appareilIndex,
     this.appareilValue,
+    this.site,
   );
 }
 

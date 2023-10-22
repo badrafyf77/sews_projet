@@ -490,40 +490,52 @@ class _EditPageState extends State<EditPage> {
                                                       ),
                                                     ),
                                                     onPressed: () {
-                                                      sewsDatabase
-                                                          .document(
-                                                              appareilList[
-                                                                      index]
-                                                                  .id)
-                                                          .update({
-                                                        'a2': myController.text,
-                                                        'a3': selectedSite,
-                                                      });
-                                                      var id =
-                                                          const Uuid().v4();
-                                                      historique
-                                                          .document(id)
-                                                          .set({
-                                                        'Type':
-                                                            'Modification de ${appareilList[index].id}',
-                                                        'Nombre de pieces': 1,
-                                                        'Date': DateTime.now(),
-                                                        'Time': DateFormat.jm()
-                                                            .format(
-                                                                DateTime.now())
-                                                            .toLowerCase(),
-                                                        'Icon': 'update.png',
-                                                        'Id': id,
-                                                      });
-                                                      Navigator.of(context)
-                                                          .pop();
-                                                      Future.delayed(
-                                                          const Duration(
-                                                              seconds: 1,
-                                                              milliseconds:
-                                                                  500), () {
-                                                        setState(() {});
-                                                      });
+                                                      if (args.site !=
+                                                          appareilList[index]
+                                                              .site) {
+                                                        myShowToast(
+                                                            context,
+                                                            'vous ne pouvez pas modifier ceci car vous n\'avez pas l\'autorisation',
+                                                            Colors.red);
+                                                      } else {
+                                                        sewsDatabase
+                                                            .document(
+                                                                appareilList[
+                                                                        index]
+                                                                    .id)
+                                                            .update({
+                                                          'a2':
+                                                              myController.text,
+                                                          'a3': selectedSite,
+                                                        });
+                                                        var id =
+                                                            const Uuid().v4();
+                                                        historique
+                                                            .document(id)
+                                                            .set({
+                                                          'Type':
+                                                              'Modification de ${appareilList[index].id}',
+                                                          'Nombre de pieces': 1,
+                                                          'Date':
+                                                              DateTime.now(),
+                                                          'Time': DateFormat
+                                                                  .jm()
+                                                              .format(DateTime
+                                                                  .now())
+                                                              .toLowerCase(),
+                                                          'Icon': 'update.png',
+                                                          'Id': id,
+                                                        });
+                                                        Navigator.of(context)
+                                                            .pop();
+                                                        Future.delayed(
+                                                            const Duration(
+                                                                seconds: 1,
+                                                                milliseconds:
+                                                                    500), () {
+                                                          setState(() {});
+                                                        });
+                                                      }
                                                     },
                                                   ),
                                                 ],
