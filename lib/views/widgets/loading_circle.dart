@@ -21,7 +21,7 @@ class LoadingAnimation extends StatelessWidget {
         child: Center(
           child: Padding(
             padding: const EdgeInsets.all(15),
-            child: SpinKitThreeBounce(
+            child: SpinKitFadingCube(
               color: color,
               size: size,
             ),

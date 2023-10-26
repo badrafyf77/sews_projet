@@ -17,6 +17,7 @@ import '../widgets/drop_down_field.dart';
 import '../widgets/text_field.dart';
 import '../../constants.dart';
 import '../../model/models/models.dart';
+import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 
 class EditPage extends StatefulWidget {
   const EditPage({super.key});
@@ -343,217 +344,264 @@ class _EditPageState extends State<EditPage> {
                           ],
                         )
                       : Expanded(
-                          child: ListView.builder(
-                            itemCount: appareilList.length,
-                            itemBuilder: (context, index) {
-                              return Column(
-                                children: [
-                                  if (index == 0) ListviewHeader(size: size),
-                                  const SizedBox(
-                                    height: 2,
-                                  ),
-                                  SwipeActionCell(
-                                    controller: controller,
-                                    index: index,
-                                    key: ValueKey(appareilList[index]),
-                                    child: MouseRegion(
-                                      cursor: SystemMouseCursors.click,
-                                      child: GestureDetector(
-                                        onTap: () {
-                                          myController.text =
-                                              appareilList[index].utilisateur;
-                                          selectedSite =
-                                              appareilList[index].site;
-                                          showDialog(
-                                            context: context,
-                                            builder: (BuildContext context) {
-                                              return AlertDialog(
-                                                title: Row(
-                                                  children: [
-                                                    Text(
-                                                      'Editer ${appareilList[index].id}',
-                                                    ),
-                                                    IconButton(
-                                                        onPressed: () {
-                                                          Navigator.pushNamed(
-                                                              context,
-                                                              RecherchePage.id,
-                                                              arguments:
+                          child: AnimationLimiter(
+                            child: ListView.builder(
+                              itemCount: appareilList.length,
+                              itemBuilder: (context, index) {
+                                return AnimationConfiguration.staggeredList(
+                                  position: index,
+                                  duration: const Duration(milliseconds: 375),
+                                  child: SlideAnimation(
+                                    verticalOffset: 50.0,
+                                    child: FadeInAnimation(
+                                      child: Column(
+                                        children: [
+                                          if (index == 0)
+                                            ListviewHeader(size: size),
+                                          const SizedBox(
+                                            height: 2,
+                                          ),
+                                          SwipeActionCell(
+                                            controller: controller,
+                                            index: index,
+                                            key: ValueKey(appareilList[index]),
+                                            child: MouseRegion(
+                                              cursor: SystemMouseCursors.click,
+                                              child: GestureDetector(
+                                                onTap: () {
+                                                  myController.text =
+                                                      appareilList[index]
+                                                          .utilisateur;
+                                                  selectedSite =
+                                                      appareilList[index].site;
+                                                  showDialog(
+                                                    context: context,
+                                                    builder:
+                                                        (BuildContext context) {
+                                                      return AlertDialog(
+                                                        title: Row(
+                                                          children: [
+                                                            Text(
+                                                              'Editer ${appareilList[index].id}',
+                                                            ),
+                                                            IconButton(
+                                                                onPressed: () {
+                                                                  Navigator.pushNamed(
+                                                                      context,
+                                                                      RecherchePage
+                                                                          .id,
+                                                                      arguments:
+                                                                          appareilList[index]
+                                                                              .id);
+                                                                },
+                                                                icon: const Icon(
+                                                                    Icons
+                                                                        .visibility))
+                                                          ],
+                                                        ),
+                                                        content: SizedBox(
+                                                          height: size.height *
+                                                              0.38,
+                                                          width:
+                                                              size.width * 0.4,
+                                                          child: Column(
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .start,
+                                                            crossAxisAlignment:
+                                                                CrossAxisAlignment
+                                                                    .start,
+                                                            children: [
+                                                              const SizedBox(
+                                                                height: 18,
+                                                              ),
+                                                              const Padding(
+                                                                padding:
+                                                                    EdgeInsets
+                                                                        .all(8),
+                                                                child: Text(
+                                                                  'le Site',
+                                                                  style:
+                                                                      TextStyle(
+                                                                    color:
+                                                                        kPrimaryColor,
+                                                                    fontSize:
+                                                                        16,
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                              SizedBox(
+                                                                width: MediaQuery.of(
+                                                                            context)
+                                                                        .size
+                                                                        .width *
+                                                                    0.55,
+                                                                child:
+                                                                    MyDropDownField(
+                                                                  onChanged:
+                                                                      (value) {
+                                                                    selectedSite =
+                                                                        value;
+                                                                  },
+                                                                  items:
+                                                                      siteItems,
+                                                                  hintText:
+                                                                      'Site',
+                                                                  selectedItem:
+                                                                      selectedSite!,
+                                                                ),
+                                                              ),
+                                                              const SizedBox(
+                                                                height: 5,
+                                                              ),
+                                                              const Padding(
+                                                                padding:
+                                                                    EdgeInsets
+                                                                        .all(8),
+                                                                child: Text(
+                                                                  'Utilisateur',
+                                                                  style:
+                                                                      TextStyle(
+                                                                    color:
+                                                                        kPrimaryColor,
+                                                                    fontSize:
+                                                                        16,
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                              SizedBox(
+                                                                width: MediaQuery.of(
+                                                                            context)
+                                                                        .size
+                                                                        .width *
+                                                                    0.55,
+                                                                child:
+                                                                    MyTextField(
+                                                                  validator:
+                                                                      (value) {
+                                                                    if (value ==
+                                                                            null ||
+                                                                        value
+                                                                            .isEmpty) {
+                                                                      return 'Taper ici';
+                                                                    } else {
+                                                                      return null;
+                                                                    }
+                                                                  },
+                                                                  controller:
+                                                                      myController,
+                                                                  label:
+                                                                      'Utilisateur',
+                                                                ),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        ),
+                                                        actions: [
+                                                          TextButton(
+                                                            child: const Text(
+                                                              'return',
+                                                              style: TextStyle(
+                                                                color:
+                                                                    kPrimaryColor,
+                                                                fontSize: 16,
+                                                              ),
+                                                            ),
+                                                            onPressed: () {
+                                                              Navigator.of(
+                                                                      context)
+                                                                  .pop();
+                                                            },
+                                                          ),
+                                                          TextButton(
+                                                            child: const Text(
+                                                              'changer',
+                                                              style: TextStyle(
+                                                                color:
+                                                                    kPrimaryColor,
+                                                                fontSize: 16,
+                                                              ),
+                                                            ),
+                                                            onPressed: () {
+                                                              if (args.site !=
                                                                   appareilList[
                                                                           index]
-                                                                      .id);
-                                                        },
-                                                        icon: const Icon(
-                                                            Icons.visibility))
-                                                  ],
-                                                ),
-                                                content: SizedBox(
-                                                  height: size.height * 0.38,
-                                                  width: size.width * 0.4,
-                                                  child: Column(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment.start,
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
-                                                    children: [
-                                                      const SizedBox(
-                                                        height: 18,
-                                                      ),
-                                                      const Padding(
-                                                        padding:
-                                                            EdgeInsets.all(8),
-                                                        child: Text(
-                                                          'le Site',
-                                                          style: TextStyle(
-                                                            color:
-                                                                kPrimaryColor,
-                                                            fontSize: 16,
+                                                                      .site) {
+                                                                myShowToast(
+                                                                    context,
+                                                                    'vous ne pouvez pas modifier ceci car vous n\'avez pas l\'autorisation',
+                                                                    Colors.red);
+                                                              } else {
+                                                                sewsDatabase
+                                                                    .document(
+                                                                        appareilList[index]
+                                                                            .id)
+                                                                    .update({
+                                                                  'a2':
+                                                                      myController
+                                                                          .text,
+                                                                  'a3':
+                                                                      selectedSite,
+                                                                });
+                                                                var id =
+                                                                    const Uuid()
+                                                                        .v4();
+                                                                historique
+                                                                    .document(
+                                                                        id)
+                                                                    .set({
+                                                                  'Type':
+                                                                      'Modification de ${appareilList[index].id}',
+                                                                  'Nombre de pieces':
+                                                                      1,
+                                                                  'Date':
+                                                                      DateTime
+                                                                          .now(),
+                                                                  'Time': DateFormat
+                                                                          .jm()
+                                                                      .format(DateTime
+                                                                          .now())
+                                                                      .toLowerCase(),
+                                                                  'Icon':
+                                                                      'update.png',
+                                                                  'Id': id,
+                                                                });
+                                                                Navigator.of(
+                                                                        context)
+                                                                    .pop();
+                                                                Future.delayed(
+                                                                    const Duration(
+                                                                        seconds:
+                                                                            1,
+                                                                        milliseconds:
+                                                                            500),
+                                                                    () {
+                                                                  setState(
+                                                                      () {});
+                                                                });
+                                                              }
+                                                            },
                                                           ),
-                                                        ),
-                                                      ),
-                                                      SizedBox(
-                                                        width: MediaQuery.of(
-                                                                    context)
-                                                                .size
-                                                                .width *
-                                                            0.55,
-                                                        child: MyDropDownField(
-                                                          onChanged: (value) {
-                                                            selectedSite =
-                                                                value;
-                                                          },
-                                                          items: siteItems,
-                                                          hintText: 'Site',
-                                                          selectedItem:
-                                                              selectedSite!,
-                                                        ),
-                                                      ),
-                                                      const SizedBox(
-                                                        height: 5,
-                                                      ),
-                                                      const Padding(
-                                                        padding:
-                                                            EdgeInsets.all(8),
-                                                        child: Text(
-                                                          'Utilisateur',
-                                                          style: TextStyle(
-                                                            color:
-                                                                kPrimaryColor,
-                                                            fontSize: 16,
-                                                          ),
-                                                        ),
-                                                      ),
-                                                      SizedBox(
-                                                        width: MediaQuery.of(
-                                                                    context)
-                                                                .size
-                                                                .width *
-                                                            0.55,
-                                                        child: MyTextField(
-                                                          validator: (value) {
-                                                            if (value == null ||
-                                                                value.isEmpty) {
-                                                              return 'Taper ici';
-                                                            } else {
-                                                              return null;
-                                                            }
-                                                          },
-                                                          controller:
-                                                              myController,
-                                                          label: 'Utilisateur',
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ),
-                                                actions: [
-                                                  TextButton(
-                                                    child: const Text(
-                                                      'return',
-                                                      style: TextStyle(
-                                                        color: kPrimaryColor,
-                                                        fontSize: 16,
-                                                      ),
-                                                    ),
-                                                    onPressed: () {
-                                                      Navigator.of(context)
-                                                          .pop();
+                                                        ],
+                                                      );
                                                     },
-                                                  ),
-                                                  TextButton(
-                                                    child: const Text(
-                                                      'changer',
-                                                      style: TextStyle(
-                                                        color: kPrimaryColor,
-                                                        fontSize: 16,
-                                                      ),
-                                                    ),
-                                                    onPressed: () {
-                                                      if (args.site !=
-                                                          appareilList[index]
-                                                              .site) {
-                                                        myShowToast(
-                                                            context,
-                                                            'vous ne pouvez pas modifier ceci car vous n\'avez pas l\'autorisation',
-                                                            Colors.red);
-                                                      } else {
-                                                        sewsDatabase
-                                                            .document(
-                                                                appareilList[
-                                                                        index]
-                                                                    .id)
-                                                            .update({
-                                                          'a2':
-                                                              myController.text,
-                                                          'a3': selectedSite,
-                                                        });
-                                                        var id =
-                                                            const Uuid().v4();
-                                                        historique
-                                                            .document(id)
-                                                            .set({
-                                                          'Type':
-                                                              'Modification de ${appareilList[index].id}',
-                                                          'Nombre de pieces': 1,
-                                                          'Date':
-                                                              DateTime.now(),
-                                                          'Time': DateFormat
-                                                                  .jm()
-                                                              .format(DateTime
-                                                                  .now())
-                                                              .toLowerCase(),
-                                                          'Icon': 'update.png',
-                                                          'Id': id,
-                                                        });
-                                                        Navigator.of(context)
-                                                            .pop();
-                                                        Future.delayed(
-                                                            const Duration(
-                                                                seconds: 1,
-                                                                milliseconds:
-                                                                    500), () {
-                                                          setState(() {});
-                                                        });
-                                                      }
-                                                    },
-                                                  ),
-                                                ],
-                                              );
-                                            },
-                                          );
-                                          setState(() {});
-                                        },
-                                        child: ListviewBody(
-                                            size: size,
-                                            index: index,
-                                            appareilList: appareilList),
+                                                  );
+                                                  setState(() {});
+                                                },
+                                                child: ListviewBody(
+                                                    size: size,
+                                                    index: index,
+                                                    appareilList: appareilList),
+                                              ),
+                                            ),
+                                          ),
+                                        ],
                                       ),
                                     ),
                                   ),
-                                ],
-                              );
-                            },
+                                );
+                              },
+                            ),
                           ),
                         ),
                 ],

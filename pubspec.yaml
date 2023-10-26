@@ -28,6 +28,7 @@ dependencies:
   lottie: ^2.6.0
   uuid: ^4.1.0
   side_navigation: ^1.0.4
+  flutter_staggered_animations: ^1.1.1
 
 dependency_overrides:
   win32: ^5.0.0
