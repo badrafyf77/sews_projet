@@ -151,7 +151,7 @@ class _SettingPageState extends State<SettingPage> {
   }
 }
 
-class AddUserWidget extends StatelessWidget {
+class AddUserWidget extends StatefulWidget {
   final Size size;
   const AddUserWidget({
     Key? key,
@@ -159,8 +159,18 @@ class AddUserWidget extends StatelessWidget {
   }) : super(key: key);
 
   @override
+  State<AddUserWidget> createState() => _AddUserWidgetState();
+}
+
+class _AddUserWidgetState extends State<AddUserWidget> {
+  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  @override
   Widget build(BuildContext context) {
     TextEditingController controller = TextEditingController();
+    TextEditingController emailController = TextEditingController();
+    TextEditingController passController = TextEditingController();
+    TextEditingController confirmEmailController = TextEditingController();
+    TextEditingController confirmPassController = TextEditingController();
 
     final List<String> siteItems = [
       'Site Ain Harouda',
@@ -169,7 +179,7 @@ class AddUserWidget extends StatelessWidget {
       'Site Ain Sebaa',
     ];
 
-    String selectedSite;
+    String? selectedSite;
 
     return Column(
       children: [
@@ -181,71 +191,225 @@ class AddUserWidget extends StatelessWidget {
               'Bonjour',
               style: TextStyle(
                 color: kPrimaryColor,
-                fontSize: size.width * 0.023,
+                fontSize: widget.size.width * 0.023,
               ),
             ),
             Image.asset(
               'assets/images/wave.png',
-              width: size.width * 0.043,
-              height: size.height * 0.043,
+              width: widget.size.width * 0.043,
+              height: widget.size.height * 0.043,
             ),
           ],
         ),
         Padding(
           padding: const EdgeInsets.all(8.0),
-          child: SizedBox(width: size.width * 0.15, child: const MyLine()),
-        ),
-        const SizedBox(
-          height: 15,
+          child:
+              SizedBox(width: widget.size.width * 0.15, child: const MyLine()),
         ),
         Padding(
-          padding: const EdgeInsets.all(30.0),
-          child: Column(
-            children: [
-              Row(
-                children: [
-                  const Text('Nom complete :'),
-                  const SizedBox(
-                    width: 10,
-                  ),
-                  SizedBox(
-                    width: size.width * 0.3,
-                    child: MyTextField(
-                        validator: (value) {
-                          return null;
-                        },
-                        label: 'Nom complete',
-                        controller: controller),
-                  ),
-                ],
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              Row(
-                children: [
-                  const Text('Le site :'),
-                  const SizedBox(
-                    width: 10,
-                  ),
-                  SizedBox(
-                    width: size.width * 0.3,
-                    child: MyDropDownField(
-                        validator: (value) {
-                          if (value == null) {
-                            return 'Veuillez choisir une option.';
+          padding: const EdgeInsets.only(right: 30, left: 30, top: 20),
+          child: Form(
+            key: formKey,
+            child: Column(
+              children: [
+                Row(
+                  children: [
+                    const Text('Nom complete :'),
+                    const SizedBox(
+                      width: 10,
+                    ),
+                    SizedBox(
+                      width: widget.size.width * 0.3,
+                      child: MyTextField(
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Entrer le nom complete';
+                            }
+                            return null;
+                          },
+                          label: 'Nom complete',
+                          controller: controller),
+                    ),
+                  ],
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                Row(
+                  children: [
+                    const Text('Le site :'),
+                    const SizedBox(
+                      width: 10,
+                    ),
+                    SizedBox(
+                      width: widget.size.width * 0.3,
+                      child: MyDropDownField(
+                          validator: (value) {
+                            if (value == null) {
+                              return 'Veuillez choisir une option.';
+                            }
+                            return null;
+                          },
+                          onChanged: (value) {
+                            selectedSite = value;
+                          },
+                          items: siteItems,
+                          hintText: 'Selectionner le site'),
+                    ),
+                  ],
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text('E-mail :'),
+                        const SizedBox(
+                          height: 5,
+                        ),
+                        SizedBox(
+                          width: widget.size.width * 0.3,
+                          child: MyTextField(
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Entrer e-mail';
+                                } else if (!value.isValidEmail()) {
+                                  return 'vérifier e-mail';
+                                }
+                                return null;
+                              },
+                              label: 'E-mail',
+                              controller: emailController),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(
+                      width: 10,
+                    ),
+                    Column(
+                      children: [
+                        SizedBox(
+                          width: widget.size.width * 0.3,
+                          child: MyTextField(
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Entrer confirmation d\'email';
+                                } else if (value != emailController.text) {
+                                  return 'Confirmation ne correspond pas au e-mail';
+                                }
+                                return null;
+                              },
+                              label: 'Confirmer e-mail',
+                              controller: confirmEmailController),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text('Mot de passe :'),
+                        const SizedBox(
+                          height: 5,
+                        ),
+                        SizedBox(
+                          width: widget.size.width * 0.3,
+                          child: MyTextField(
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Entrer mot de passe';
+                                } else if (value.length < 8) {
+                                  return 'Mot de passe doit être d\'au moins 8 caractères';
+                                }
+                                return null;
+                              },
+                              label: 'Mot de passe',
+                              controller: passController),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(
+                      width: 10,
+                    ),
+                    Column(
+                      children: [
+                        SizedBox(
+                          width: widget.size.width * 0.3,
+                          child: MyTextField(
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Entrer confirmation mot de passe';
+                                } else if (value != passController.text) {
+                                  return 'Confirmation ne correspond pas au mot de passe';
+                                }
+                                return null;
+                              },
+                              label: 'Confirmer mot de passe',
+                              controller: confirmPassController),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                MyButton(
+                    onPressed: () async {
+                      if (formKey.currentState!.validate()) {
+                        if (await connectivityResult() ==
+                            ConnectivityResult.none) {
+                          if (context.mounted) {
+                            myShowToast(context, 'Pas de connexion internet',
+                                Colors.grey);
                           }
-                          return null;
-                        },
-                        onChanged: (value) {
-                          selectedSite = value!;
-                        },
-                        items: siteItems,
-                        hintText: 'Selectionner le site'),
-                  ),
-                ],
-              ),
-            ],
+                        } else {
+                          try {
+                            if (context.mounted) {
+                              showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return const LoadingAnimation();
+                                },
+                              );
+                            }
+                            await signUp(
+                                emailController.text, passController.text);
+                            CollectionReference users =
+                                Firestore.instance.collection('Users');
+                            users.document(emailController.text).set({
+                              'displayName': controller.text,
+                              'email': emailController.text,
+                              'site': selectedSite,
+                            });
+                            if (context.mounted) {
+                              Navigator.of(context).pop();
+                            }
+                            if (context.mounted) {
+                              myShowToast(context, 'success', Colors.green);
+                            }
+                          } catch (e) {
+                            if (context.mounted) {
+                              myShowToast(context, e.toString(), Colors.red);
+                            }
+                          }
+                        }
+                      }
+                    },
+                    textButton: 'Ajouter')
+              ],
+            ),
           ),
         )
       ],
