@@ -64,6 +64,8 @@ class MyDropDownField extends StatelessWidget {
         ),
       ),
       buttonStyleData: const ButtonStyleData(
+        decoration:
+            BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(25))),
         padding: EdgeInsets.only(right: 8),
       ),
       iconStyleData: const IconStyleData(

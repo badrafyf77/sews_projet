@@ -4,6 +4,7 @@ import 'package:firedart/firedart.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:side_navigation/side_navigation.dart';
+
 import 'package:sews_projet/constants.dart';
 import 'package:sews_projet/model/models/models.dart';
 import 'package:sews_projet/model/services/auth_api.dart';
@@ -12,6 +13,7 @@ import 'package:sews_projet/views/pages/home_page.dart';
 import 'package:sews_projet/views/pages/login_page.dart';
 import 'package:sews_projet/views/widgets/button.dart';
 import 'package:sews_projet/views/widgets/custom_appbar.dart';
+import 'package:sews_projet/views/widgets/drop_down_field.dart';
 import 'package:sews_projet/views/widgets/line.dart';
 import 'package:sews_projet/views/widgets/loading_circle.dart';
 import 'package:sews_projet/views/widgets/text_field.dart';
@@ -51,6 +53,11 @@ class _SettingPageState extends State<SettingPage> {
           size: size,
         ),
       ),
+      Center(
+        child: AddUserWidget(
+          size: size,
+        ),
+      )
     ];
 
     return Scaffold(
@@ -104,19 +111,24 @@ class _SettingPageState extends State<SettingPage> {
                           showFooterDivider: true),
                     ),
                     selectedIndex: selectedIndex,
-                    items: const [
-                      SideNavigationBarItem(
+                    items: [
+                      const SideNavigationBarItem(
                         icon: Icons.person,
                         label: 'Compte',
                       ),
-                      SideNavigationBarItem(
+                      const SideNavigationBarItem(
                         icon: Icons.contact_mail,
                         label: 'E-mail',
                       ),
-                      SideNavigationBarItem(
+                      const SideNavigationBarItem(
                         icon: Icons.vpn_key,
                         label: 'Mot de passe',
                       ),
+                      if (args.displayName == "admin")
+                        const SideNavigationBarItem(
+                          icon: Icons.person_add,
+                          label: 'Ajouter utilisateur',
+                        ),
                     ],
                     onTap: (index) {
                       setState(() {
@@ -135,6 +147,108 @@ class _SettingPageState extends State<SettingPage> {
           ),
         ],
       ),
+    );
+  }
+}
+
+class AddUserWidget extends StatelessWidget {
+  final Size size;
+  const AddUserWidget({
+    Key? key,
+    required this.size,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    TextEditingController controller = TextEditingController();
+
+    final List<String> siteItems = [
+      'Site Ain Harouda',
+      'Site Berrechid 1',
+      'Site Berrechid 2',
+      'Site Ain Sebaa',
+    ];
+
+    String selectedSite;
+
+    return Column(
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Text(
+              'Bonjour',
+              style: TextStyle(
+                color: kPrimaryColor,
+                fontSize: size.width * 0.023,
+              ),
+            ),
+            Image.asset(
+              'assets/images/wave.png',
+              width: size.width * 0.043,
+              height: size.height * 0.043,
+            ),
+          ],
+        ),
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: SizedBox(width: size.width * 0.15, child: const MyLine()),
+        ),
+        const SizedBox(
+          height: 15,
+        ),
+        Padding(
+          padding: const EdgeInsets.all(30.0),
+          child: Column(
+            children: [
+              Row(
+                children: [
+                  const Text('Nom complete :'),
+                  const SizedBox(
+                    width: 10,
+                  ),
+                  SizedBox(
+                    width: size.width * 0.3,
+                    child: MyTextField(
+                        validator: (value) {
+                          return null;
+                        },
+                        label: 'Nom complete',
+                        controller: controller),
+                  ),
+                ],
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              Row(
+                children: [
+                  const Text('Le site :'),
+                  const SizedBox(
+                    width: 10,
+                  ),
+                  SizedBox(
+                    width: size.width * 0.3,
+                    child: MyDropDownField(
+                        validator: (value) {
+                          if (value == null) {
+                            return 'Veuillez choisir une option.';
+                          }
+                          return null;
+                        },
+                        onChanged: (value) {
+                          selectedSite = value!;
+                        },
+                        items: siteItems,
+                        hintText: 'Selectionner le site'),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        )
+      ],
     );
   }
 }

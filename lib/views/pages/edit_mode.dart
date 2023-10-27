@@ -365,6 +365,12 @@ class _EditPageState extends State<EditPage> {
                                             controller: controller,
                                             index: index,
                                             key: ValueKey(appareilList[index]),
+                                            selectedIndicator: const Icon(
+                                                Icons.radio_button_checked,
+                                                color: kPrimaryColor),
+                                            unselectedIndicator: const Icon(
+                                                Icons.radio_button_unchecked,
+                                                color: Colors.red),
                                             child: MouseRegion(
                                               cursor: SystemMouseCursors.click,
                                               child: GestureDetector(
