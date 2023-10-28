@@ -340,13 +340,13 @@ class _ContratRechercheState extends State<ContratRecherche> {
                                                     fontSize: 16,
                                                   ),
                                                 ),
-                                                onPressed: () {
+                                                onPressed: () async {
                                                   for (int i = 0;
                                                       i <
                                                           selectedIndexes
                                                               .length;
                                                       i++) {
-                                                    sewsDatabase
+                                                    await sewsDatabase
                                                         .document(appareilList[
                                                                 selectedIndexes[
                                                                     i]]
@@ -592,8 +592,9 @@ class _ContratRechercheState extends State<ContratRecherche> {
                                                                         16,
                                                                   ),
                                                                 ),
-                                                                onPressed: () {
-                                                                  sewsDatabase
+                                                                onPressed:
+                                                                    () async {
+                                                                  await sewsDatabase
                                                                       .document(
                                                                           appareilList[index]
                                                                               .id)
@@ -628,17 +629,18 @@ class _ContratRechercheState extends State<ContratRecherche> {
                                                                         'update.png',
                                                                     'Id': id,
                                                                   });
-                                                                  Navigator.of(
-                                                                          context)
-                                                                      .pop();
-                                                                  Future.delayed(
-                                                                      const Duration(
-                                                                        seconds:
-                                                                            1,
-                                                                      ), () {
-                                                                    setState(
-                                                                        () {});
-                                                                  });
+                                                                  setState(
+                                                                      () {});
+                                                                  if (context
+                                                                      .mounted) {
+                                                                    Navigator.pop(
+                                                                        context);
+                                                                    myShowToast(
+                                                                        context,
+                                                                        'success',
+                                                                        Colors
+                                                                            .green);
+                                                                  }
                                                                 },
                                                               ),
                                                             ],

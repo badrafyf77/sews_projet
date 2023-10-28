@@ -248,53 +248,53 @@ class _EditPageState extends State<EditPage> {
                                                   },
                                                 ),
                                                 TextButton(
-                                                  child: const Text(
-                                                    'continue',
-                                                    style: TextStyle(
-                                                      color: kPrimaryColor,
-                                                      fontSize: 16,
+                                                    child: const Text(
+                                                      'continue',
+                                                      style: TextStyle(
+                                                        color: kPrimaryColor,
+                                                        fontSize: 16,
+                                                      ),
                                                     ),
-                                                  ),
-                                                  onPressed: () {
-                                                    for (int i = 0;
-                                                        i <
+                                                    onPressed: () async {
+                                                      for (int i = 0;
+                                                          i <
+                                                              selectedIndexes
+                                                                  .length;
+                                                          i++) {
+                                                        await sewsDatabase
+                                                            .document(appareilList[
+                                                                    selectedIndexes[
+                                                                        i]]
+                                                                .id)
+                                                            .delete();
+                                                      }
+                                                      var id =
+                                                          const Uuid().v4();
+                                                      historique
+                                                          .document(id)
+                                                          .set({
+                                                        'Type': 'Suppression',
+                                                        'Nombre de pieces':
                                                             selectedIndexes
-                                                                .length;
-                                                        i++) {
-                                                      sewsDatabase
-                                                          .document(appareilList[
-                                                                  selectedIndexes[
-                                                                      i]]
-                                                              .id)
-                                                          .delete();
-                                                    }
-                                                    var id = const Uuid().v4();
-                                                    historique
-                                                        .document(id)
-                                                        .set({
-                                                      'Type': 'Suppression',
-                                                      'Nombre de pieces':
-                                                          selectedIndexes
-                                                              .length,
-                                                      'Date': DateTime.now(),
-                                                      'Time': DateFormat.jm()
-                                                          .format(
-                                                              DateTime.now())
-                                                          .toLowerCase(),
-                                                      'Icon': 'delete.png',
-                                                      'Id': id,
-                                                    });
-                                                    exitEditingMode();
-                                                    Navigator.pop(context);
-                                                    Future.delayed(
-                                                        const Duration(
-                                                            seconds: 1,
-                                                            milliseconds: 500),
-                                                        () {
+                                                                .length,
+                                                        'Date': DateTime.now(),
+                                                        'Time': DateFormat.jm()
+                                                            .format(
+                                                                DateTime.now())
+                                                            .toLowerCase(),
+                                                        'Icon': 'delete.png',
+                                                        'Id': id,
+                                                      });
+                                                      exitEditingMode();
                                                       setState(() {});
-                                                    });
-                                                  },
-                                                ),
+                                                      if (context.mounted) {
+                                                        Navigator.pop(context);
+                                                        myShowToast(
+                                                            context,
+                                                            'success',
+                                                            Colors.green);
+                                                      }
+                                                    }),
                                               ],
                                             );
                                           },
@@ -528,7 +528,8 @@ class _EditPageState extends State<EditPage> {
                                                                 fontSize: 16,
                                                               ),
                                                             ),
-                                                            onPressed: () {
+                                                            onPressed:
+                                                                () async {
                                                               if (args.site !=
                                                                   appareilList[
                                                                           index]
@@ -538,7 +539,7 @@ class _EditPageState extends State<EditPage> {
                                                                     'vous ne pouvez pas modifier ceci car vous n\'avez pas l\'autorisation',
                                                                     Colors.red);
                                                               } else {
-                                                                sewsDatabase
+                                                                await sewsDatabase
                                                                     .document(
                                                                         appareilList[index]
                                                                             .id)
@@ -572,19 +573,17 @@ class _EditPageState extends State<EditPage> {
                                                                       'update.png',
                                                                   'Id': id,
                                                                 });
-                                                                Navigator.of(
-                                                                        context)
-                                                                    .pop();
-                                                                Future.delayed(
-                                                                    const Duration(
-                                                                        seconds:
-                                                                            1,
-                                                                        milliseconds:
-                                                                            500),
-                                                                    () {
-                                                                  setState(
-                                                                      () {});
-                                                                });
+                                                                setState(() {});
+                                                                if (context
+                                                                    .mounted) {
+                                                                  Navigator.pop(
+                                                                      context);
+                                                                  myShowToast(
+                                                                      context,
+                                                                      'success',
+                                                                      Colors
+                                                                          .green);
+                                                                }
                                                               }
                                                             },
                                                           ),
