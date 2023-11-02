@@ -445,7 +445,7 @@ class _HomePageState extends State<HomePage> {
                                                                         }
                                                                       },
                                                                       items:
-                                                                          siteItems,
+                                                                          appareilItems,
                                                                       hintText:
                                                                           'Selectionner l\'appareil'),
                                                             ),

@@ -4,7 +4,7 @@ import 'package:firedart/firedart.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:side_navigation/side_navigation.dart';
-
+import 'package:encrypt/encrypt.dart' as encrypt;
 import 'package:sews_projet/constants.dart';
 import 'package:sews_projet/model/models/models.dart';
 import 'package:sews_projet/model/services/auth_api.dart';
@@ -384,8 +384,9 @@ class _AddUserWidgetState extends State<AddUserWidget> {
                                 },
                               );
                             }
-                            await signUp(
+                            Map<String, dynamic> data = await signUp(
                                 emailController.text, passController.text);
+                            await updateName(data['idToken'], controller.text);
                             CollectionReference users =
                                 Firestore.instance.collection('Users');
                             users.document(emailController.text).set({

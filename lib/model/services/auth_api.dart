@@ -140,3 +140,29 @@ Future<Map<String, dynamic>> updatePassword(
   }
   return data;
 }
+
+Future<Map<String, dynamic>> updateName(String idToken, String name) async {
+  const url = '${baseUrl}update?key=$apiKey';
+  final header = {
+    'Content-Type': 'application/json',
+  };
+  final body = {
+    "idToken": idToken,
+    "displayName": name,
+    "returnSecureToken": true,
+  };
+
+  final response =
+      await http.post(Uri.parse(url), headers: header, body: json.encode(body));
+
+  final Map<String, dynamic> data = json.decode(response.body);
+
+  if (response.statusCode != 200) {
+    if (data['error']['message'] == 'INVALID_ID_TOKEN') {
+      throw 'Id Token invalide';
+    } else {
+      throw data['error']['message'];
+    }
+  }
+  return data;
+}
