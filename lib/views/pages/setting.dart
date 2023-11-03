@@ -3,6 +3,7 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:firedart/firedart.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:sews_projet/model/services/encrypt.dart';
 import 'package:side_navigation/side_navigation.dart';
 import 'package:encrypt/encrypt.dart' as encrypt;
 import 'package:sews_projet/constants.dart';
@@ -326,6 +327,8 @@ class _AddUserWidgetState extends State<AddUserWidget> {
                         SizedBox(
                           width: widget.size.width * 0.3,
                           child: MyTextField(
+                              obscureText: true,
+                              showPasswordIcon: true,
                               validator: (value) {
                                 if (value == null || value.isEmpty) {
                                   return 'Entrer mot de passe';
@@ -347,6 +350,8 @@ class _AddUserWidgetState extends State<AddUserWidget> {
                         SizedBox(
                           width: widget.size.width * 0.3,
                           child: MyTextField(
+                              obscureText: true,
+                              showPasswordIcon: true,
                               validator: (value) {
                                 if (value == null || value.isEmpty) {
                                   return 'Entrer confirmation mot de passe';
@@ -393,6 +398,9 @@ class _AddUserWidgetState extends State<AddUserWidget> {
                               'displayName': controller.text,
                               'email': emailController.text,
                               'site': selectedSite,
+                              'passUser': MyEncryptionDecryption.encryptFernet(
+                                      passController.text)
+                                  .base64,
                             });
                             if (context.mounted) {
                               Navigator.of(context).pop();

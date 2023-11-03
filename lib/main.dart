@@ -16,6 +16,7 @@ import 'package:sews_projet/views/pages/manual_addition_page.dart';
 import 'package:sews_projet/views/pages/recherche_contrat.dart';
 import 'package:sews_projet/views/pages/recherche_page.dart';
 import 'package:sews_projet/views/pages/setting.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class MyBehavior extends ScrollBehavior {
   @override
@@ -29,6 +30,7 @@ const projectId = 'sews-projet';
 
 void main() async {
   Firestore.initialize(projectId);
+  await dotenv.load(fileName: ".env");
   runApp(const MyApp());
   doWhenWindowReady(() {
     const initialSize = Size(800, 550);
