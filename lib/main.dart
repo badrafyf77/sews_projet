@@ -8,6 +8,7 @@ import 'package:sews_projet/view_model/blocs/excel_import_bloc/excel_import_bloc
 import 'package:sews_projet/constants.dart';
 import 'package:sews_projet/views/pages/add_with_excelfile.dart';
 import 'package:sews_projet/views/pages/edit_mode.dart';
+import 'package:sews_projet/views/pages/edit_user.dart';
 import 'package:sews_projet/views/pages/forgetpass_page.dart';
 import 'package:sews_projet/views/pages/historique_page.dart';
 import 'package:sews_projet/views/pages/home_page.dart';
@@ -16,7 +17,6 @@ import 'package:sews_projet/views/pages/manual_addition_page.dart';
 import 'package:sews_projet/views/pages/recherche_contrat.dart';
 import 'package:sews_projet/views/pages/recherche_page.dart';
 import 'package:sews_projet/views/pages/setting.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class MyBehavior extends ScrollBehavior {
   @override
@@ -30,7 +30,7 @@ const projectId = 'sews-projet';
 
 void main() async {
   Firestore.initialize(projectId);
-  await dotenv.load(fileName: ".env");
+
   runApp(const MyApp());
   doWhenWindowReady(() {
     const initialSize = Size(800, 550);
@@ -97,6 +97,7 @@ class _MyAppState extends State<MyApp> {
           GetPage(name: RecherchePage.id, page: () => const RecherchePage()),
           GetPage(name: Forgetpassword.id, page: () => const Forgetpassword()),
           GetPage(name: SettingPage.id, page: () => const SettingPage()),
+          GetPage(name: EditUser.id, page: () => const EditUser()),
         ],
       ),
     );

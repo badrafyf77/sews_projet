@@ -3,6 +3,7 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:firedart/firedart.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:sews_projet/views/pages/edit_user.dart';
 import 'package:side_navigation/side_navigation.dart';
 
 import 'package:sews_projet/constants.dart';
@@ -218,49 +219,60 @@ class ManageUsers extends StatelessWidget {
                 return Expanded(
                   child: Padding(
                     padding: const EdgeInsets.all(30),
-                    child: ListView.separated(
+                    child: ListView.builder(
                       itemCount: usersList.length,
-                      separatorBuilder: (context, index) {
-                        return const Padding(
-                          padding: EdgeInsets.only(bottom: 8.0),
-                          child: MyLine(),
-                        );
-                      },
                       itemBuilder: (context, index) {
                         return MouseRegion(
                           cursor: SystemMouseCursors.click,
                           child: GestureDetector(
-                            onTap: () {},
-                            child: Row(
-                              children: [
-                                const Icon(
-                                  Icons.person,
-                                  color: kPrimaryColor,
-                                  size: 50,
-                                ),
-                                const SizedBox(
-                                  width: 15,
-                                ),
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      usersList[index].displayName,
-                                      style: const TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.bold,
+                            onTap: () {
+                              Get.to(
+                                () => const EditUser(),
+                                arguments: usersList[index],
+                                transition: Transition.rightToLeft,
+                              );
+                            },
+                            child: (usersList[index].displayName != 'admin')
+                                ? Column(
+                                    children: [
+                                      Row(
+                                        children: [
+                                          const Icon(
+                                            Icons.person,
+                                            color: kPrimaryColor,
+                                            size: 50,
+                                          ),
+                                          const SizedBox(
+                                            width: 15,
+                                          ),
+                                          Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                usersList[index].displayName,
+                                                style: const TextStyle(
+                                                  fontSize: 16,
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                              ),
+                                              Text(
+                                                usersList[index].site,
+                                                style: const TextStyle(
+                                                  fontSize: 12,
+                                                ),
+                                              ),
+                                            ],
+                                          )
+                                        ],
                                       ),
-                                    ),
-                                    Text(
-                                      usersList[index].site,
-                                      style: const TextStyle(
-                                        fontSize: 12,
-                                      ),
-                                    ),
-                                  ],
-                                )
-                              ],
-                            ),
+                                      const Padding(
+                                        padding: EdgeInsets.only(bottom: 8.0),
+                                        child: MyLine(),
+                                      )
+                                    ],
+                                  )
+                                : const SizedBox(),
                           ),
                         );
                       },
