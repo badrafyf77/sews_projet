@@ -3,13 +3,13 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:firedart/firedart.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:sews_projet/model/services/encrypt.dart';
 import 'package:side_navigation/side_navigation.dart';
-import 'package:encrypt/encrypt.dart' as encrypt;
+
 import 'package:sews_projet/constants.dart';
 import 'package:sews_projet/model/models/models.dart';
 import 'package:sews_projet/model/services/auth_api.dart';
 import 'package:sews_projet/model/services/connectivity.dart';
+import 'package:sews_projet/model/services/encrypt.dart';
 import 'package:sews_projet/views/pages/home_page.dart';
 import 'package:sews_projet/views/pages/login_page.dart';
 import 'package:sews_projet/views/widgets/button.dart';
@@ -55,10 +55,15 @@ class _SettingPageState extends State<SettingPage> {
         ),
       ),
       Center(
+        child: ManageUsers(
+          size: size,
+        ),
+      ),
+      Center(
         child: AddUserWidget(
           size: size,
         ),
-      )
+      ),
     ];
 
     return Scaffold(
@@ -127,6 +132,11 @@ class _SettingPageState extends State<SettingPage> {
                       ),
                       if (args.displayName == "admin")
                         const SideNavigationBarItem(
+                          icon: Icons.person,
+                          label: 'Gerer les utilisateur',
+                        ),
+                      if (args.displayName == "admin")
+                        const SideNavigationBarItem(
                           icon: Icons.person_add,
                           label: 'Ajouter utilisateur',
                         ),
@@ -148,6 +158,122 @@ class _SettingPageState extends State<SettingPage> {
           ),
         ],
       ),
+    );
+  }
+}
+
+class ManageUsers extends StatelessWidget {
+  final Size size;
+  const ManageUsers({
+    Key? key,
+    required this.size,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    CollectionReference users = Firestore.instance.collection('Users');
+
+    Future<List<Document>> getData() async {
+      List<Document> data = await users.get();
+      return data;
+    }
+
+    return Column(
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Text(
+              'Bonjour',
+              style: TextStyle(
+                color: kPrimaryColor,
+                fontSize: size.width * 0.023,
+              ),
+            ),
+            Image.asset(
+              'assets/images/wave.png',
+              width: size.width * 0.043,
+              height: size.height * 0.043,
+            ),
+          ],
+        ),
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: SizedBox(width: size.width * 0.15, child: const MyLine()),
+        ),
+        FutureBuilder<List<Document>>(
+            future: getData(),
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                List<Users> usersList = [];
+
+                for (int i = 0; i < snapshot.data!.length; i++) {
+                  usersList.add(
+                    Users.fromJson(
+                      snapshot.data!.elementAt(i),
+                    ),
+                  );
+                }
+                return Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.all(30),
+                    child: ListView.separated(
+                      itemCount: usersList.length,
+                      separatorBuilder: (context, index) {
+                        return const Padding(
+                          padding: EdgeInsets.only(bottom: 8.0),
+                          child: MyLine(),
+                        );
+                      },
+                      itemBuilder: (context, index) {
+                        return MouseRegion(
+                          cursor: SystemMouseCursors.click,
+                          child: GestureDetector(
+                            onTap: () {},
+                            child: Row(
+                              children: [
+                                const Icon(
+                                  Icons.person,
+                                  color: kPrimaryColor,
+                                  size: 50,
+                                ),
+                                const SizedBox(
+                                  width: 15,
+                                ),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      usersList[index].displayName,
+                                      style: const TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                    Text(
+                                      usersList[index].site,
+                                      style: const TextStyle(
+                                        fontSize: 12,
+                                      ),
+                                    ),
+                                  ],
+                                )
+                              ],
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                );
+              }
+              return const LoadingAnimation(
+                color: kPrimaryColor,
+                size: 60,
+              );
+            }),
+      ],
     );
   }
 }

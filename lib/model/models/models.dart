@@ -100,6 +100,29 @@ class Historique {
   }
 }
 
+class Users {
+  final String displayName;
+  final String email;
+  final String passUser;
+  final String site;
+
+  Users(
+    this.displayName,
+    this.email,
+    this.passUser,
+    this.site,
+  );
+
+  factory Users.fromJson(jsonData) {
+    return Users(
+      jsonData['displayName'],
+      jsonData['email'],
+      jsonData['passUser'],
+      jsonData['site'],
+    );
+  }
+}
+
 class EditArguments {
   final String siteIndex;
   final String siteValue;
