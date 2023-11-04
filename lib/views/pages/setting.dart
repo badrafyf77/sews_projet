@@ -151,8 +151,6 @@ class _SettingPageState extends State<SettingPage> {
                     },
                   ),
                 ),
-
-                /// Make it take the rest of the available width
                 Expanded(
                   child: views.elementAt(selectedIndex),
                 )
@@ -233,15 +231,22 @@ class _ManageUsersState extends State<ManageUsers> {
                         return MouseRegion(
                           cursor: SystemMouseCursors.click,
                           child: GestureDetector(
-                            onTap: () {
-                              Get.to(
+                            onTap: () async {
+                              await Get.to(
                                 () => EditUser(
                                   displayName: usersList[index].displayName,
                                   site: usersList[index].site,
                                 ),
                                 arguments: usersList[index],
                                 transition: Transition.rightToLeft,
-                              );
+                              )!
+                                  .then((_) {
+                                setState(() {});
+                                Future.delayed(
+                                    const Duration(milliseconds: 500), () {
+                                  setState(() {});
+                                });
+                              });
                             },
                             child: (usersList[index].displayName != 'admin')
                                 ? Column(
@@ -328,10 +333,15 @@ class _AddUserWidgetState extends State<AddUserWidget> {
       'Site Berrechid 2',
       'Site Ain Sebaa',
     ];
+    final List<String> postItems = [
+      'Directeur general',
+      'Employé',
+    ];
 
     String? selectedSite;
+    String? selectedPost;
 
-    return Column(
+    return ListView(
       children: [
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -353,11 +363,15 @@ class _AddUserWidgetState extends State<AddUserWidget> {
         ),
         Padding(
           padding: const EdgeInsets.all(8.0),
-          child:
-              SizedBox(width: widget.size.width * 0.15, child: const MyLine()),
+          child: UnconstrainedBox(
+            child: SizedBox(
+              width: widget.size.width * 0.15,
+              child: const MyLine(),
+            ),
+          ),
         ),
         Padding(
-          padding: const EdgeInsets.only(right: 30, left: 30, top: 20),
+          padding: const EdgeInsets.all(30),
           child: Form(
             key: formKey,
             child: Column(
@@ -379,6 +393,32 @@ class _AddUserWidgetState extends State<AddUserWidget> {
                           },
                           label: 'Nom complete',
                           controller: controller),
+                    ),
+                  ],
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                Row(
+                  children: [
+                    const Text('Le poste :'),
+                    const SizedBox(
+                      width: 10,
+                    ),
+                    SizedBox(
+                      width: widget.size.width * 0.3,
+                      child: MyDropDownField(
+                          validator: (value) {
+                            if (value == null) {
+                              return 'Veuillez choisir une option.';
+                            }
+                            return null;
+                          },
+                          onChanged: (value) {
+                            selectedPost = value;
+                          },
+                          items: postItems,
+                          hintText: 'Selectionner le poste'),
                     ),
                   ],
                 ),
@@ -520,53 +560,55 @@ class _AddUserWidgetState extends State<AddUserWidget> {
                   height: 10,
                 ),
                 MyButton(
-                    onPressed: () async {
-                      if (formKey.currentState!.validate()) {
-                        if (await connectivityResult() ==
-                            ConnectivityResult.none) {
+                  onPressed: () async {
+                    if (formKey.currentState!.validate()) {
+                      if (await connectivityResult() ==
+                          ConnectivityResult.none) {
+                        if (context.mounted) {
+                          myShowToast(context, 'Pas de connexion internet',
+                              Colors.grey);
+                        }
+                      } else {
+                        try {
                           if (context.mounted) {
-                            myShowToast(context, 'Pas de connexion internet',
-                                Colors.grey);
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return const LoadingAnimation();
+                              },
+                            );
                           }
-                        } else {
-                          try {
-                            if (context.mounted) {
-                              showDialog(
-                                context: context,
-                                builder: (BuildContext context) {
-                                  return const LoadingAnimation();
-                                },
-                              );
-                            }
-                            Map<String, dynamic> data = await signUp(
-                                emailController.text, passController.text);
-                            await updateName(data['idToken'], controller.text);
-                            CollectionReference users =
-                                Firestore.instance.collection('Users');
-                            users.document(emailController.text).set({
-                              'displayName': controller.text,
-                              'email': emailController.text,
-                              'site': selectedSite,
-                              'passUser': MyEncryptionDecryption.encryptFernet(
-                                      passController.text)
-                                  .base64,
-                            });
-                            if (context.mounted) {
-                              Navigator.of(context).pop();
-                            }
-                            if (context.mounted) {
-                              myShowToast(context, 'success', Colors.green);
-                            }
-                          } catch (e) {
-                            if (context.mounted) {
-                              Navigator.of(context).pop();
-                              myShowToast(context, e.toString(), Colors.red);
-                            }
+                          Map<String, dynamic> data = await signUp(
+                              emailController.text, passController.text);
+                          await updateName(data['idToken'], controller.text);
+                          CollectionReference users =
+                              Firestore.instance.collection('Users');
+                          users.document(emailController.text).set({
+                            'displayName': controller.text,
+                            'email': emailController.text,
+                            'site': selectedSite,
+                            'passUser': MyEncryptionDecryption.encryptFernet(
+                                    passController.text)
+                                .base64,
+                          });
+                          if (context.mounted) {
+                            Navigator.of(context).pop();
+                          }
+                          if (context.mounted) {
+                            myShowToast(context, 'success', Colors.green);
+                          }
+                        } catch (e) {
+                          if (context.mounted) {
+                            Navigator.of(context).pop();
+                            myShowToast(context, e.toString(), Colors.red);
                           }
                         }
                       }
-                    },
-                    textButton: 'Ajouter')
+                    }
+                  },
+                  textButton: 'Ajouter',
+                  padding: 10,
+                )
               ],
             ),
           ),

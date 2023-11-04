@@ -30,7 +30,6 @@ const projectId = 'sews-projet';
 
 void main() async {
   Firestore.initialize(projectId);
-
   runApp(const MyApp());
   doWhenWindowReady(() {
     const initialSize = Size(800, 550);

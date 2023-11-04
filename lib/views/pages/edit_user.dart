@@ -10,7 +10,6 @@ import 'package:sews_projet/model/models/models.dart';
 import 'package:sews_projet/model/services/auth_api.dart';
 import 'package:sews_projet/model/services/connectivity.dart';
 import 'package:sews_projet/model/services/encrypt.dart';
-import 'package:sews_projet/views/pages/setting.dart';
 import 'package:sews_projet/views/widgets/button.dart';
 import 'package:sews_projet/views/widgets/custom_appbar.dart';
 import 'package:sews_projet/views/widgets/drop_down_field.dart';
@@ -84,7 +83,7 @@ class _EditUserState extends State<EditUser> {
                           context, 'Pas de connexion internet', Colors.grey);
                     }
                   } else {
-                    Get.off(()=> const SettingPage());
+                    Get.back();
                   }
                 },
                 icon: const Icon(Icons.arrow_back),
