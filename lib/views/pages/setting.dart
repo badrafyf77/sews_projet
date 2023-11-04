@@ -59,6 +59,7 @@ class _SettingPageState extends State<SettingPage> {
       ),
       Center(
         child: ManageUsers(
+          userInfo: args,
           size: size,
         ),
       ),
@@ -164,9 +165,11 @@ class _SettingPageState extends State<SettingPage> {
 }
 
 class ManageUsers extends StatefulWidget {
+  final UserInfo userInfo;
   final Size size;
   const ManageUsers({
     Key? key,
+    required this.userInfo,
     required this.size,
   }) : super(key: key);
 
@@ -248,7 +251,9 @@ class _ManageUsersState extends State<ManageUsers> {
                                 });
                               });
                             },
-                            child: (usersList[index].displayName != 'admin')
+                            child: (usersList[index].email !=
+                                        widget.userInfo.email ||
+                                    usersList[index].poste != 'administrateur')
                                 ? Column(
                                     children: [
                                       Row(
@@ -334,7 +339,6 @@ class _AddUserWidgetState extends State<AddUserWidget> {
       'Site Ain Sebaa',
     ];
     final List<String> postItems = [
-      'administrateur',
       'directeur',
       'employé',
     ];
@@ -587,11 +591,10 @@ class _AddUserWidgetState extends State<AddUserWidget> {
                           users.document(emailController.text).set({
                             'displayName': controller.text,
                             'email': emailController.text,
-                            'post': selectedPost,
+                            'poste': selectedPost,
                             'site': selectedSite,
                             'passUser': MyEncryptionDecryption.encryptFernet(
-                                    passController.text)
-                                .base64,
+                                passController.text),
                           });
                           if (context.mounted) {
                             Navigator.of(context).pop();
@@ -703,7 +706,9 @@ class _PasswordWidgetState extends State<PasswordWidget> {
                               return 'Entrer votre mot de passe';
                             } else if (value.length < 8) {
                               return 'Mot de passe doit être d\'au moins 8 caractères';
-                            } else if (value != widget.userInfo.password) {
+                            } else if (value !=
+                                MyEncryptionDecryption.decryptFernet(
+                                    widget.userInfo.passUser)) {
                               return 'Le mot de passe contredit votre mot de passe actuel';
                             }
                             return null;
@@ -729,7 +734,8 @@ class _PasswordWidgetState extends State<PasswordWidget> {
                           showPasswordIcon: true,
                           onChanged: (text) {
                             if (newPassController.text !=
-                                    widget.userInfo.password &&
+                                    MyEncryptionDecryption.decryptFernet(
+                                        widget.userInfo.passUser) &&
                                 newPassController.text ==
                                     confirmPassController.text) {
                               setState(() {
@@ -771,7 +777,8 @@ class _PasswordWidgetState extends State<PasswordWidget> {
                           showPasswordIcon: true,
                           onChanged: (text) {
                             if (newPassController.text !=
-                                    widget.userInfo.password &&
+                                    MyEncryptionDecryption.decryptFernet(
+                                        widget.userInfo.passUser) &&
                                 newPassController.text ==
                                     confirmPassController.text) {
                               setState(() {
@@ -826,9 +833,9 @@ class _PasswordWidgetState extends State<PasswordWidget> {
                             }
                             var dataForIdToken = await signIn(
                                 widget.userInfo.email,
-                                widget.userInfo.password);
-                            var data = await updatePassword(
-                                newPassController.text,
+                                MyEncryptionDecryption.decryptFernet(
+                                    widget.userInfo.passUser));
+                            await updatePassword(newPassController.text,
                                 dataForIdToken['idToken']);
                             if (context.mounted) {
                               Navigator.of(context).pop();
@@ -838,8 +845,9 @@ class _PasswordWidgetState extends State<PasswordWidget> {
                                   Colors.green);
                             }
                             setState(() {
-                              widget.userInfo.password = newPassController.text;
-                              widget.userInfo.idToken = data['idToken'];
+                              widget.userInfo.passUser =
+                                  MyEncryptionDecryption.encryptFernet(
+                                      newPassController.text);
                               enablePassword = false;
                               oldPassController.clear();
                               newPassController.clear();
@@ -847,6 +855,7 @@ class _PasswordWidgetState extends State<PasswordWidget> {
                             });
                           } catch (e) {
                             if (context.mounted) {
+                              Navigator.of(context).pop();
                               myShowToast(context, e.toString(), Colors.red);
                             }
                           }
@@ -1041,12 +1050,10 @@ class _EmailWidgetState extends State<EmailWidget> {
                             }
                             var dataForIdToken = await signIn(
                                 widget.userInfo.email,
-                                widget.userInfo.password);
+                                MyEncryptionDecryption.decryptFernet(
+                                    widget.userInfo.passUser));
                             var data = await updateEmail(emailController.text,
                                 dataForIdToken['idToken']);
-                            if (context.mounted) {
-                              Navigator.of(context).pop();
-                            }
 
                             CollectionReference updateUserInfo =
                                 Firestore.instance.collection('Users');
@@ -1062,19 +1069,20 @@ class _EmailWidgetState extends State<EmailWidget> {
                             });
 
                             if (context.mounted) {
+                              Navigator.of(context).pop();
                               myShowToast(
                                   context, 'E-mail changee', Colors.green);
                             }
 
                             setState(() {
                               widget.userInfo.email = data['email'];
-                              widget.userInfo.idToken = data['idToken'];
                               enableEmail = false;
                               emailController.clear();
                               confirmEmailController.clear();
                             });
                           } catch (e) {
                             if (context.mounted) {
+                              Navigator.of(context).pop();
                               myShowToast(context, e.toString(), Colors.red);
                             }
                           }
@@ -1168,6 +1176,27 @@ class DashboardWidget extends StatelessWidget {
                   ),
                   Text(
                     userInfo.email,
+                    style: TextStyle(
+                      fontSize: size.height * 0.024,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  )
+                ],
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              Row(
+                children: [
+                  Text(
+                    'Le poste:',
+                    style: TextStyle(fontSize: size.height * 0.024),
+                  ),
+                  const SizedBox(
+                    width: 15,
+                  ),
+                  Text(
+                    userInfo.poste,
                     style: TextStyle(
                       fontSize: size.height * 0.024,
                       fontWeight: FontWeight.bold,

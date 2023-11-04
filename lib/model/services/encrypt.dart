@@ -1,17 +1,18 @@
 import 'package:encrypt/encrypt.dart' as encrypt;
 
 class MyEncryptionDecryption {
-  static final keyFernet = encrypt.Key.fromUtf8('my32lengthsecretkey:dimaraja1949');
+  static final keyFernet =
+      encrypt.Key.fromUtf8('my32lengthsecretkey:dimaraja1949');
 
   static final fernet = encrypt.Fernet(keyFernet);
   static final encrypterFernet = encrypt.Encrypter(fernet);
 
-  static encrypt.Encrypted encryptFernet(text) {
+  static String encryptFernet(String text) {
     final encrypted = encrypterFernet.encrypt(text);
-    return encrypted;
+    return encrypted.base64;
   }
 
-  static String decryptFernet(encrypt.Encrypted encrypted) {
-    return encrypterFernet.decrypt(encrypted);
+  static String decryptFernet(String text) {
+    return encrypterFernet.decrypt(encrypt.Encrypted.fromBase64(text));
   }
 }

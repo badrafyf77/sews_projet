@@ -1,5 +1,3 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
-
 class Appareil {
   final String id;
   final String utilisateur;
@@ -103,14 +101,14 @@ class Historique {
 class User {
   String displayName;
   String email;
-  String post;
+  String poste;
   String passUser;
   String site;
 
   User(
     this.displayName,
     this.email,
-    this.post,
+    this.poste,
     this.passUser,
     this.site,
   );
@@ -119,7 +117,7 @@ class User {
     return User(
       jsonData['displayName'],
       jsonData['email'],
-      jsonData['post'],
+      jsonData['poste'],
       jsonData['passUser'],
       jsonData['site'],
     );
@@ -145,15 +143,15 @@ class EditArguments {
 class UserInfo {
   String displayName;
   String site;
-  String idToken;
+  String poste;
   String email;
-  String password;
+  String passUser;
 
   UserInfo(
     this.displayName,
     this.site,
-    this.idToken,
+    this.poste,
     this.email,
-    this.password,
+    this.passUser,
   );
 }

@@ -1,6 +1,5 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:connectivity_plus/connectivity_plus.dart';
-import 'package:encrypt/encrypt.dart' as encrypt;
 import 'package:firedart/firedart.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -135,7 +134,23 @@ class _EditUserState extends State<EditUser> {
                     ],
                   ),
                   const SizedBox(
-                    height: 10,
+                    height: 15,
+                  ),
+                  Row(
+                    children: [
+                      const Text('Le post:'),
+                      const SizedBox(
+                        width: 15,
+                      ),
+                      Text(
+                        args.poste,
+                        style: const TextStyle(
+                            fontSize: 16, fontWeight: FontWeight.bold),
+                      )
+                    ],
+                  ),
+                  const SizedBox(
+                    height: 15,
                   ),
                   Row(
                     children: [
@@ -151,7 +166,7 @@ class _EditUserState extends State<EditUser> {
                     ],
                   ),
                   const SizedBox(
-                    height: 10,
+                    height: 15,
                   ),
                   Row(
                     children: [
@@ -216,8 +231,7 @@ class _EditUserState extends State<EditUser> {
                                 Map<String, dynamic> data = await signIn(
                                     args.email,
                                     MyEncryptionDecryption.decryptFernet(
-                                        encrypt.Encrypted.fromBase64(
-                                            args.passUser)));
+                                        args.passUser));
                                 await updateName(
                                     data['idToken'], controller.text);
 
@@ -305,10 +319,8 @@ class _EditUserState extends State<EditUser> {
                                                 await signIn(
                                                     args.email,
                                                     MyEncryptionDecryption
-                                                        .decryptFernet(encrypt
-                                                                .Encrypted
-                                                            .fromBase64(args
-                                                                .passUser)));
+                                                        .decryptFernet(
+                                                            args.passUser));
                                             await deleteUser(data['idToken']);
 
                                             CollectionReference users =

@@ -158,11 +158,11 @@ class LoginPage extends StatelessWidget {
                                           },
                                         );
                                       }
-                                      Map<String, dynamic> data = await signIn(
-                                          emailController.text,
+                                      await signIn(emailController.text,
                                           passwordController.text);
-                                      String site = await getUsersData(
-                                          emailController.text);
+                                      Map<String, dynamic> userData =
+                                          await getUsersData(
+                                              emailController.text);
 
                                       if (context.mounted) {
                                         Navigator.of(context).pop();
@@ -171,11 +171,11 @@ class LoginPage extends StatelessWidget {
                                       Get.off(
                                         () => HomePage(updateCallback: () {}),
                                         arguments: UserInfo(
-                                          data['displayName'],
-                                          site,
-                                          data['idToken'],
-                                          data['email'],
-                                          passwordController.text,
+                                          userData['displayName'].toString(),
+                                          userData['site'].toString(),
+                                          userData['poste'].toString(),
+                                          userData['email'].toString(),
+                                          userData['passUser'].toString(),
                                         ),
                                       );
                                     } catch (e) {
