@@ -1,14 +1,16 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:encrypt/encrypt.dart' as encrypt;
 import 'package:firedart/firedart.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:encrypt/encrypt.dart' as encrypt;
+
 import 'package:sews_projet/constants.dart';
 import 'package:sews_projet/model/models/models.dart';
 import 'package:sews_projet/model/services/auth_api.dart';
 import 'package:sews_projet/model/services/connectivity.dart';
 import 'package:sews_projet/model/services/encrypt.dart';
+import 'package:sews_projet/views/pages/setting.dart';
 import 'package:sews_projet/views/widgets/button.dart';
 import 'package:sews_projet/views/widgets/custom_appbar.dart';
 import 'package:sews_projet/views/widgets/drop_down_field.dart';
@@ -17,9 +19,11 @@ import 'package:sews_projet/views/widgets/text_field.dart';
 
 class EditUser extends StatefulWidget {
   final String displayName;
+  final String site;
   const EditUser({
     Key? key,
     required this.displayName,
+    required this.site,
   }) : super(key: key);
   static String id = '/EditUser';
 
@@ -38,13 +42,14 @@ class _EditUserState extends State<EditUser> {
     'Site Ain Sebaa',
   ];
 
-  String? selectedSite;
-
   bool enableSave = false;
+
+  String? selectedSite;
 
   @override
   void initState() {
     controller.text = widget.displayName;
+    selectedSite = widget.site;
     super.initState();
   }
 
@@ -79,7 +84,7 @@ class _EditUserState extends State<EditUser> {
                           context, 'Pas de connexion internet', Colors.grey);
                     }
                   } else {
-                    Get.back();
+                    Get.off(()=> const SettingPage());
                   }
                 },
                 icon: const Icon(Icons.arrow_back),
@@ -166,7 +171,7 @@ class _EditUserState extends State<EditUser> {
                               return null;
                             },
                             onChanged: (value) {
-                              selectedSite = value;
+                              selectedSite = value!;
                               if (selectedSite != args.site ||
                                   controller.text != args.displayName) {
                                 setState(() {
@@ -222,10 +227,13 @@ class _EditUserState extends State<EditUser> {
 
                                 users.document(args.email).update({
                                   'displayName': controller.text,
-                                  'site': selectedSite!,
+                                  'site': selectedSite,
                                 });
                                 args.displayName = controller.text;
                                 args.site = selectedSite!;
+                                setState(() {
+                                  enableSave = false;
+                                });
 
                                 if (context.mounted) {
                                   Navigator.of(context).pop();

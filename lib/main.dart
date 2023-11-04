@@ -101,6 +101,7 @@ class _MyAppState extends State<MyApp> {
               name: EditUser.id,
               page: () => const EditUser(
                     displayName: '',
+                    site: '',
                   )),
         ],
       ),

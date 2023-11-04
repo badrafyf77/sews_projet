@@ -3,7 +3,6 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:firedart/firedart.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:sews_projet/views/pages/edit_user.dart';
 import 'package:side_navigation/side_navigation.dart';
 
 import 'package:sews_projet/constants.dart';
@@ -11,6 +10,7 @@ import 'package:sews_projet/model/models/models.dart';
 import 'package:sews_projet/model/services/auth_api.dart';
 import 'package:sews_projet/model/services/connectivity.dart';
 import 'package:sews_projet/model/services/encrypt.dart';
+import 'package:sews_projet/views/pages/edit_user.dart';
 import 'package:sews_projet/views/pages/home_page.dart';
 import 'package:sews_projet/views/pages/login_page.dart';
 import 'package:sews_projet/views/widgets/button.dart';
@@ -21,7 +21,9 @@ import 'package:sews_projet/views/widgets/loading_circle.dart';
 import 'package:sews_projet/views/widgets/text_field.dart';
 
 class SettingPage extends StatefulWidget {
-  const SettingPage({super.key});
+  const SettingPage({
+    Key? key,
+  }) : super(key: key);
   static String id = '/Setting';
 
   @override
@@ -163,13 +165,18 @@ class _SettingPageState extends State<SettingPage> {
   }
 }
 
-class ManageUsers extends StatelessWidget {
+class ManageUsers extends StatefulWidget {
   final Size size;
   const ManageUsers({
     Key? key,
     required this.size,
   }) : super(key: key);
 
+  @override
+  State<ManageUsers> createState() => _ManageUsersState();
+}
+
+class _ManageUsersState extends State<ManageUsers> {
   @override
   Widget build(BuildContext context) {
     CollectionReference users = Firestore.instance.collection('Users');
@@ -189,19 +196,20 @@ class ManageUsers extends StatelessWidget {
               'Bonjour',
               style: TextStyle(
                 color: kPrimaryColor,
-                fontSize: size.width * 0.023,
+                fontSize: widget.size.width * 0.023,
               ),
             ),
             Image.asset(
               'assets/images/wave.png',
-              width: size.width * 0.043,
-              height: size.height * 0.043,
+              width: widget.size.width * 0.043,
+              height: widget.size.height * 0.043,
             ),
           ],
         ),
         Padding(
           padding: const EdgeInsets.all(8.0),
-          child: SizedBox(width: size.width * 0.15, child: const MyLine()),
+          child:
+              SizedBox(width: widget.size.width * 0.15, child: const MyLine()),
         ),
         FutureBuilder<List<Document>>(
             future: getData(),
@@ -229,6 +237,7 @@ class ManageUsers extends StatelessWidget {
                               Get.to(
                                 () => EditUser(
                                   displayName: usersList[index].displayName,
+                                  site: usersList[index].site,
                                 ),
                                 arguments: usersList[index],
                                 transition: Transition.rightToLeft,
@@ -550,6 +559,7 @@ class _AddUserWidgetState extends State<AddUserWidget> {
                             }
                           } catch (e) {
                             if (context.mounted) {
+                              Navigator.of(context).pop();
                               myShowToast(context, e.toString(), Colors.red);
                             }
                           }
