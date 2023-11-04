@@ -103,12 +103,14 @@ class Historique {
 class User {
   String displayName;
   String email;
+  String post;
   String passUser;
   String site;
 
   User(
     this.displayName,
     this.email,
+    this.post,
     this.passUser,
     this.site,
   );
@@ -117,6 +119,7 @@ class User {
     return User(
       jsonData['displayName'],
       jsonData['email'],
+      jsonData['post'],
       jsonData['passUser'],
       jsonData['site'],
     );

@@ -334,8 +334,9 @@ class _AddUserWidgetState extends State<AddUserWidget> {
       'Site Ain Sebaa',
     ];
     final List<String> postItems = [
-      'Directeur general',
-      'Employé',
+      'administrateur',
+      'directeur',
+      'employé',
     ];
 
     String? selectedSite;
@@ -586,6 +587,7 @@ class _AddUserWidgetState extends State<AddUserWidget> {
                           users.document(emailController.text).set({
                             'displayName': controller.text,
                             'email': emailController.text,
+                            'post': selectedPost,
                             'site': selectedSite,
                             'passUser': MyEncryptionDecryption.encryptFernet(
                                     passController.text)
