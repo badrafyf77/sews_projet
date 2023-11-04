@@ -8,12 +8,14 @@ class MyButton extends StatelessWidget {
   final Function()? onPressed;
   final String textButton;
   final double padding;
+  final Color color;
   const MyButton({
     Key? key,
     this.enable = true,
     required this.onPressed,
     required this.textButton,
     this.padding = 1,
+    this.color = kPrimaryColor,
   }) : super(key: key);
 
   @override
@@ -23,7 +25,7 @@ class MyButton extends StatelessWidget {
         onPressed: enable ? onPressed : null,
         style: ButtonStyle(
           backgroundColor:
-              MaterialStatePropertyAll(enable ? kPrimaryColor : Colors.grey),
+              MaterialStatePropertyAll(enable ? color : Colors.grey),
           foregroundColor: const MaterialStatePropertyAll(Colors.white),
           shape: MaterialStateProperty.all<RoundedRectangleBorder>(
             RoundedRectangleBorder(

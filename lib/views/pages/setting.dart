@@ -207,11 +207,11 @@ class ManageUsers extends StatelessWidget {
             future: getData(),
             builder: (context, snapshot) {
               if (snapshot.hasData) {
-                List<Users> usersList = [];
+                List<User> usersList = [];
 
                 for (int i = 0; i < snapshot.data!.length; i++) {
                   usersList.add(
-                    Users.fromJson(
+                    User.fromJson(
                       snapshot.data!.elementAt(i),
                     ),
                   );
@@ -227,7 +227,9 @@ class ManageUsers extends StatelessWidget {
                           child: GestureDetector(
                             onTap: () {
                               Get.to(
-                                () => const EditUser(),
+                                () => EditUser(
+                                  displayName: usersList[index].displayName,
+                                ),
                                 arguments: usersList[index],
                                 transition: Transition.rightToLeft,
                               );
@@ -752,38 +754,47 @@ class _PasswordWidgetState extends State<PasswordWidget> {
                     enable: enablePassword,
                     onPressed: () async {
                       if (formKeyPass.currentState!.validate()) {
-                        try {
+                        if (await connectivityResult() ==
+                            ConnectivityResult.none) {
                           if (context.mounted) {
-                            showDialog(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return const LoadingAnimation();
-                              },
-                            );
+                            myShowToast(context, 'Pas de connexion internet',
+                                Colors.grey);
                           }
-                          var dataForIdToken = await signIn(
-                              widget.userInfo.email, widget.userInfo.password);
-                          var data = await updatePassword(
-                              newPassController.text,
-                              dataForIdToken['idToken']);
-                          if (context.mounted) {
-                            Navigator.of(context).pop();
-                          }
-                          if (context.mounted) {
-                            myShowToast(
-                                context, 'Mot de passe changee', Colors.green);
-                          }
-                          setState(() {
-                            widget.userInfo.password = newPassController.text;
-                            widget.userInfo.idToken = data['idToken'];
-                            enablePassword = false;
-                            oldPassController.clear();
-                            newPassController.clear();
-                            confirmPassController.clear();
-                          });
-                        } catch (e) {
-                          if (context.mounted) {
-                            myShowToast(context, e.toString(), Colors.red);
+                        } else {
+                          try {
+                            if (context.mounted) {
+                              showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return const LoadingAnimation();
+                                },
+                              );
+                            }
+                            var dataForIdToken = await signIn(
+                                widget.userInfo.email,
+                                widget.userInfo.password);
+                            var data = await updatePassword(
+                                newPassController.text,
+                                dataForIdToken['idToken']);
+                            if (context.mounted) {
+                              Navigator.of(context).pop();
+                            }
+                            if (context.mounted) {
+                              myShowToast(context, 'Mot de passe changee',
+                                  Colors.green);
+                            }
+                            setState(() {
+                              widget.userInfo.password = newPassController.text;
+                              widget.userInfo.idToken = data['idToken'];
+                              enablePassword = false;
+                              oldPassController.clear();
+                              newPassController.clear();
+                              confirmPassController.clear();
+                            });
+                          } catch (e) {
+                            if (context.mounted) {
+                              myShowToast(context, e.toString(), Colors.red);
+                            }
                           }
                         }
                       }
@@ -958,51 +969,60 @@ class _EmailWidgetState extends State<EmailWidget> {
                     enable: enableEmail,
                     onPressed: () async {
                       if (formKey.currentState!.validate()) {
-                        try {
+                        if (await connectivityResult() ==
+                            ConnectivityResult.none) {
                           if (context.mounted) {
-                            showDialog(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return const LoadingAnimation();
-                              },
-                            );
+                            myShowToast(context, 'Pas de connexion internet',
+                                Colors.grey);
                           }
-                          var dataForIdToken = await signIn(
-                              widget.userInfo.email, widget.userInfo.password);
-                          var data = await updateEmail(
-                              emailController.text, dataForIdToken['idToken']);
-                          if (context.mounted) {
-                            Navigator.of(context).pop();
-                          }
+                        } else {
+                          try {
+                            if (context.mounted) {
+                              showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return const LoadingAnimation();
+                                },
+                              );
+                            }
+                            var dataForIdToken = await signIn(
+                                widget.userInfo.email,
+                                widget.userInfo.password);
+                            var data = await updateEmail(emailController.text,
+                                dataForIdToken['idToken']);
+                            if (context.mounted) {
+                              Navigator.of(context).pop();
+                            }
 
-                          CollectionReference updateUserInfo =
-                              Firestore.instance.collection('Users');
+                            CollectionReference updateUserInfo =
+                                Firestore.instance.collection('Users');
 
-                          await updateUserInfo
-                              .document(widget.userInfo.email)
-                              .delete();
+                            await updateUserInfo
+                                .document(widget.userInfo.email)
+                                .delete();
 
-                          updateUserInfo.document(data['email']).set({
-                            'displayName': widget.userInfo.displayName,
-                            'email': data['email'],
-                            'site': widget.userInfo.site,
-                          });
+                            updateUserInfo.document(data['email']).set({
+                              'displayName': widget.userInfo.displayName,
+                              'email': data['email'],
+                              'site': widget.userInfo.site,
+                            });
 
-                          if (context.mounted) {
-                            myShowToast(
-                                context, 'E-mail changee', Colors.green);
-                          }
+                            if (context.mounted) {
+                              myShowToast(
+                                  context, 'E-mail changee', Colors.green);
+                            }
 
-                          setState(() {
-                            widget.userInfo.email = data['email'];
-                            widget.userInfo.idToken = data['idToken'];
-                            enableEmail = false;
-                            emailController.clear();
-                            confirmEmailController.clear();
-                          });
-                        } catch (e) {
-                          if (context.mounted) {
-                            myShowToast(context, e.toString(), Colors.red);
+                            setState(() {
+                              widget.userInfo.email = data['email'];
+                              widget.userInfo.idToken = data['idToken'];
+                              enableEmail = false;
+                              emailController.clear();
+                              confirmEmailController.clear();
+                            });
+                          } catch (e) {
+                            if (context.mounted) {
+                              myShowToast(context, e.toString(), Colors.red);
+                            }
                           }
                         }
                       }

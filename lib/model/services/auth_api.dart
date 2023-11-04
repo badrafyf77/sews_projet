@@ -63,6 +63,31 @@ Future<Map<String, dynamic>> signUp(String email, String password) async {
   return data;
 }
 
+Future<Map<String, dynamic>> deleteUser(String idToken) async {
+  const url = '${baseUrl}delete?key=$apiKey';
+  final header = {
+    'Content-Type': 'application/json',
+  };
+  final body = {
+    "idToken":idToken,
+  };
+
+  final response =
+      await http.post(Uri.parse(url), headers: header, body: json.encode(body));
+  final Map<String, dynamic> data = json.decode(response.body);
+
+  if (response.statusCode != 200) {
+    if (data['error']['message'] == 'INVALID_ID_TOKEN') {
+      throw 'Id Token invalide';
+    } else if (data['error']['message'] == 'USER_NOT_FOUND') {
+      throw 'Employe non trouvé';
+    } else {
+      throw data['error']['message'];
+    }
+  }
+  return data;
+}
+
 Future<void> resetPassword(String email) async {
   const url = '${baseUrl}sendOobCode?key=$apiKey';
   final header = {

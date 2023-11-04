@@ -100,21 +100,21 @@ class Historique {
   }
 }
 
-class Users {
-  final String displayName;
-  final String email;
-  final String passUser;
-  final String site;
+class User {
+  String displayName;
+  String email;
+  String passUser;
+  String site;
 
-  Users(
+  User(
     this.displayName,
     this.email,
     this.passUser,
     this.site,
   );
 
-  factory Users.fromJson(jsonData) {
-    return Users(
+  factory User.fromJson(jsonData) {
+    return User(
       jsonData['displayName'],
       jsonData['email'],
       jsonData['passUser'],

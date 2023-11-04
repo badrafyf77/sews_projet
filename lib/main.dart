@@ -97,7 +97,11 @@ class _MyAppState extends State<MyApp> {
           GetPage(name: RecherchePage.id, page: () => const RecherchePage()),
           GetPage(name: Forgetpassword.id, page: () => const Forgetpassword()),
           GetPage(name: SettingPage.id, page: () => const SettingPage()),
-          GetPage(name: EditUser.id, page: () => const EditUser()),
+          GetPage(
+              name: EditUser.id,
+              page: () => const EditUser(
+                    displayName: '',
+                  )),
         ],
       ),
     );
