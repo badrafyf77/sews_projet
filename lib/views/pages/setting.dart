@@ -65,6 +65,7 @@ class _SettingPageState extends State<SettingPage> {
       ),
       Center(
         child: AddUserWidget(
+          userInfo: args,
           size: size,
         ),
       ),
@@ -134,12 +135,14 @@ class _SettingPageState extends State<SettingPage> {
                         icon: Icons.vpn_key,
                         label: 'Mot de passe',
                       ),
-                      if (args.displayName == "admin")
+                      if (args.poste == "administrateur" ||
+                          args.poste == "directeur")
                         const SideNavigationBarItem(
                           icon: Icons.person,
                           label: 'Gerer les utilisateur',
                         ),
-                      if (args.displayName == "admin")
+                      if (args.poste == "administrateur" ||
+                          args.poste == "directeur")
                         const SideNavigationBarItem(
                           icon: Icons.person_add,
                           label: 'Ajouter utilisateur',
@@ -252,47 +255,55 @@ class _ManageUsersState extends State<ManageUsers> {
                               });
                             },
                             child: (usersList[index].email !=
-                                        widget.userInfo.email ||
+                                        widget.userInfo.email &&
                                     usersList[index].poste != 'administrateur')
-                                ? Column(
-                                    children: [
-                                      Row(
+                                ? (widget.userInfo.poste == 'administrateur' ||
+                                        (widget.userInfo.poste == 'directeur' &&
+                                            widget.userInfo.site ==
+                                                usersList[index].site))
+                                    ? Column(
                                         children: [
-                                          const Icon(
-                                            Icons.person,
-                                            color: kPrimaryColor,
-                                            size: 50,
-                                          ),
-                                          const SizedBox(
-                                            width: 15,
-                                          ),
-                                          Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
+                                          Row(
                                             children: [
-                                              Text(
-                                                usersList[index].displayName,
-                                                style: const TextStyle(
-                                                  fontSize: 16,
-                                                  fontWeight: FontWeight.bold,
-                                                ),
+                                              const Icon(
+                                                Icons.person,
+                                                color: kPrimaryColor,
+                                                size: 50,
                                               ),
-                                              Text(
-                                                usersList[index].site,
-                                                style: const TextStyle(
-                                                  fontSize: 12,
-                                                ),
+                                              const SizedBox(
+                                                width: 15,
                                               ),
+                                              Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Text(
+                                                    usersList[index]
+                                                        .displayName,
+                                                    style: const TextStyle(
+                                                      fontSize: 16,
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                    ),
+                                                  ),
+                                                  Text(
+                                                    usersList[index].site,
+                                                    style: const TextStyle(
+                                                      fontSize: 12,
+                                                    ),
+                                                  ),
+                                                ],
+                                              )
                                             ],
+                                          ),
+                                          const Padding(
+                                            padding:
+                                                EdgeInsets.only(bottom: 8.0),
+                                            child: MyLine(),
                                           )
                                         ],
-                                      ),
-                                      const Padding(
-                                        padding: EdgeInsets.only(bottom: 8.0),
-                                        child: MyLine(),
                                       )
-                                    ],
-                                  )
+                                    : const SizedBox()
                                 : const SizedBox(),
                           ),
                         );
@@ -312,9 +323,11 @@ class _ManageUsersState extends State<ManageUsers> {
 }
 
 class AddUserWidget extends StatefulWidget {
+  final UserInfo userInfo;
   final Size size;
   const AddUserWidget({
     Key? key,
+    required this.userInfo,
     required this.size,
   }) : super(key: key);
 
@@ -344,6 +357,7 @@ class _AddUserWidgetState extends State<AddUserWidget> {
     ];
 
     String? selectedSite;
+
     String? selectedPost;
 
     return ListView(
@@ -428,33 +442,47 @@ class _AddUserWidgetState extends State<AddUserWidget> {
                   ],
                 ),
                 const SizedBox(
-                  height: 10,
+                  height: 15,
                 ),
-                Row(
-                  children: [
-                    const Text('Le site :'),
-                    const SizedBox(
-                      width: 10,
-                    ),
-                    SizedBox(
-                      width: widget.size.width * 0.3,
-                      child: MyDropDownField(
-                          validator: (value) {
-                            if (value == null) {
-                              return 'Veuillez choisir une option.';
-                            }
-                            return null;
-                          },
-                          onChanged: (value) {
-                            selectedSite = value;
-                          },
-                          items: siteItems,
-                          hintText: 'Selectionner le site'),
-                    ),
-                  ],
-                ),
+                (widget.userInfo.poste == 'administrateur')
+                    ? Row(
+                        children: [
+                          const Text('Le site :'),
+                          const SizedBox(
+                            width: 10,
+                          ),
+                          SizedBox(
+                            width: widget.size.width * 0.3,
+                            child: MyDropDownField(
+                                validator: (value) {
+                                  if (value == null) {
+                                    return 'Veuillez choisir une option.';
+                                  }
+                                  return null;
+                                },
+                                onChanged: (value) {
+                                  selectedSite = value;
+                                },
+                                items: siteItems,
+                                hintText: 'Selectionner le site'),
+                          ),
+                        ],
+                      )
+                    : Row(
+                        children: [
+                          const Text('Le site:'),
+                          const SizedBox(
+                            width: 10,
+                          ),
+                          Text(
+                            widget.userInfo.site,
+                            style: const TextStyle(
+                                fontSize: 16, fontWeight: FontWeight.bold),
+                          )
+                        ],
+                      ),
                 const SizedBox(
-                  height: 10,
+                  height: 15,
                 ),
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.end,
@@ -588,6 +616,10 @@ class _AddUserWidgetState extends State<AddUserWidget> {
                           await updateName(data['idToken'], controller.text);
                           CollectionReference users =
                               Firestore.instance.collection('Users');
+
+                          if (widget.userInfo.poste != 'administrateur') {
+                            selectedSite = widget.userInfo.site;
+                          }
                           users.document(emailController.text).set({
                             'displayName': controller.text,
                             'email': emailController.text,
@@ -840,6 +872,15 @@ class _PasswordWidgetState extends State<PasswordWidget> {
                             if (context.mounted) {
                               Navigator.of(context).pop();
                             }
+                            CollectionReference updateUserInfo =
+                                Firestore.instance.collection('Users');
+
+                            updateUserInfo
+                                .document(widget.userInfo.email)
+                                .update({
+                              'passUser': MyEncryptionDecryption.encryptFernet(
+                                  newPassController.text),
+                            });
                             if (context.mounted) {
                               myShowToast(context, 'Mot de passe changee',
                                   Colors.green);
@@ -1066,6 +1107,8 @@ class _EmailWidgetState extends State<EmailWidget> {
                               'displayName': widget.userInfo.displayName,
                               'email': data['email'],
                               'site': widget.userInfo.site,
+                              'poste': widget.userInfo.poste,
+                              'passUser': widget.userInfo.passUser,
                             });
 
                             if (context.mounted) {
