@@ -25,6 +25,9 @@ class MyDropDownField extends StatelessWidget {
       value: selectedItem == "null" ? null : selectedItem,
       validator: validator,
       isExpanded: true,
+      style: const TextStyle(
+        fontSize: 12,
+      ),
       hint: Text(
         hintText,
         style: const TextStyle(fontSize: 14),
