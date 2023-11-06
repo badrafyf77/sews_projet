@@ -293,6 +293,9 @@ class _AddExcelFilePageState extends State<AddExcelFilePage> {
                       MyButton(
                         onPressed: () async {
                           if (_formKey.currentState!.validate()) {
+                            if (args.poste != 'administrateur') {
+                              selectedSite = args.site;
+                            }
                             BlocProvider.of<ExcelImportBloc>(context).add(
                               ImportEvent(
                                 selectedSite: selectedSite!,
@@ -305,6 +308,7 @@ class _AddExcelFilePageState extends State<AddExcelFilePage> {
                                   config.calendarType,
                                   finLocation,
                                 ),
+                                userInfo: args,
                               ),
                             );
                           }

@@ -351,6 +351,11 @@ class _EditPageState extends State<EditPage> {
                                                                 .set({
                                                               'Type':
                                                                   'Suppression',
+                                                              'userNom': args
+                                                                  .displayName,
+                                                              'site': args.site,
+                                                              'poste':
+                                                                  args.poste,
                                                               'Nombre de pieces':
                                                                   selectedIndexes
                                                                       .length,
@@ -749,6 +754,12 @@ class _EditPageState extends State<EditPage> {
                                                                       .set({
                                                                     'Type':
                                                                         'Modification de ${appareilList[index].id}',
+                                                                    'userNom': args
+                                                                        .displayName,
+                                                                    'site': args
+                                                                        .site,
+                                                                    'poste': args
+                                                                        .poste,
                                                                     'Nombre de pieces':
                                                                         1,
                                                                     'Date':

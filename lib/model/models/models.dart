@@ -1,3 +1,4 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 class Appareil {
   final String id;
   final String utilisateur;
@@ -71,6 +72,9 @@ class Appareil {
 
 class Historique {
   final String type;
+  final String userNom;
+  final String site;
+  final String poste;
   final int nmbrPiece;
   final DateTime date;
   final String time;
@@ -79,6 +83,9 @@ class Historique {
 
   Historique(
     this.type,
+    this.userNom,
+    this.site,
+    this.poste,
     this.nmbrPiece,
     this.date,
     this.time,
@@ -89,6 +96,9 @@ class Historique {
   factory Historique.fromJson(jsonData) {
     return Historique(
       jsonData['Type'],
+      jsonData['userNom'],
+      jsonData['site'],
+      jsonData['poste'],
       jsonData['Nombre de pieces'],
       jsonData['Date'],
       jsonData['Time'],

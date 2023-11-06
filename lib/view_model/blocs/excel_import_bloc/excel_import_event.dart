@@ -9,11 +9,13 @@ class ImportEvent extends ExcelImportEvent {
   final String selectedAppareil;
   final String debutContratDate;
   final String finContratDate;
+  final UserInfo userInfo;
 
   ImportEvent({
     required this.selectedSite,
     required this.selectedAppareil,
     required this.debutContratDate,
     required this.finContratDate,
+    required this.userInfo,
   });
 }

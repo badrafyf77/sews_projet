@@ -120,22 +120,20 @@ class _HistoriquePageState extends State<HistoriquePage> {
                                             fontSize: 16,
                                           ),
                                         ),
-                                        onPressed: () {
+                                        onPressed: () async {
                                           for (int i = 0;
                                               i < historiqueList.length;
                                               i++) {
-                                            historique
+                                            await historique
                                                 .document(historiqueList[i].id)
                                                 .delete();
                                           }
 
-                                          Navigator.of(context).pop();
-                                          Future.delayed(
-                                            const Duration(seconds: 1),
-                                            () {
-                                              setState(() {});
-                                            },
-                                          );
+                                          if (context.mounted) {
+                                            Navigator.of(context).pop();
+                                          }
+
+                                          setState(() {});
                                         },
                                       ),
                                     ],
@@ -349,141 +347,125 @@ class _HistoriquePageState extends State<HistoriquePage> {
                                                     width: size.width * 0.065,
                                                     height: size.height * 0.065,
                                                   ),
-                                                  SizedBox(
-                                                    width: size.width * 0.4,
-                                                    child: Text(
-                                                      historiqueList[index]
-                                                          .type,
-                                                      style: const TextStyle(
-                                                          fontSize: 16),
-                                                    ),
+                                                  Text(
+                                                    historiqueList[index].type,
                                                   ),
                                                 ],
                                               ),
-                                              SizedBox(
-                                                width: size.width * 0.035,
-                                              ),
-                                              SizedBox(
-                                                width: size.width * 0.2,
-                                                child: Text(
-                                                  'Nombre de pieces : ${historiqueList[index].nmbrPiece.toString()}',
-                                                ),
-                                              ),
-                                              SizedBox(
-                                                width: size.width * 0.035,
-                                              ),
-                                              SizedBox(
-                                                width: size.width * 0.12,
-                                                child: Text(
-                                                  historiqueList[index].time,
-                                                ),
-                                              ),
-                                              SizedBox(
-                                                width: size.width * 0.035,
-                                              ),
-                                              SizedBox(
-                                                width: size.width * 0.05,
-                                                child: IconButton(
-                                                  hoverColor:
-                                                      Colors.transparent,
-                                                  splashColor:
-                                                      Colors.transparent,
-                                                  highlightColor:
-                                                      Colors.transparent,
-                                                  onPressed: () {
-                                                    showDialog(
-                                                      context: context,
-                                                      builder: (BuildContext
-                                                          context) {
-                                                        return AlertDialog(
-                                                          title: const Text(
-                                                              'Suppression'),
-                                                          content: SizedBox(
-                                                            height:
-                                                                size.height *
-                                                                    0.3,
-                                                            width: size.width *
-                                                                0.4,
-                                                            child: const Column(
-                                                              children: [
-                                                                SizedBox(
-                                                                  height: 30,
-                                                                ),
-                                                                Text(
-                                                                  'Confirmer la suppression',
-                                                                  style:
-                                                                      TextStyle(
-                                                                    color: Colors
-                                                                        .black,
-                                                                    fontSize:
-                                                                        20,
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .bold,
-                                                                  ),
-                                                                ),
-                                                              ],
-                                                            ),
-                                                          ),
-                                                          actions: [
-                                                            TextButton(
-                                                              child: const Text(
-                                                                'retour',
-                                                                style:
-                                                                    TextStyle(
-                                                                  color:
-                                                                      kPrimaryColor,
-                                                                  fontSize: 16,
-                                                                ),
-                                                              ),
-                                                              onPressed: () {
-                                                                Navigator.of(
-                                                                        context)
-                                                                    .pop();
-                                                              },
-                                                            ),
-                                                            TextButton(
-                                                              child: const Text(
-                                                                'continue',
-                                                                style:
-                                                                    TextStyle(
-                                                                  color:
-                                                                      kPrimaryColor,
-                                                                  fontSize: 16,
-                                                                ),
-                                                              ),
-                                                              onPressed: () {
-                                                                historique
-                                                                    .document(
-                                                                        historiqueList[index]
-                                                                            .id)
-                                                                    .delete();
-                                                                Navigator.of(
-                                                                        context)
-                                                                    .pop();
-                                                                Future.delayed(
-                                                                  const Duration(
-                                                                      seconds:
-                                                                          1),
-                                                                  () {
-                                                                    setState(
-                                                                        () {});
-                                                                  },
-                                                                );
-                                                              },
-                                                            ),
-                                                          ],
-                                                        );
-                                                      },
-                                                    );
-                                                  },
-                                                  icon: const Icon(
-                                                    Icons.delete,
+                                              Column(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                children: [
+                                                  Text(
+                                                    historiqueList[index]
+                                                        .userNom,
+                                                    style: const TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                    ),
                                                   ),
-                                                ),
+                                                  Text(
+                                                    '${historiqueList[index].poste} - ${historiqueList[index].site}',
+                                                    style: const TextStyle(
+                                                        fontSize: 12),
+                                                  ),
+                                                ],
                                               ),
-                                              SizedBox(
-                                                width: size.width * 0.009,
+                                              Text(
+                                                'pieces : ${historiqueList[index].nmbrPiece.toString()}',
+                                              ),
+                                              Text(
+                                                historiqueList[index].time,
+                                              ),
+                                              IconButton(
+                                                hoverColor: Colors.transparent,
+                                                splashColor: Colors.transparent,
+                                                highlightColor:
+                                                    Colors.transparent,
+                                                onPressed: () {
+                                                  showDialog(
+                                                    context: context,
+                                                    builder:
+                                                        (BuildContext context) {
+                                                      return AlertDialog(
+                                                        title: const Text(
+                                                            'Suppression'),
+                                                        content: SizedBox(
+                                                          height:
+                                                              size.height * 0.3,
+                                                          width:
+                                                              size.width * 0.4,
+                                                          child: const Column(
+                                                            children: [
+                                                              SizedBox(
+                                                                height: 30,
+                                                              ),
+                                                              Text(
+                                                                'Confirmer la suppression',
+                                                                style:
+                                                                    TextStyle(
+                                                                  color: Colors
+                                                                      .black,
+                                                                  fontSize: 20,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold,
+                                                                ),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        ),
+                                                        actions: [
+                                                          TextButton(
+                                                            child: const Text(
+                                                              'retour',
+                                                              style: TextStyle(
+                                                                color:
+                                                                    kPrimaryColor,
+                                                                fontSize: 16,
+                                                              ),
+                                                            ),
+                                                            onPressed: () {
+                                                              Navigator.of(
+                                                                      context)
+                                                                  .pop();
+                                                            },
+                                                          ),
+                                                          TextButton(
+                                                            child: const Text(
+                                                              'continue',
+                                                              style: TextStyle(
+                                                                color:
+                                                                    kPrimaryColor,
+                                                                fontSize: 16,
+                                                              ),
+                                                            ),
+                                                            onPressed:
+                                                                () async {
+                                                              await historique
+                                                                  .document(
+                                                                      historiqueList[
+                                                                              index]
+                                                                          .id)
+                                                                  .delete();
+                                                              if (context
+                                                                  .mounted) {
+                                                                Navigator.of(
+                                                                        context)
+                                                                    .pop();
+                                                              }
+
+                                                              setState(() {});
+                                                            },
+                                                          ),
+                                                        ],
+                                                      );
+                                                    },
+                                                  );
+                                                },
+                                                icon: const Icon(
+                                                  Icons.delete,
+                                                ),
                                               ),
                                             ],
                                           ),

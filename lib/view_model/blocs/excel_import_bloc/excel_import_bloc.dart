@@ -9,6 +9,7 @@ import 'package:firedart/firedart.dart';
 import 'package:intl/intl.dart';
 // ignore: depend_on_referenced_packages
 import 'package:meta/meta.dart';
+import 'package:sews_projet/model/models/models.dart';
 import 'package:uuid/uuid.dart';
 
 part 'excel_import_event.dart';
@@ -95,7 +96,7 @@ class ExcelImportBloc extends Bloc<ExcelImportEvent, ExcelImportState> {
                     );
                     nSerie.add(rowdetail[i]);
                   }
-                  
+
                   rowdetail.clear();
                   userdetail.clear();
                   int k = 7;
@@ -142,6 +143,9 @@ class ExcelImportBloc extends Bloc<ExcelImportEvent, ExcelImportState> {
                   var id = const Uuid().v4();
                   historique.document(id).set({
                     'Type': 'Importer par un fichier excel',
+                    'userNom': event.userInfo.displayName,
+                    'site': event.userInfo.site,
+                    'poste': event.userInfo.poste,
                     'Nombre de pieces': nSerie.length,
                     'Date': DateTime.now(),
                     'Time':

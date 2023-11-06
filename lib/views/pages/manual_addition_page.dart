@@ -139,6 +139,10 @@ class _ManualAdditionPageState extends State<ManualAdditionPage> {
                                               Firestore.instance
                                                   .collection('Historique');
 
+                                          if (args.poste != 'administrateur') {
+                                            selectedSite = args.site;
+                                          }
+
                                           sewsDatabase
                                               .document(controllerId.text)
                                               .set(
@@ -196,6 +200,9 @@ class _ManualAdditionPageState extends State<ManualAdditionPage> {
                                           var id = const Uuid().v4();
                                           historique.document(id).set({
                                             'Type': 'Ajouter manuellement',
+                                            'userNom': args.displayName,
+                                            'site': args.site,
+                                            'poste': args.poste,
                                             'Nombre de pieces': 1,
                                             'Date': DateTime.now(),
                                             'Time': DateFormat.jm()

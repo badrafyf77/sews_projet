@@ -388,6 +388,10 @@ class _ContratRechercheState extends State<ContratRecherche> {
                                                           .document(id)
                                                           .set({
                                                         'Type': 'Suppression',
+                                                        'userNom':
+                                                            args.displayName,
+                                                        'site': args.site,
+                                                        'poste': args.poste,
                                                         'Nombre de pieces':
                                                             selectedIndexes
                                                                 .length,
@@ -674,6 +678,12 @@ class _ContratRechercheState extends State<ContratRecherche> {
                                                                           .set({
                                                                         'Type':
                                                                             'Modification de ${appareilList[index].id}',
+                                                                        'userNom':
+                                                                            args.displayName,
+                                                                        'site':
+                                                                            args.site,
+                                                                        'poste':
+                                                                            args.poste,
                                                                         'Nombre de pieces':
                                                                             1,
                                                                         'Date':
