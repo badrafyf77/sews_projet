@@ -317,209 +317,25 @@ class _HomePageState extends State<HomePage> {
                               MyContainer(
                                 label: 'Autre',
                                 widget1: MyTextButton(
-                                  onPressed: () {
-                                    GlobalKey<FormState> dropDownFormKey =
-                                        GlobalKey();
-                                    showDialog(
-                                      context: context,
-                                      builder: (BuildContext context) {
-                                        return Form(
-                                          key: dropDownFormKey,
-                                          child: AlertDialog(
-                                            title: const Text('Select options'),
-                                            content: SizedBox(
-                                              height: size.height * 0.4,
-                                              width: size.width * 0.4,
-                                              child: Center(
-                                                child: Column(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.center,
-                                                  children: [
-                                                    Column(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .start,
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .start,
-                                                      children: [
-                                                        const Padding(
-                                                          padding:
-                                                              EdgeInsets.all(8),
-                                                          child: Text(
-                                                            'le Site',
-                                                            style: TextStyle(
-                                                              color:
-                                                                  kPrimaryColor,
-                                                              fontSize: 16,
-                                                            ),
-                                                          ),
-                                                        ),
-                                                        UnconstrainedBox(
-                                                          child: SizedBox(
-                                                            width: size.width *
-                                                                0.35,
-                                                            child:
-                                                                MyDropDownField(
-                                                                    validator:
-                                                                        (value) {
-                                                                      if (value ==
-                                                                          null) {
-                                                                        return 'Veuillez choisir une option.';
-                                                                      }
-                                                                      return null;
-                                                                    },
-                                                                    onChanged:
-                                                                        (value) {
-                                                                      if (value ==
-                                                                          'All') {
-                                                                        fieldIndexSite =
-                                                                            'a0';
-                                                                        fieldValueSite =
-                                                                            'All';
-                                                                      } else {
-                                                                        fieldIndexSite =
-                                                                            'a3';
-                                                                        fieldValueSite =
-                                                                            value!;
-                                                                      }
-                                                                    },
-                                                                    items:
-                                                                        siteItems,
-                                                                    hintText:
-                                                                        'Selectionner le site'),
-                                                          ),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                    Center(
-                                                      child: Column(
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .start,
-                                                        crossAxisAlignment:
-                                                            CrossAxisAlignment
-                                                                .start,
-                                                        children: [
-                                                          const Padding(
-                                                            padding:
-                                                                EdgeInsets.all(
-                                                                    8),
-                                                            child: Text(
-                                                              'l\'appareil',
-                                                              style: TextStyle(
-                                                                color:
-                                                                    kPrimaryColor,
-                                                                fontSize: 16,
-                                                              ),
-                                                            ),
-                                                          ),
-                                                          UnconstrainedBox(
-                                                            child: SizedBox(
-                                                              width:
-                                                                  size.width *
-                                                                      0.35,
-                                                              child:
-                                                                  MyDropDownField(
-                                                                      validator:
-                                                                          (value) {
-                                                                        if (value ==
-                                                                            null) {
-                                                                          return 'Veuillez choisir une option.';
-                                                                        }
-                                                                        return null;
-                                                                      },
-                                                                      onChanged:
-                                                                          (value) {
-                                                                        if (value ==
-                                                                            'All') {
-                                                                          fieldIndexAppareil =
-                                                                              'a00';
-                                                                          fieldValueAppareil =
-                                                                              'All';
-                                                                        } else {
-                                                                          fieldIndexAppareil =
-                                                                              'a4';
-                                                                          fieldValueAppareil =
-                                                                              value!;
-                                                                        }
-                                                                      },
-                                                                      items:
-                                                                          appareilItems,
-                                                                      hintText:
-                                                                          'Selectionner l\'appareil'),
-                                                            ),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                            ),
-                                            actions: <Widget>[
-                                              TextButton(
-                                                child: const Text(
-                                                  'concel',
-                                                  style: TextStyle(
-                                                    color: kPrimaryColor,
-                                                    fontSize: 16,
-                                                  ),
-                                                ),
-                                                onPressed: () {
-                                                  Navigator.of(context).pop();
-                                                },
-                                              ),
-                                              TextButton(
-                                                child: const Text(
-                                                  'continue',
-                                                  style: TextStyle(
-                                                    color: kPrimaryColor,
-                                                    fontSize: 16,
-                                                  ),
-                                                ),
-                                                onPressed: () async {
-                                                  if (dropDownFormKey
-                                                      .currentState!
-                                                      .validate()) {
-                                                    if (await connectivityResult() ==
-                                                        ConnectivityResult
-                                                            .none) {
-                                                      if (context.mounted) {
-                                                        myShowToast(
-                                                            context,
-                                                            'Pas de connexion internet',
-                                                            Colors.grey);
-                                                      }
-                                                    } else {
-                                                      await Get.to(
-                                                          () =>
-                                                              const EditPage(),
-                                                          arguments:
-                                                              EditArguments(
-                                                            fieldIndexSite,
-                                                            fieldValueSite,
-                                                            fieldIndexAppareil,
-                                                            fieldValueAppareil,
-                                                            args.site,
-                                                          ),
-                                                          transition: Transition
-                                                              .cupertino);
+                                  onPressed: () async {
+                                    if (await connectivityResult() ==
+                                        ConnectivityResult.none) {
+                                      if (context.mounted) {
+                                        myShowToast(
+                                            context,
+                                            'Pas de connexion internet',
+                                            Colors.grey);
+                                      }
+                                    } else {
+                                      await Get.to(() => const EditPage(),
+                                          arguments: args,
+                                          transition: Transition.cupertino);
 
-                                                      widget.updateCallback();
-                                                      if (context.mounted) {
-                                                        Navigator.of(context)
-                                                            .pop();
-                                                      }
-                                                    }
-                                                  }
-                                                },
-                                              ),
-                                            ],
-                                          ),
-                                        );
-                                      },
-                                    );
+                                      widget.updateCallback();
+                                      if (context.mounted) {
+                                        Navigator.of(context).pop();
+                                      }
+                                    }
                                   },
                                   text: '- Mode édition',
                                 ),
