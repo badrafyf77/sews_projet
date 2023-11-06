@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:sews_projet/constants.dart';
 
 class MyDropDownField extends StatelessWidget {
+  final bool filre;
   final String? Function(String?)? validator;
   final Function(String?)? onChanged;
   final List<String> items;
@@ -12,6 +13,7 @@ class MyDropDownField extends StatelessWidget {
   final String selectedItem;
   const MyDropDownField({
     Key? key,
+    this.filre = false,
     this.validator,
     required this.onChanged,
     required this.items,
@@ -25,9 +27,11 @@ class MyDropDownField extends StatelessWidget {
       value: selectedItem == "null" ? null : selectedItem,
       validator: validator,
       isExpanded: true,
-      style: const TextStyle(
-        fontSize: 12,
-      ),
+      style: (filre)
+          ? const TextStyle(
+              fontSize: 12,
+            )
+          : null,
       hint: Text(
         hintText,
         style: const TextStyle(fontSize: 14),

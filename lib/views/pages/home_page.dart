@@ -7,7 +7,6 @@ import 'package:sews_projet/views/pages/setting.dart';
 import 'package:sews_projet/views/widgets/button.dart';
 import 'package:sews_projet/views/widgets/container.dart';
 import 'package:sews_projet/views/widgets/custom_appbar.dart';
-import 'package:sews_projet/views/widgets/drop_down_field.dart';
 import 'package:sews_projet/views/widgets/line.dart';
 import 'package:sews_projet/views/widgets/text_button.dart';
 import 'package:sews_projet/views/widgets/text_field.dart';

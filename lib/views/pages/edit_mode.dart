@@ -91,6 +91,12 @@ class _EditPageState extends State<EditPage> {
     return data;
   }
 
+  mysetState() {
+    setState(() {
+      myData = getData();
+    });
+  }
+
   @override
   void initState() {
     myData = getData();
@@ -100,6 +106,8 @@ class _EditPageState extends State<EditPage> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
+
+    final args = ModalRoute.of(context)!.settings.arguments as UserInfo;
 
     try {
       return FutureBuilder<List<Document>>(
@@ -169,7 +177,7 @@ class _EditPageState extends State<EditPage> {
                                     IconButton(
                                       tooltip: 'actualiser',
                                       onPressed: () {
-                                        setState(() {});
+                                        mysetState();
                                         myShowToast(
                                             context, 'actualiser', Colors.grey);
                                       },
@@ -196,93 +204,113 @@ class _EditPageState extends State<EditPage> {
                                         onPressed: () {
                                           selectedIndexes = controller
                                               .getSelectedIndexPaths();
-                                          if (selectedIndexes.isEmpty) {
-                                            showDialog(
-                                              context: context,
-                                              builder: (BuildContext context) {
-                                                return AlertDialog(
-                                                  title: const Text(''),
-                                                  content: SizedBox(
-                                                    height: size.height * 0.3,
-                                                    width: size.width * 0.4,
-                                                    child: const Column(
-                                                      children: [
-                                                        SizedBox(
-                                                          height: 30,
-                                                        ),
-                                                        Text(
-                                                          'Vous devez selectionner un element !!!',
+                                          bool allowed = true;
+
+                                          for (int i = 0;
+                                              i < selectedIndexes.length;
+                                              i++) {
+                                            if (appareilList[selectedIndexes[i]]
+                                                    .site !=
+                                                args.site) {
+                                              allowed = false;
+                                            }
+                                          }
+                                          if (allowed) {
+                                            if (selectedIndexes.isEmpty) {
+                                              showDialog(
+                                                context: context,
+                                                builder:
+                                                    (BuildContext context) {
+                                                  return AlertDialog(
+                                                    title: const Text(''),
+                                                    content: SizedBox(
+                                                      height: size.height * 0.3,
+                                                      width: size.width * 0.4,
+                                                      child: const Column(
+                                                        children: [
+                                                          SizedBox(
+                                                            height: 30,
+                                                          ),
+                                                          Text(
+                                                            'Vous devez selectionner un element !!!',
+                                                            style: TextStyle(
+                                                              color:
+                                                                  Colors.black,
+                                                              fontSize: 20,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold,
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                    actions: [
+                                                      TextButton(
+                                                        child: const Text(
+                                                          'retour',
                                                           style: TextStyle(
-                                                            color: Colors.black,
-                                                            fontSize: 20,
-                                                            fontWeight:
-                                                                FontWeight.bold,
+                                                            color:
+                                                                kPrimaryColor,
+                                                            fontSize: 16,
                                                           ),
                                                         ),
-                                                      ],
-                                                    ),
-                                                  ),
-                                                  actions: [
-                                                    TextButton(
-                                                      child: const Text(
-                                                        'retour',
-                                                        style: TextStyle(
-                                                          color: kPrimaryColor,
-                                                          fontSize: 16,
-                                                        ),
+                                                        onPressed: () {
+                                                          Navigator.of(context)
+                                                              .pop();
+                                                        },
                                                       ),
-                                                      onPressed: () {
-                                                        Navigator.of(context)
-                                                            .pop();
-                                                      },
+                                                    ],
+                                                  );
+                                                },
+                                              );
+                                            } else {
+                                              showDialog(
+                                                context: context,
+                                                builder:
+                                                    (BuildContext context) {
+                                                  return AlertDialog(
+                                                    title:
+                                                        const Text('Supprimer'),
+                                                    content: SizedBox(
+                                                      height: size.height * 0.3,
+                                                      width: size.width * 0.4,
+                                                      child: Column(
+                                                        children: [
+                                                          const SizedBox(
+                                                            height: 30,
+                                                          ),
+                                                          Text(
+                                                            'Supprimer ${selectedIndexes.length} elements',
+                                                            style:
+                                                                const TextStyle(
+                                                              color:
+                                                                  Colors.black,
+                                                              fontSize: 20,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold,
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
                                                     ),
-                                                  ],
-                                                );
-                                              },
-                                            );
-                                          } else {
-                                            showDialog(
-                                              context: context,
-                                              builder: (BuildContext context) {
-                                                return AlertDialog(
-                                                  title:
-                                                      const Text('Supprimer'),
-                                                  content: SizedBox(
-                                                    height: size.height * 0.3,
-                                                    width: size.width * 0.4,
-                                                    child: Column(
-                                                      children: [
-                                                        const SizedBox(
-                                                          height: 30,
-                                                        ),
-                                                        Text(
-                                                          'Supprimer ${selectedIndexes.length} elements',
-                                                          style:
-                                                              const TextStyle(
-                                                            color: Colors.black,
-                                                            fontSize: 20,
-                                                            fontWeight:
-                                                                FontWeight.bold,
+                                                    actions: [
+                                                      TextButton(
+                                                        child: const Text(
+                                                          'concel',
+                                                          style: TextStyle(
+                                                            color:
+                                                                kPrimaryColor,
+                                                            fontSize: 16,
                                                           ),
                                                         ),
-                                                      ],
-                                                    ),
-                                                  ),
-                                                  actions: [
-                                                    TextButton(
-                                                      child: const Text(
-                                                        'concel',
-                                                        style: TextStyle(
-                                                          color: kPrimaryColor,
-                                                          fontSize: 16,
-                                                        ),
+                                                        onPressed: () {
+                                                          Navigator.of(context)
+                                                              .pop();
+                                                        },
                                                       ),
-                                                      onPressed: () {
-                                                        Navigator.of(context)
-                                                            .pop();
-                                                      },
-                                                    ),
-                                                    TextButton(
+                                                      TextButton(
                                                         child: const Text(
                                                           'continue',
                                                           style: TextStyle(
@@ -326,7 +354,7 @@ class _EditPageState extends State<EditPage> {
                                                             'Id': id,
                                                           });
                                                           exitEditingMode();
-                                                          setState(() {});
+                                                          mysetState();
                                                           if (context.mounted) {
                                                             Navigator.pop(
                                                                 context);
@@ -335,11 +363,18 @@ class _EditPageState extends State<EditPage> {
                                                                 'success',
                                                                 Colors.green);
                                                           }
-                                                        }),
-                                                  ],
-                                                );
-                                              },
-                                            );
+                                                        },
+                                                      ),
+                                                    ],
+                                                  );
+                                                },
+                                              );
+                                            }
+                                          } else {
+                                            myShowToast(
+                                                context,
+                                                'vous ne pouvez pas supprimer car vous n\'avez pas l\'autorisation, Essayez de sélectionner un appareil sur votre site',
+                                                Colors.red);
                                           }
                                         },
                                         icon: const Icon(
@@ -377,6 +412,7 @@ class _EditPageState extends State<EditPage> {
                                     SizedBox(
                                       width: size.width * 0.2,
                                       child: MyDropDownField(
+                                          filre: true,
                                           selectedItem: 'All',
                                           validator: (value) {
                                             if (value == null) {
@@ -417,6 +453,7 @@ class _EditPageState extends State<EditPage> {
                                     SizedBox(
                                       width: size.width * 0.2,
                                       child: MyDropDownField(
+                                          filre: true,
                                           selectedItem: 'All',
                                           validator: (value) {
                                             if (value == null) {
@@ -660,15 +697,12 @@ class _EditPageState extends State<EditPage> {
                                                             ),
                                                             onPressed:
                                                                 () async {
-                                                              if ('' !=
-                                                                  appareilList[
-                                                                          index]
-                                                                      .site) {
-                                                                myShowToast(
-                                                                    context,
-                                                                    'vous ne pouvez pas modifier ceci car vous n\'avez pas l\'autorisation',
-                                                                    Colors.red);
-                                                              } else {
+                                                              if (args.poste ==
+                                                                      'administrateur' ||
+                                                                  args.site ==
+                                                                      appareilList[
+                                                                              index]
+                                                                          .site) {
                                                                 await sewsDatabase
                                                                     .document(
                                                                         appareilList[index]
@@ -703,7 +737,7 @@ class _EditPageState extends State<EditPage> {
                                                                       'update.png',
                                                                   'Id': id,
                                                                 });
-                                                                setState(() {});
+                                                                mysetState();
                                                                 if (context
                                                                     .mounted) {
                                                                   Navigator.pop(
@@ -714,6 +748,11 @@ class _EditPageState extends State<EditPage> {
                                                                       Colors
                                                                           .green);
                                                                 }
+                                                              } else {
+                                                                myShowToast(
+                                                                    context,
+                                                                    'vous ne pouvez pas modifier ceci car vous n\'avez pas l\'autorisation',
+                                                                    Colors.red);
                                                               }
                                                             },
                                                           ),
