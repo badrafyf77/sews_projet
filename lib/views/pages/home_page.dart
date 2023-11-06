@@ -351,6 +351,7 @@ class _HomePageState extends State<HomePage> {
                                     } else {
                                       await Get.to(
                                           () => const ContratRecherche(),
+                                          arguments: args,
                                           transition: Transition.cupertino);
                                       widget.updateCallback();
                                     }
