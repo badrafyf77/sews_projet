@@ -287,7 +287,7 @@ class _ManageUsersState extends State<ManageUsers> {
                                                     ),
                                                   ),
                                                   Text(
-                                                    usersList[index].site,
+                                                    '${usersList[index].poste} - ${usersList[index].site}',
                                                     style: const TextStyle(
                                                       fontSize: 12,
                                                     ),
