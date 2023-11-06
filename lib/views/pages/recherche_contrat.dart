@@ -360,40 +360,52 @@ class _ContratRechercheState extends State<ContratRecherche> {
                                                     ),
                                                   ),
                                                   onPressed: () async {
-                                                    for (int i = 0;
-                                                        i <
+                                                    if (await connectivityResult() ==
+                                                        ConnectivityResult
+                                                            .none) {
+                                                      if (context.mounted) {
+                                                        myShowToast(
+                                                            context,
+                                                            'Pas de connexion internet',
+                                                            Colors.grey);
+                                                      }
+                                                    } else {
+                                                      for (int i = 0;
+                                                          i <
+                                                              selectedIndexes
+                                                                  .length;
+                                                          i++) {
+                                                        await sewsDatabase
+                                                            .document(appareilList[
+                                                                    selectedIndexes[
+                                                                        i]]
+                                                                .id)
+                                                            .delete();
+                                                      }
+                                                      var id =
+                                                          const Uuid().v4();
+                                                      historique
+                                                          .document(id)
+                                                          .set({
+                                                        'Type': 'Suppression',
+                                                        'Nombre de pieces':
                                                             selectedIndexes
-                                                                .length;
-                                                        i++) {
-                                                      await sewsDatabase
-                                                          .document(appareilList[
-                                                                  selectedIndexes[
-                                                                      i]]
-                                                              .id)
-                                                          .delete();
-                                                    }
-                                                    var id = const Uuid().v4();
-                                                    historique
-                                                        .document(id)
-                                                        .set({
-                                                      'Type': 'Suppression',
-                                                      'Nombre de pieces':
-                                                          selectedIndexes
-                                                              .length,
-                                                      'Date': DateTime.now(),
-                                                      'Time': DateFormat.jm()
-                                                          .format(
-                                                              DateTime.now())
-                                                          .toLowerCase(),
-                                                      'Icon': 'delete.png',
-                                                      'Id': id,
-                                                    });
-                                                    exitEditingMode();
-                                                    if (context.mounted) {
-                                                      Navigator.pop(context);
-                                                    }
+                                                                .length,
+                                                        'Date': DateTime.now(),
+                                                        'Time': DateFormat.jm()
+                                                            .format(
+                                                                DateTime.now())
+                                                            .toLowerCase(),
+                                                        'Icon': 'delete.png',
+                                                        'Id': id,
+                                                      });
+                                                      exitEditingMode();
+                                                      if (context.mounted) {
+                                                        Navigator.pop(context);
+                                                      }
 
-                                                    mysetState();
+                                                      mysetState();
+                                                    }
                                                   },
                                                 ),
                                               ],
