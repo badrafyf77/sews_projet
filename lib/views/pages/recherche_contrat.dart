@@ -7,7 +7,6 @@ import 'package:flutter_swipe_action_cell/core/cell.dart';
 import 'package:flutter_swipe_action_cell/core/controller.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:sews_projet/views/widgets/button.dart';
 import 'package:sews_projet/views/widgets/custom_appbar.dart';
 import 'package:sews_projet/views/widgets/drop_down_field.dart';
 import 'package:sews_projet/views/widgets/listview_body.dart';
@@ -35,26 +34,6 @@ class _ContratRechercheState extends State<ContratRecherche> {
   List<DateTime?> debutLocation = [
     DateTime.now(),
   ];
-
-  final config = CalendarDatePicker2WithActionButtonsConfig(
-    selectedDayHighlightColor: kPrimaryColor,
-    weekdayLabels: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
-    weekdayLabelTextStyle: const TextStyle(
-      color: Colors.black87,
-      fontWeight: FontWeight.bold,
-    ),
-    firstDayOfWeek: 1,
-    controlsHeight: 50,
-    controlsTextStyle: const TextStyle(
-      color: Colors.black,
-      fontSize: 15,
-      fontWeight: FontWeight.bold,
-    ),
-    dayTextStyle: const TextStyle(
-      color: Colors.blueGrey,
-      fontWeight: FontWeight.bold,
-    ),
-  );
 
   final List<String> siteItems = [
     'Site Ain Harouda',

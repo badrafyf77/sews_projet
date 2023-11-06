@@ -59,25 +59,7 @@ class _ManualAdditionPageState extends State<ManualAdditionPage> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    final config = CalendarDatePicker2WithActionButtonsConfig(
-      selectedDayHighlightColor: kPrimaryColor,
-      weekdayLabels: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
-      weekdayLabelTextStyle: const TextStyle(
-        color: Colors.black87,
-        fontWeight: FontWeight.bold,
-      ),
-      firstDayOfWeek: 1,
-      controlsHeight: 50,
-      controlsTextStyle: const TextStyle(
-        color: Colors.black,
-        fontSize: 15,
-        fontWeight: FontWeight.bold,
-      ),
-      dayTextStyle: const TextStyle(
-        color: Colors.blueGrey,
-        fontWeight: FontWeight.bold,
-      ),
-    );
+    
     try {
       return Scaffold(
         body: Column(
