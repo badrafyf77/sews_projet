@@ -703,50 +703,62 @@ class _EditPageState extends State<EditPage> {
                                                                       appareilList[
                                                                               index]
                                                                           .site) {
-                                                                await sewsDatabase
-                                                                    .document(
-                                                                        appareilList[index]
-                                                                            .id)
-                                                                    .update({
-                                                                  'a2':
-                                                                      myController
-                                                                          .text,
-                                                                  'a3':
-                                                                      selectedSite,
-                                                                });
-                                                                var id =
-                                                                    const Uuid()
-                                                                        .v4();
-                                                                historique
-                                                                    .document(
-                                                                        id)
-                                                                    .set({
-                                                                  'Type':
-                                                                      'Modification de ${appareilList[index].id}',
-                                                                  'Nombre de pieces':
-                                                                      1,
-                                                                  'Date':
-                                                                      DateTime
-                                                                          .now(),
-                                                                  'Time': DateFormat
-                                                                          .jm()
-                                                                      .format(DateTime
-                                                                          .now())
-                                                                      .toLowerCase(),
-                                                                  'Icon':
-                                                                      'update.png',
-                                                                  'Id': id,
-                                                                });
-                                                                mysetState();
-                                                                if (context
-                                                                    .mounted) {
-                                                                  Navigator.pop(
-                                                                      context);
-                                                                  myShowToast(
-                                                                      context,
-                                                                      'success',
-                                                                      Colors
-                                                                          .green);
+                                                                if (await connectivityResult() ==
+                                                                    ConnectivityResult
+                                                                        .none) {
+                                                                  if (context
+                                                                      .mounted) {
+                                                                    myShowToast(
+                                                                        context,
+                                                                        'Pas de connexion internet',
+                                                                        Colors
+                                                                            .grey);
+                                                                  }
+                                                                } else {
+                                                                  await sewsDatabase
+                                                                      .document(
+                                                                          appareilList[index]
+                                                                              .id)
+                                                                      .update({
+                                                                    'a2': myController
+                                                                        .text,
+                                                                    'a3':
+                                                                        selectedSite,
+                                                                  });
+                                                                  var id =
+                                                                      const Uuid()
+                                                                          .v4();
+                                                                  historique
+                                                                      .document(
+                                                                          id)
+                                                                      .set({
+                                                                    'Type':
+                                                                        'Modification de ${appareilList[index].id}',
+                                                                    'Nombre de pieces':
+                                                                        1,
+                                                                    'Date':
+                                                                        DateTime
+                                                                            .now(),
+                                                                    'Time': DateFormat
+                                                                            .jm()
+                                                                        .format(
+                                                                            DateTime.now())
+                                                                        .toLowerCase(),
+                                                                    'Icon':
+                                                                        'update.png',
+                                                                    'Id': id,
+                                                                  });
+                                                                  mysetState();
+                                                                  if (context
+                                                                      .mounted) {
+                                                                    Navigator.pop(
+                                                                        context);
+                                                                    myShowToast(
+                                                                        context,
+                                                                        'success',
+                                                                        Colors
+                                                                            .green);
+                                                                  }
                                                                 }
                                                               } else {
                                                                 myShowToast(

@@ -299,6 +299,7 @@ class _HomePageState extends State<HomePage> {
                                   onPressed: () async {
                                     await Get.to(
                                         () => const ManualAdditionPage(),
+                                        arguments: args,
                                         transition: Transition.cupertino);
                                     widget.updateCallback();
                                   },
@@ -308,6 +309,7 @@ class _HomePageState extends State<HomePage> {
                                     onPressed: () async {
                                       await Get.to(
                                           () => const AddExcelFilePage(),
+                                          arguments: args,
                                           transition: Transition.cupertino);
                                       widget.updateCallback();
                                     },

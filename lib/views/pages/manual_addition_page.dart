@@ -4,6 +4,7 @@ import 'package:firedart/firedart.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:sews_projet/model/models/models.dart';
 import 'package:sews_projet/views/widgets/custom_appbar.dart';
 import 'package:sews_projet/views/widgets/date_picker.dart';
 import 'package:sews_projet/views/widgets/drop_down_field.dart';
@@ -59,7 +60,9 @@ class _ManualAdditionPageState extends State<ManualAdditionPage> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    
+
+    var args = ModalRoute.of(context)!.settings.arguments as UserInfo;
+
     try {
       return Scaffold(
         body: Column(
@@ -88,6 +91,14 @@ class _ManualAdditionPageState extends State<ManualAdditionPage> {
                   iconSize: 50,
                   color: kPrimaryColor,
                 ),
+                if (args.poste != 'administrateur')
+                  Text(
+                    args.site,
+                    style: const TextStyle(
+                      color: kPrimaryColor,
+                      fontSize: 16,
+                    ),
+                  ),
                 Padding(
                   padding: const EdgeInsets.only(right: 15),
                   child: MyButton(
@@ -290,42 +301,47 @@ class _ManualAdditionPageState extends State<ManualAdditionPage> {
                                   ),
                                 ],
                               ),
-                              const SizedBox(
-                                height: 6,
-                              ),
-                              Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  const Padding(
-                                    padding: EdgeInsets.all(5),
-                                    child: Text(
-                                      'Site :',
-                                      style: TextStyle(
-                                        color: kPrimaryColor,
-                                        fontSize: 16,
-                                      ),
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    width: size.width * 0.4,
-                                    child: MyDropDownField(
-                                      validator: (value) {
-                                        if (value == null || value.isEmpty) {
-                                          return 'Taper ici';
-                                        } else {
-                                          return null;
-                                        }
-                                      },
-                                      onChanged: (value) {
-                                        selectedSite = value;
-                                      },
-                                      items: siteItems,
-                                      hintText: 'site',
-                                    ),
-                                  ),
-                                ],
-                              ),
+                              (args.poste == 'administrateur')
+                                  ? Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        const SizedBox(
+                                          height: 6,
+                                        ),
+                                        const Padding(
+                                          padding: EdgeInsets.all(5),
+                                          child: Text(
+                                            'Site :',
+                                            style: TextStyle(
+                                              color: kPrimaryColor,
+                                              fontSize: 16,
+                                            ),
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          width: size.width * 0.4,
+                                          child: MyDropDownField(
+                                            validator: (value) {
+                                              if (value == null ||
+                                                  value.isEmpty) {
+                                                return 'Taper ici';
+                                              } else {
+                                                return null;
+                                              }
+                                            },
+                                            onChanged: (value) {
+                                              selectedSite = value;
+                                            },
+                                            items: siteItems,
+                                            hintText: 'site',
+                                          ),
+                                        ),
+                                      ],
+                                    )
+                                  : const SizedBox(),
                               const SizedBox(
                                 height: 6,
                               ),

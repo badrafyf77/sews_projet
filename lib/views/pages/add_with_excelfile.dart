@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:calendar_date_picker2/calendar_date_picker2.dart';
 import 'package:excel/excel.dart';
 import 'package:flutter/material.dart';
+import 'package:sews_projet/model/models/models.dart';
 import 'package:sews_projet/view_model/blocs/excel_import_bloc/excel_import_bloc.dart';
 import 'package:sews_projet/views/widgets/button.dart';
 import 'package:sews_projet/views/widgets/date_picker.dart';
@@ -52,6 +53,8 @@ class _AddExcelFilePageState extends State<AddExcelFilePage> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
+
+    var args = ModalRoute.of(context)!.settings.arguments as UserInfo;
 
     return BlocConsumer<ExcelImportBloc, ExcelImportState>(
       listener: (context, state) {
@@ -119,39 +122,47 @@ class _AddExcelFilePageState extends State<AddExcelFilePage> {
                   child: ListView(
                     children: [
                       Center(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const Padding(
-                              padding: EdgeInsets.all(8),
-                              child: Text(
-                                'le Site',
-                                style: TextStyle(
+                        child: (args.poste == 'administrateur')
+                            ? Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  const Padding(
+                                    padding: EdgeInsets.all(8),
+                                    child: Text(
+                                      'le Site',
+                                      style: TextStyle(
+                                        color: kPrimaryColor,
+                                        fontSize: 16,
+                                      ),
+                                    ),
+                                  ),
+                                  UnconstrainedBox(
+                                    child: SizedBox(
+                                      width: size.width * 0.55,
+                                      child: MyDropDownField(
+                                          validator: (value) {
+                                            if (value == null) {
+                                              return 'Veuillez choisir une option.';
+                                            }
+                                            return null;
+                                          },
+                                          onChanged: (value) {
+                                            selectedSite = value;
+                                          },
+                                          items: siteItems,
+                                          hintText: 'Selectionner le site'),
+                                    ),
+                                  ),
+                                ],
+                              )
+                            : Text(
+                                args.site,
+                                style: const TextStyle(
                                   color: kPrimaryColor,
                                   fontSize: 16,
                                 ),
                               ),
-                            ),
-                            UnconstrainedBox(
-                              child: SizedBox(
-                                width: size.width * 0.55,
-                                child: MyDropDownField(
-                                    validator: (value) {
-                                      if (value == null) {
-                                        return 'Veuillez choisir une option.';
-                                      }
-                                      return null;
-                                    },
-                                    onChanged: (value) {
-                                      selectedSite = value;
-                                    },
-                                    items: siteItems,
-                                    hintText: 'Selectionner le site'),
-                              ),
-                            ),
-                          ],
-                        ),
                       ),
                       const SizedBox(height: 15),
                       Center(
