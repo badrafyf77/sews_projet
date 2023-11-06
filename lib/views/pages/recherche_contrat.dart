@@ -35,6 +35,27 @@ class _ContratRechercheState extends State<ContratRecherche> {
   List<DateTime?> debutLocation = [
     DateTime.now(),
   ];
+
+  final config = CalendarDatePicker2WithActionButtonsConfig(
+    selectedDayHighlightColor: kPrimaryColor,
+    weekdayLabels: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
+    weekdayLabelTextStyle: const TextStyle(
+      color: Colors.black87,
+      fontWeight: FontWeight.bold,
+    ),
+    firstDayOfWeek: 1,
+    controlsHeight: 50,
+    controlsTextStyle: const TextStyle(
+      color: Colors.black,
+      fontSize: 15,
+      fontWeight: FontWeight.bold,
+    ),
+    dayTextStyle: const TextStyle(
+      color: Colors.blueGrey,
+      fontWeight: FontWeight.bold,
+    ),
+  );
+
   final List<String> siteItems = [
     'Site Ain Harouda',
     'Site Berrechid 1',
@@ -65,42 +86,51 @@ class _ContratRechercheState extends State<ContratRecherche> {
 
   var controller = SwipeActionController();
   var myController = TextEditingController();
+
   String? selectedSite;
+
   List<int> selectedIndexes = [];
+
   CollectionReference sewsDatabase =
       Firestore.instance.collection('sewsDatabase');
+
   CollectionReference historique = Firestore.instance.collection('Historique');
+
+  Future<List<Document>>? myData;
+
+  Future<List<Document>> getData() async {
+    List<Document> data =
+        await sewsDatabase.where(fieldName, isEqualTo: fieldValue).get();
+    return data;
+  }
+
+  @override
+  void initState() {
+    fieldValue = _getValueText(
+      config.calendarType,
+      debutLocation,
+    );
+
+    myData = getData();
+
+    super.initState();
+  }
+
+  mysetState() {
+    setState(() {
+      myData = getData();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    final config = CalendarDatePicker2WithActionButtonsConfig(
-      selectedDayHighlightColor: kPrimaryColor,
-      weekdayLabels: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
-      weekdayLabelTextStyle: const TextStyle(
-        color: Colors.black87,
-        fontWeight: FontWeight.bold,
-      ),
-      firstDayOfWeek: 1,
-      controlsHeight: 50,
-      controlsTextStyle: const TextStyle(
-        color: Colors.black,
-        fontSize: 15,
-        fontWeight: FontWeight.bold,
-      ),
-      dayTextStyle: const TextStyle(
-        color: Colors.blueGrey,
-        fontWeight: FontWeight.bold,
-      ),
-    );
-    Future<List<Document>> getData() async {
-      List<Document> data =
-          await sewsDatabase.where(fieldName, isEqualTo: fieldValue).get();
-      return data;
-    }
+
+    var args = ModalRoute.of(context)!.settings.arguments as UserInfo;
 
     try {
       return FutureBuilder(
-          future: getData(),
+          future: myData,
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               List<Appareil> appareilList = [];
@@ -177,6 +207,11 @@ class _ContratRechercheState extends State<ContratRecherche> {
                               if (value != null) {
                                 setState(() {
                                   debutLocation = value;
+                                  fieldValue = _getValueText(
+                                    config.calendarType,
+                                    debutLocation,
+                                  );
+                                  myData = getData();
                                 });
                               }
                             },
@@ -186,13 +221,6 @@ class _ContratRechercheState extends State<ContratRecherche> {
                             ),
                           ),
                         ),
-                        MyButton(
-                            onPressed: () {
-                              fieldValue = _getValueText(
-                                  config.calendarType, debutLocation);
-                              mySetState();
-                            },
-                            textButton: 'Rechercher')
                       ],
                     ),
                     const SizedBox(
@@ -225,7 +253,7 @@ class _ContratRechercheState extends State<ContratRecherche> {
                               IconButton(
                                 tooltip: 'actualiser',
                                 onPressed: () {
-                                  setState(() {});
+                                  mysetState();
                                   myShowToast(
                                       context, 'actualiser', Colors.grey);
                                 },
@@ -250,136 +278,155 @@ class _ContratRechercheState extends State<ContratRecherche> {
                                   onPressed: () {
                                     selectedIndexes =
                                         controller.getSelectedIndexPaths();
-                                    if (selectedIndexes.isEmpty) {
-                                      showDialog(
-                                        context: context,
-                                        builder: (BuildContext context) {
-                                          return AlertDialog(
-                                            title: const Text(''),
-                                            content: SizedBox(
-                                              height: size.height * 0.3,
-                                              width: size.width * 0.4,
-                                              child: const Column(
-                                                children: [
-                                                  SizedBox(
-                                                    height: 30,
-                                                  ),
-                                                  Text(
-                                                    'Vous devez selectionner un element !!!',
+                                    bool allowed = true;
+
+                                    for (int i = 0;
+                                        i < selectedIndexes.length;
+                                        i++) {
+                                      if (appareilList[selectedIndexes[i]]
+                                              .site !=
+                                          args.site) {
+                                        allowed = false;
+                                      }
+                                    }
+                                    if (allowed) {
+                                      if (selectedIndexes.isEmpty) {
+                                        showDialog(
+                                          context: context,
+                                          builder: (BuildContext context) {
+                                            return AlertDialog(
+                                              title: const Text(''),
+                                              content: SizedBox(
+                                                height: size.height * 0.3,
+                                                width: size.width * 0.4,
+                                                child: const Column(
+                                                  children: [
+                                                    SizedBox(
+                                                      height: 30,
+                                                    ),
+                                                    Text(
+                                                      'Vous devez selectionner un element !!!',
+                                                      style: TextStyle(
+                                                        color: Colors.black,
+                                                        fontSize: 20,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                              actions: [
+                                                TextButton(
+                                                  child: const Text(
+                                                    'return',
                                                     style: TextStyle(
-                                                      color: Colors.black,
-                                                      fontSize: 20,
-                                                      fontWeight:
-                                                          FontWeight.bold,
+                                                      color: kPrimaryColor,
+                                                      fontSize: 16,
                                                     ),
                                                   ),
-                                                ],
-                                              ),
-                                            ),
-                                            actions: [
-                                              TextButton(
-                                                child: const Text(
-                                                  'return',
-                                                  style: TextStyle(
-                                                    color: kPrimaryColor,
-                                                    fontSize: 16,
-                                                  ),
+                                                  onPressed: () {
+                                                    Navigator.of(context).pop();
+                                                  },
                                                 ),
-                                                onPressed: () {
-                                                  Navigator.of(context).pop();
-                                                },
+                                              ],
+                                            );
+                                          },
+                                        );
+                                      } else {
+                                        showDialog(
+                                          context: context,
+                                          builder: (BuildContext context) {
+                                            return AlertDialog(
+                                              title: const Text('Supprimer'),
+                                              content: SizedBox(
+                                                height: size.height * 0.3,
+                                                width: size.width * 0.4,
+                                                child: Column(
+                                                  children: [
+                                                    const SizedBox(
+                                                      height: 30,
+                                                    ),
+                                                    Text(
+                                                      'Supprimer ${selectedIndexes.length} elements',
+                                                      style: const TextStyle(
+                                                        color: Colors.black,
+                                                        fontSize: 20,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
                                               ),
-                                            ],
-                                          );
-                                        },
-                                      );
-                                    } else {
-                                      showDialog(
-                                        context: context,
-                                        builder: (BuildContext context) {
-                                          return AlertDialog(
-                                            title: const Text('Supprimer'),
-                                            content: SizedBox(
-                                              height: size.height * 0.3,
-                                              width: size.width * 0.4,
-                                              child: Column(
-                                                children: [
-                                                  const SizedBox(
-                                                    height: 30,
-                                                  ),
-                                                  Text(
-                                                    'Supprimer ${selectedIndexes.length} elements',
-                                                    style: const TextStyle(
-                                                      color: Colors.black,
-                                                      fontSize: 20,
-                                                      fontWeight:
-                                                          FontWeight.bold,
+                                              actions: [
+                                                TextButton(
+                                                  child: const Text(
+                                                    'concel',
+                                                    style: TextStyle(
+                                                      color: kPrimaryColor,
+                                                      fontSize: 16,
                                                     ),
                                                   ),
-                                                ],
-                                              ),
-                                            ),
-                                            actions: [
-                                              TextButton(
-                                                child: const Text(
-                                                  'concel',
-                                                  style: TextStyle(
-                                                    color: kPrimaryColor,
-                                                    fontSize: 16,
-                                                  ),
+                                                  onPressed: () {
+                                                    Navigator.of(context).pop();
+                                                  },
                                                 ),
-                                                onPressed: () {
-                                                  Navigator.of(context).pop();
-                                                },
-                                              ),
-                                              TextButton(
-                                                child: const Text(
-                                                  'continue',
-                                                  style: TextStyle(
-                                                    color: kPrimaryColor,
-                                                    fontSize: 16,
+                                                TextButton(
+                                                  child: const Text(
+                                                    'continue',
+                                                    style: TextStyle(
+                                                      color: kPrimaryColor,
+                                                      fontSize: 16,
+                                                    ),
                                                   ),
-                                                ),
-                                                onPressed: () async {
-                                                  for (int i = 0;
-                                                      i <
+                                                  onPressed: () async {
+                                                    for (int i = 0;
+                                                        i <
+                                                            selectedIndexes
+                                                                .length;
+                                                        i++) {
+                                                      await sewsDatabase
+                                                          .document(appareilList[
+                                                                  selectedIndexes[
+                                                                      i]]
+                                                              .id)
+                                                          .delete();
+                                                    }
+                                                    var id = const Uuid().v4();
+                                                    historique
+                                                        .document(id)
+                                                        .set({
+                                                      'Type': 'Suppression',
+                                                      'Nombre de pieces':
                                                           selectedIndexes
-                                                              .length;
-                                                      i++) {
-                                                    await sewsDatabase
-                                                        .document(appareilList[
-                                                                selectedIndexes[
-                                                                    i]]
-                                                            .id)
-                                                        .delete();
-                                                  }
-                                                  var id = const Uuid().v4();
-                                                  historique.document(id).set({
-                                                    'Type': 'Suppression',
-                                                    'Nombre de pieces':
-                                                        selectedIndexes.length,
-                                                    'Date': DateTime.now(),
-                                                    'Time': DateFormat.jm()
-                                                        .format(DateTime.now())
-                                                        .toLowerCase(),
-                                                    'Icon': 'delete.png',
-                                                    'Id': id,
-                                                  });
-                                                  exitEditingMode();
-                                                  Navigator.pop(context);
-                                                  Future.delayed(
-                                                      const Duration(
-                                                          seconds: 1,
-                                                          milliseconds: 500),
-                                                      () {
-                                                    setState(() {});
-                                                  });
-                                                },
-                                              ),
-                                            ],
-                                          );
-                                        },
-                                      );
+                                                              .length,
+                                                      'Date': DateTime.now(),
+                                                      'Time': DateFormat.jm()
+                                                          .format(
+                                                              DateTime.now())
+                                                          .toLowerCase(),
+                                                      'Icon': 'delete.png',
+                                                      'Id': id,
+                                                    });
+                                                    exitEditingMode();
+                                                    if (context.mounted) {
+                                                      Navigator.pop(context);
+                                                    }
+
+                                                    mysetState();
+                                                  },
+                                                ),
+                                              ],
+                                            );
+                                          },
+                                        );
+                                      }
+                                    } else {
+                                      myShowToast(
+                                          context,
+                                          'vous ne pouvez pas supprimer car vous n\'avez pas l\'autorisation, Essayez de sélectionner un appareil sur votre site',
+                                          Colors.red);
                                     }
                                   },
                                   icon: const Icon(
@@ -428,6 +475,13 @@ class _ContratRechercheState extends State<ContratRecherche> {
                                                 index: index,
                                                 key: ValueKey(
                                                     appareilList[index]),
+                                                selectedIndicator: const Icon(
+                                                    Icons.check_box,
+                                                    color: kPrimaryColor),
+                                                unselectedIndicator: const Icon(
+                                                    Icons
+                                                        .check_box_outline_blank,
+                                                    color: kPrimaryColor),
                                                 child: MouseRegion(
                                                   cursor:
                                                       SystemMouseCursors.click,
@@ -594,52 +648,60 @@ class _ContratRechercheState extends State<ContratRecherche> {
                                                                 ),
                                                                 onPressed:
                                                                     () async {
-                                                                  await sewsDatabase
-                                                                      .document(
+                                                                  if (args.poste ==
+                                                                          'administrateur' ||
+                                                                      args.site ==
                                                                           appareilList[index]
-                                                                              .id)
-                                                                      .update({
-                                                                    'a2': myController
-                                                                        .text,
-                                                                    'a3':
-                                                                        selectedSite,
-                                                                  });
-                                                                  setState(
-                                                                      () {});
-                                                                  var id =
-                                                                      const Uuid()
-                                                                          .v4();
-                                                                  historique
-                                                                      .document(
-                                                                          id)
-                                                                      .set({
-                                                                    'Type':
-                                                                        'Modification de ${appareilList[index].id}',
-                                                                    'Nombre de pieces':
-                                                                        1,
-                                                                    'Date':
-                                                                        DateTime
-                                                                            .now(),
-                                                                    'Time': DateFormat
-                                                                            .jm()
-                                                                        .format(
-                                                                            DateTime.now())
-                                                                        .toLowerCase(),
-                                                                    'Icon':
-                                                                        'update.png',
-                                                                    'Id': id,
-                                                                  });
-                                                                  setState(
-                                                                      () {});
-                                                                  if (context
-                                                                      .mounted) {
-                                                                    Navigator.pop(
-                                                                        context);
+                                                                              .site) {
+                                                                    await sewsDatabase
+                                                                        .document(
+                                                                            appareilList[index].id)
+                                                                        .update({
+                                                                      'a2': myController
+                                                                          .text,
+                                                                      'a3':
+                                                                          selectedSite,
+                                                                    });
+
+                                                                    var id =
+                                                                        const Uuid()
+                                                                            .v4();
+                                                                    historique
+                                                                        .document(
+                                                                            id)
+                                                                        .set({
+                                                                      'Type':
+                                                                          'Modification de ${appareilList[index].id}',
+                                                                      'Nombre de pieces':
+                                                                          1,
+                                                                      'Date': DateTime
+                                                                          .now(),
+                                                                      'Time': DateFormat
+                                                                              .jm()
+                                                                          .format(
+                                                                              DateTime.now())
+                                                                          .toLowerCase(),
+                                                                      'Icon':
+                                                                          'update.png',
+                                                                      'Id': id,
+                                                                    });
+                                                                    mysetState();
+                                                                    if (context
+                                                                        .mounted) {
+                                                                      Navigator.pop(
+                                                                          context);
+                                                                      myShowToast(
+                                                                          context,
+                                                                          'success',
+                                                                          Colors
+                                                                              .green);
+                                                                    }
+                                                                  } else {
                                                                     myShowToast(
                                                                         context,
-                                                                        'success',
+                                                                        'vous ne pouvez pas modifier ceci car vous n\'avez pas l\'autorisation',
                                                                         Colors
-                                                                            .green);
+                                                                            .red);
                                                                   }
                                                                 },
                                                               ),
@@ -647,12 +709,6 @@ class _ContratRechercheState extends State<ContratRecherche> {
                                                           );
                                                         },
                                                       );
-                                                      Future.delayed(
-                                                          const Duration(
-                                                            seconds: 1,
-                                                          ), () {
-                                                        setState(() {});
-                                                      });
                                                     },
                                                     child: ListviewBody(
                                                         size: size,
