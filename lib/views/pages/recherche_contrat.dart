@@ -9,7 +9,6 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:sews_projet/views/widgets/custom_appbar.dart';
 import 'package:sews_projet/views/widgets/drop_down_field.dart';
-import 'package:sews_projet/views/widgets/line.dart';
 import 'package:sews_projet/views/widgets/listview_body.dart';
 import 'package:sews_projet/views/widgets/listview_header.dart';
 import 'package:sews_projet/views/widgets/loading_circle.dart';
@@ -189,7 +188,7 @@ class _ContratRechercheState extends State<ContratRecherche> {
                         const Padding(
                           padding: EdgeInsets.all(5),
                           child: Text(
-                            'Entrer la date pour continue',
+                            'Entrer la date pour rechercher',
                             style: TextStyle(
                               color: kPrimaryColor,
                               fontSize: 19,
@@ -197,7 +196,7 @@ class _ContratRechercheState extends State<ContratRecherche> {
                           ),
                         ),
                         SizedBox(
-                          width: size.width * 0.7,
+                          width: size.width * 0.45,
                           child: MyDatePicker(
                             onPressed: () async {
                               final value = await showCalendarDatePicker2Dialog(
@@ -238,118 +237,9 @@ class _ContratRechercheState extends State<ContratRecherche> {
                         children: [
                           Row(
                             children: [
-                              Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Text(
-                                  'resultats : ${_getValueText(
-                                    config.calendarType,
-                                    debutLocation,
-                                  )}',
-                                  style: const TextStyle(
-                                      color: Colors.white, fontSize: 18),
-                                ),
+                              const SizedBox(
+                                width: 20,
                               ),
-                              Row(
-                                children: [
-                                  const MyVerticalLine(
-                                    height: 30,
-                                  ),
-                                  const Text(
-                                    'Le site:',
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                    ),
-                                  ),
-                                  const SizedBox(
-                                    width: 10,
-                                  ),
-                                  SizedBox(
-                                    width: size.width * 0.2,
-                                    child: MyDropDownField(
-                                        filre: true,
-                                        selectedItem: 'All',
-                                        validator: (value) {
-                                          if (value == null) {
-                                            return 'Veuillez choisir une option.';
-                                          }
-                                          return null;
-                                        },
-                                        onChanged: (value) {
-                                          if (value == 'All') {
-                                            setState(() {
-                                              sitefield = 'a0';
-                                              siteValue = 'All';
-                                              fieldValue = _getValueText(
-                                                config.calendarType,
-                                                debutLocation,
-                                              );
-                                              myData = getData();
-                                            });
-                                          } else {
-                                            setState(() {
-                                              sitefield = 'a3';
-                                              siteValue = value!;
-                                              fieldValue = _getValueText(
-                                                config.calendarType,
-                                                debutLocation,
-                                              );
-                                              myData = getData();
-                                            });
-                                          }
-                                        },
-                                        items: siteItemsSelect,
-                                        hintText: 'le site'),
-                                  ),
-                                  const SizedBox(
-                                    width: 10,
-                                  ),
-                                  const Text(
-                                    'l\'appareil',
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                    ),
-                                  ),
-                                  const SizedBox(
-                                    width: 10,
-                                  ),
-                                  SizedBox(
-                                    width: size.width * 0.2,
-                                    child: MyDropDownField(
-                                        filre: true,
-                                        selectedItem: 'All',
-                                        validator: (value) {
-                                          if (value == null) {
-                                            return 'Veuillez choisir une option.';
-                                          }
-                                          return null;
-                                        },
-                                        onChanged: (value) {
-                                          if (value == 'All') {
-                                            setState(() {
-                                              appareilfield = 'a00';
-                                              appareilValue = 'All';
-                                              myData = getData();
-                                            });
-                                          } else {
-                                            setState(() {
-                                              appareilfield = 'a4';
-                                              appareilValue = value!;
-                                              myData = getData();
-                                            });
-                                          }
-                                        },
-                                        items: appareilItems,
-                                        hintText: 'l\'appareil'),
-                                  ),
-                                  const SizedBox(
-                                    width: 10,
-                                  ),
-                                ],
-                              )
-                            ],
-                          ),
-                          Row(
-                            children: [
                               Text(
                                 '(${appareilList.length})',
                                 style: const TextStyle(color: Colors.white),
@@ -509,7 +399,7 @@ class _ContratRechercheState extends State<ContratRecherche> {
                                                       }
                                                       var id =
                                                           const Uuid().v4();
-                                                      historique
+                                                      await historique
                                                           .document(id)
                                                           .set({
                                                         'Type': 'Suppression',
@@ -565,6 +455,105 @@ class _ContratRechercheState extends State<ContratRecherche> {
                                   ),
                                 ),
                             ],
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(2.0),
+                            child: Row(
+                              children: [
+                                const Text(
+                                  'Le site:',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                  ),
+                                ),
+                                const SizedBox(
+                                  width: 10,
+                                ),
+                                SizedBox(
+                                  width: size.width * 0.2,
+                                  child: MyDropDownField(
+                                      isContractPage: true,
+                                      filre: true,
+                                      selectedItem: 'All',
+                                      validator: (value) {
+                                        if (value == null) {
+                                          return 'Veuillez choisir une option.';
+                                        }
+                                        return null;
+                                      },
+                                      onChanged: (value) {
+                                        if (value == 'All') {
+                                          setState(() {
+                                            sitefield = 'a0';
+                                            siteValue = 'All';
+                                            fieldValue = _getValueText(
+                                              config.calendarType,
+                                              debutLocation,
+                                            );
+                                            myData = getData();
+                                          });
+                                        } else {
+                                          setState(() {
+                                            sitefield = 'a3';
+                                            siteValue = value!;
+                                            fieldValue = _getValueText(
+                                              config.calendarType,
+                                              debutLocation,
+                                            );
+                                            myData = getData();
+                                          });
+                                        }
+                                      },
+                                      items: siteItemsSelect,
+                                      hintText: 'le site'),
+                                ),
+                                const SizedBox(
+                                  width: 10,
+                                ),
+                                const Text(
+                                  'l\'appareil',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                  ),
+                                ),
+                                const SizedBox(
+                                  width: 10,
+                                ),
+                                SizedBox(
+                                  width: size.width * 0.2,
+                                  child: MyDropDownField(
+                                      isContractPage: true,
+                                      filre: true,
+                                      selectedItem: 'All',
+                                      validator: (value) {
+                                        if (value == null) {
+                                          return 'Veuillez choisir une option.';
+                                        }
+                                        return null;
+                                      },
+                                      onChanged: (value) {
+                                        if (value == 'All') {
+                                          setState(() {
+                                            appareilfield = 'a00';
+                                            appareilValue = 'All';
+                                            myData = getData();
+                                          });
+                                        } else {
+                                          setState(() {
+                                            appareilfield = 'a4';
+                                            appareilValue = value!;
+                                            myData = getData();
+                                          });
+                                        }
+                                      },
+                                      items: appareilItems,
+                                      hintText: 'l\'appareil'),
+                                ),
+                                const SizedBox(
+                                  width: 10,
+                                ),
+                              ],
+                            ),
                           ),
                         ],
                       ),

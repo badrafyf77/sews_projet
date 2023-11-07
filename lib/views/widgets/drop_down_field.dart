@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:sews_projet/constants.dart';
 
 class MyDropDownField extends StatelessWidget {
+  final bool isContractPage;
   final bool filre;
   final String? Function(String?)? validator;
   final Function(String?)? onChanged;
@@ -13,6 +14,7 @@ class MyDropDownField extends StatelessWidget {
   final String selectedItem;
   const MyDropDownField({
     Key? key,
+    this.isContractPage = false,
     this.filre = false,
     this.validator,
     required this.onChanged,
@@ -41,28 +43,29 @@ class MyDropDownField extends StatelessWidget {
                 value: item,
                 child: Text(
                   item,
-                  style: const TextStyle(color: Colors.black),
+                  style: TextStyle(
+                      color: (isContractPage) ? Colors.white : Colors.black),
                 ),
               ))
           .toList(),
       onChanged: onChanged,
-      decoration: const InputDecoration(
-        contentPadding: EdgeInsets.symmetric(vertical: 16),
+      decoration: InputDecoration(
+        contentPadding: const EdgeInsets.symmetric(vertical: 16),
         enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.all(Radius.circular(25)),
+          borderRadius: const BorderRadius.all(Radius.circular(25)),
           borderSide: BorderSide(
             width: 1.5,
-            color: kPrimaryColor,
+            color: (isContractPage) ? Colors.white : kPrimaryColor,
           ),
         ),
         focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.all(Radius.circular(25)),
+          borderRadius: const BorderRadius.all(Radius.circular(25)),
           borderSide: BorderSide(
             width: 1.5,
-            color: kPrimaryColor,
+            color: (isContractPage) ? Colors.white : kPrimaryColor,
           ),
         ),
-        errorBorder: OutlineInputBorder(
+        errorBorder: const OutlineInputBorder(
           borderRadius: BorderRadius.all(Radius.circular(25)),
           borderSide: BorderSide(
             width: 1.5,
@@ -75,15 +78,16 @@ class MyDropDownField extends StatelessWidget {
             BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(25))),
         padding: EdgeInsets.only(right: 8),
       ),
-      iconStyleData: const IconStyleData(
+      iconStyleData: IconStyleData(
         icon: Icon(
           Icons.arrow_drop_down,
-          color: kPrimaryColor,
+          color: (isContractPage) ? Colors.white : kPrimaryColor,
         ),
         iconSize: 24,
       ),
       dropdownStyleData: DropdownStyleData(
         decoration: BoxDecoration(
+          color: (isContractPage) ? kPrimaryColor : Colors.white,
           borderRadius: BorderRadius.circular(15),
         ),
       ),
