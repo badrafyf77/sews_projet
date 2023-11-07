@@ -68,7 +68,7 @@ class ExcelImportBloc extends Bloc<ExcelImportEvent, ExcelImportState> {
                     col = row.length;
                   }
                   for (int i = 1; i < rowdetail.length; i++) {
-                    sewsDatabase.document(rowdetail[i]).set(
+                    await sewsDatabase.document(rowdetail[i]).set(
                       {
                         'a00': 'All',
                         'a0': 'All',
@@ -108,7 +108,7 @@ class ExcelImportBloc extends Bloc<ExcelImportEvent, ExcelImportState> {
                       for (int j = 1, c = 0; j < rowdetail.length; j++, c++) {
                         if (rowdetail[0].isNotEmpty &&
                             rowdetail[j].isNotEmpty) {
-                          sewsDatabase.document(nSerie[c]).update(
+                          await sewsDatabase.document(nSerie[c]).update(
                             {
                               'a${k.toString()}':
                                   '${rowdetail[0]} : ${rowdetail[j]}',
@@ -129,7 +129,7 @@ class ExcelImportBloc extends Bloc<ExcelImportEvent, ExcelImportState> {
                         rowdetail.add(row.elementAt(i)!.value.toString());
                       }
                       for (int j = 1, c = 0; j < rowdetail.length; j++, c++) {
-                        sewsDatabase.document(nSerie[c]).update(
+                        await sewsDatabase.document(nSerie[c]).update(
                           {
                             'a${k.toString()}':
                                 '${rowdetail[0]} : ${rowdetail[j]}',
@@ -141,7 +141,7 @@ class ExcelImportBloc extends Bloc<ExcelImportEvent, ExcelImportState> {
                     }
                   }
                   var id = const Uuid().v4();
-                  historique.document(id).set({
+                  await historique.document(id).set({
                     'Type': 'Importer par un fichier excel',
                     'userNom': event.userInfo.displayName,
                     'site': event.userInfo.site,

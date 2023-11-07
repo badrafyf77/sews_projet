@@ -331,11 +331,7 @@ class _HomePageState extends State<HomePage> {
                                       await Get.to(() => const EditPage(),
                                           arguments: args,
                                           transition: Transition.cupertino);
-
                                       widget.updateCallback();
-                                      if (context.mounted) {
-                                        Navigator.of(context).pop();
-                                      }
                                     }
                                   },
                                   text: '- Mode édition',

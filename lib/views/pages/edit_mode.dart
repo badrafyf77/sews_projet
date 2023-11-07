@@ -748,7 +748,7 @@ class _EditPageState extends State<EditPage> {
                                                                   var id =
                                                                       const Uuid()
                                                                           .v4();
-                                                                  historique
+                                                                  await historique
                                                                       .document(
                                                                           id)
                                                                       .set({

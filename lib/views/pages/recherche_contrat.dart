@@ -9,6 +9,7 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:sews_projet/views/widgets/custom_appbar.dart';
 import 'package:sews_projet/views/widgets/drop_down_field.dart';
+import 'package:sews_projet/views/widgets/line.dart';
 import 'package:sews_projet/views/widgets/listview_body.dart';
 import 'package:sews_projet/views/widgets/listview_header.dart';
 import 'package:sews_projet/views/widgets/loading_circle.dart';
@@ -40,6 +41,20 @@ class _ContratRechercheState extends State<ContratRecherche> {
     'Site Berrechid 1',
     'Site Berrechid 2',
     'Site Ain Sebaa',
+  ];
+
+  final List<String> siteItemsSelect = [
+    'Site Ain Harouda',
+    'Site Berrechid 1',
+    'Site Berrechid 2',
+    'Site Ain Sebaa',
+    'All',
+  ];
+  final List<String> appareilItems = [
+    'Pc fixe',
+    'Pc portable',
+    'Ecran',
+    'All',
   ];
   bool editingMode = false;
   void enterEditingMode() {
@@ -75,11 +90,20 @@ class _ContratRechercheState extends State<ContratRecherche> {
 
   CollectionReference historique = Firestore.instance.collection('Historique');
 
+  String sitefield = 'a0';
+  String siteValue = 'All';
+
+  String appareilfield = 'a00';
+  String appareilValue = 'All';
+
   Future<List<Document>>? myData;
 
   Future<List<Document>> getData() async {
-    List<Document> data =
-        await sewsDatabase.where(fieldName, isEqualTo: fieldValue).get();
+    List<Document> data = await sewsDatabase
+        .where(sitefield, isEqualTo: siteValue)
+        .where(appareilfield, isEqualTo: appareilValue)
+        .where(fieldName, isEqualTo: fieldValue)
+        .get();
     return data;
   }
 
@@ -212,16 +236,117 @@ class _ContratRechercheState extends State<ContratRecherche> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Text(
-                              'resultats : ${_getValueText(
-                                config.calendarType,
-                                debutLocation,
-                              )}',
-                              style: const TextStyle(
-                                  color: Colors.white, fontSize: 18),
-                            ),
+                          Row(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Text(
+                                  'resultats : ${_getValueText(
+                                    config.calendarType,
+                                    debutLocation,
+                                  )}',
+                                  style: const TextStyle(
+                                      color: Colors.white, fontSize: 18),
+                                ),
+                              ),
+                              Row(
+                                children: [
+                                  const MyVerticalLine(
+                                    height: 30,
+                                  ),
+                                  const Text(
+                                    'Le site:',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                  const SizedBox(
+                                    width: 10,
+                                  ),
+                                  SizedBox(
+                                    width: size.width * 0.2,
+                                    child: MyDropDownField(
+                                        filre: true,
+                                        selectedItem: 'All',
+                                        validator: (value) {
+                                          if (value == null) {
+                                            return 'Veuillez choisir une option.';
+                                          }
+                                          return null;
+                                        },
+                                        onChanged: (value) {
+                                          if (value == 'All') {
+                                            setState(() {
+                                              sitefield = 'a0';
+                                              siteValue = 'All';
+                                              fieldValue = _getValueText(
+                                                config.calendarType,
+                                                debutLocation,
+                                              );
+                                              myData = getData();
+                                            });
+                                          } else {
+                                            setState(() {
+                                              sitefield = 'a3';
+                                              siteValue = value!;
+                                              fieldValue = _getValueText(
+                                                config.calendarType,
+                                                debutLocation,
+                                              );
+                                              myData = getData();
+                                            });
+                                          }
+                                        },
+                                        items: siteItemsSelect,
+                                        hintText: 'le site'),
+                                  ),
+                                  const SizedBox(
+                                    width: 10,
+                                  ),
+                                  const Text(
+                                    'l\'appareil',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                  const SizedBox(
+                                    width: 10,
+                                  ),
+                                  SizedBox(
+                                    width: size.width * 0.2,
+                                    child: MyDropDownField(
+                                        filre: true,
+                                        selectedItem: 'All',
+                                        validator: (value) {
+                                          if (value == null) {
+                                            return 'Veuillez choisir une option.';
+                                          }
+                                          return null;
+                                        },
+                                        onChanged: (value) {
+                                          if (value == 'All') {
+                                            setState(() {
+                                              appareilfield = 'a00';
+                                              appareilValue = 'All';
+                                              myData = getData();
+                                            });
+                                          } else {
+                                            setState(() {
+                                              appareilfield = 'a4';
+                                              appareilValue = value!;
+                                              myData = getData();
+                                            });
+                                          }
+                                        },
+                                        items: appareilItems,
+                                        hintText: 'l\'appareil'),
+                                  ),
+                                  const SizedBox(
+                                    width: 10,
+                                  ),
+                                ],
+                              )
+                            ],
                           ),
                           Row(
                             children: [

@@ -143,7 +143,7 @@ class _ManualAdditionPageState extends State<ManualAdditionPage> {
                                             selectedSite = args.site;
                                           }
 
-                                          sewsDatabase
+                                          await sewsDatabase
                                               .document(controllerId.text)
                                               .set(
                                             {
@@ -182,7 +182,7 @@ class _ManualAdditionPageState extends State<ManualAdditionPage> {
                                             for (int i = 0, j = 7;
                                                 i < fields.length;
                                                 i++, j++) {
-                                              sewsDatabase
+                                              await sewsDatabase
                                                   .document(controllerId.text)
                                                   .update({
                                                 'a${j.toString()}':
