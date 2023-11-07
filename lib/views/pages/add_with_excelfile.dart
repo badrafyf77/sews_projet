@@ -30,7 +30,7 @@ class _AddExcelFilePageState extends State<AddExcelFilePage> {
     DateTime.now(),
   ];
   List<DateTime?> finLocation = [
-    DateTime.now(),
+    DateTime.now().add(const Duration(days: 1)),
   ];
 
   final List<String> siteItems = [
@@ -230,9 +230,18 @@ class _AddExcelFilePageState extends State<AddExcelFilePage> {
                                       value: debutLocation,
                                     );
                                     if (value != null) {
-                                      setState(() {
-                                        debutLocation = value;
-                                      });
+                                      if (value[0]!.isBefore(finLocation[0]!)) {
+                                        setState(() {
+                                          debutLocation = value;
+                                        });
+                                      } else {
+                                        if (context.mounted) {
+                                          myShowToast(
+                                              context,
+                                              'Date de debut de location ne doit pas etre superieur ou egale a la date de fin de location',
+                                              Colors.red);
+                                        }
+                                      }
                                     }
                                   },
                                   hintText: _getValueText(
@@ -275,9 +284,19 @@ class _AddExcelFilePageState extends State<AddExcelFilePage> {
                                         value: finLocation,
                                       );
                                       if (value != null) {
-                                        setState(() {
-                                          finLocation = value;
-                                        });
+                                        if (value[0]!
+                                            .isAfter(debutLocation[0]!)) {
+                                          setState(() {
+                                            finLocation = value;
+                                          });
+                                        } else {
+                                          if (context.mounted) {
+                                            myShowToast(
+                                                context,
+                                                'Date de fin de location ne doit pas etre inferieure ou egale a la date de debut de location',
+                                                Colors.red);
+                                          }
+                                        }
                                       }
                                     },
                                     hintText: _getValueText(
