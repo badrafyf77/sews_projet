@@ -215,7 +215,8 @@ class _EditPageState extends State<EditPage> {
                                               allowed = false;
                                             }
                                           }
-                                          if (allowed) {
+                                          if (allowed ||
+                                              args.poste == 'administrateur') {
                                             if (selectedIndexes.isEmpty) {
                                               showDialog(
                                                 context: context,

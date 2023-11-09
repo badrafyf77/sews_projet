@@ -215,8 +215,7 @@ class _HomePageState extends State<HomePage> {
                                             focusNode: fieldFocusNode,
                                           );
                                         },
-                                        optionsBuilder: (TextEditingValue
-                                            textEditingValue) {
+                                        optionsBuilder: (value) {
                                           if (c == 0) {
                                             appareilList.clear();
                                             numSerie.clear();
@@ -237,20 +236,17 @@ class _HomePageState extends State<HomePage> {
                                             c++;
                                           }
                                           setState(() {
-                                            controller.text =
-                                                textEditingValue.text;
+                                            controller.text = value.text;
                                           });
-                                          if (textEditingValue.text == '') {
+                                          if (value.text == '') {
                                             return const Iterable<
                                                 String>.empty();
                                           }
                                           return numSerie
                                               .where((String option) {
-                                            return option.contains(
-                                                textEditingValue.text);
+                                            return option.contains(value.text);
                                           });
                                         },
-                                        onSelected: (String value) {},
                                       ),
                                     ),
                                   ),
@@ -273,9 +269,12 @@ class _HomePageState extends State<HomePage> {
                                         Colors.grey);
                                   }
                                 } else {
-                                  Get.to(() => const RecherchePage(),
-                                      arguments: controller.text,
-                                      transition: Transition.downToUp);
+                                  if (controller.text.isNotEmpty) {
+                                    await Get.to(() => const RecherchePage(),
+                                        arguments: controller.text,
+                                        transition: Transition.downToUp);
+                                    controller.clear();
+                                  }
                                 }
                               }
                             },
