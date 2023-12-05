@@ -1,10 +1,7 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
-
 import 'package:sews_projet/model/models/models.dart';
-
-import 'container.dart';
-import 'line.dart';
+import 'package:sews_projet/core/utils/customs/container.dart';
+import 'package:sews_projet/core/utils/customs/line.dart';
 
 class ListviewBody extends StatelessWidget {
   final Size size;

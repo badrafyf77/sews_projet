@@ -5,17 +5,17 @@ import 'package:flutter_swipe_action_cell/flutter_swipe_action_cell.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:lottie/lottie.dart';
-import 'package:sews_projet/views/widgets/custom_appbar.dart';
-import 'package:sews_projet/views/widgets/line.dart';
+import 'package:sews_projet/core/utils/customs/custom_appbar.dart';
+import 'package:sews_projet/core/utils/customs/line.dart';
 import 'package:sews_projet/views/widgets/listview_body.dart';
 import 'package:sews_projet/views/widgets/listview_header.dart';
-import 'package:sews_projet/views/widgets/loading_circle.dart';
+import 'package:sews_projet/core/utils/customs/loading_circle.dart';
 import 'package:sews_projet/views/pages/recherche_page.dart';
 import 'package:sews_projet/model/services/connectivity.dart';
 import 'package:uuid/uuid.dart';
-import '../widgets/drop_down_field.dart';
-import '../widgets/text_field.dart';
-import '../../constants.dart';
+import 'package:sews_projet/core/utils/customs/drop_down_field.dart';
+import 'package:sews_projet/core/utils/customs/text_field.dart';
+import '../../core/utils/constants.dart';
 import '../../model/models/models.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 
@@ -394,7 +394,7 @@ class _EditPageState extends State<EditPage> {
                                           } else {
                                             myShowToast(
                                                 context,
-                                                'vous ne pouvez pas supprimer car vous n\'avez pas l\'autorisation, Essayez de sélectionner un appareil sur votre site',
+                                                'vous ne pouvez pas supprimer car vous n\'avez pas l\'autorisation, Essayez de sélectionner un appareil de votre site',
                                                 Colors.red);
                                           }
                                         },

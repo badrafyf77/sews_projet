@@ -4,13 +4,13 @@ import 'package:firedart/firedart.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sews_projet/views/pages/setting.dart';
-import 'package:sews_projet/views/widgets/button.dart';
-import 'package:sews_projet/views/widgets/container.dart';
-import 'package:sews_projet/views/widgets/custom_appbar.dart';
-import 'package:sews_projet/views/widgets/line.dart';
-import 'package:sews_projet/views/widgets/text_button.dart';
-import 'package:sews_projet/views/widgets/text_field.dart';
-import 'package:sews_projet/constants.dart';
+import 'package:sews_projet/core/utils/customs/button.dart';
+import 'package:sews_projet/core/utils/customs/container.dart';
+import 'package:sews_projet/core/utils/customs/custom_appbar.dart';
+import 'package:sews_projet/core/utils/customs/line.dart';
+import 'package:sews_projet/core/utils/customs/text_button.dart';
+import 'package:sews_projet/core/utils/customs/text_field.dart';
+import 'package:sews_projet/core/utils/constants.dart';
 import 'package:sews_projet/model/models/models.dart';
 import 'package:sews_projet/views/pages/historique_page.dart';
 import 'package:sews_projet/views/pages/manual_addition_page.dart';
@@ -354,7 +354,7 @@ class _HomePageState extends State<HomePage> {
                                     }
                                   },
                                   text:
-                                      '- Afficher tous les appareils d\'un contrat',
+                                      '- Afficher les appareils d\'un contrat',
                                 ),
                                 widget3: MyTextButton(
                                   onPressed: () async {
@@ -368,8 +368,9 @@ class _HomePageState extends State<HomePage> {
                                       }
                                     } else {
                                       await Get.to(() => const HistoriquePage(),
-                                          transition: Transition.cupertino);
-
+                                      arguments: args,
+                                          transition: Transition.cupertino,
+                                          );
                                       widget.updateCallback();
                                     }
                                   },

@@ -4,22 +4,24 @@ import 'package:firedart/firedart.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import 'package:sews_projet/constants.dart';
+import 'package:sews_projet/core/utils/constants.dart';
+import 'package:sews_projet/core/utils/customs/button.dart';
+import 'package:sews_projet/core/utils/customs/custom_appbar.dart';
+import 'package:sews_projet/core/utils/customs/drop_down_field.dart';
+import 'package:sews_projet/core/utils/customs/loading_circle.dart';
+import 'package:sews_projet/core/utils/customs/text_field.dart';
 import 'package:sews_projet/model/models/models.dart';
 import 'package:sews_projet/model/services/auth_api.dart';
 import 'package:sews_projet/model/services/connectivity.dart';
 import 'package:sews_projet/model/services/encrypt.dart';
-import 'package:sews_projet/views/widgets/button.dart';
-import 'package:sews_projet/views/widgets/custom_appbar.dart';
-import 'package:sews_projet/views/widgets/drop_down_field.dart';
-import 'package:sews_projet/views/widgets/loading_circle.dart';
-import 'package:sews_projet/views/widgets/text_field.dart';
 
 class EditUser extends StatefulWidget {
+  final String editPost;
   final String displayName;
   final String site;
   const EditUser({
     Key? key,
+    required this.editPost,
     required this.displayName,
     required this.site,
   }) : super(key: key);
@@ -174,32 +176,38 @@ class _EditUserState extends State<EditUser> {
                       const SizedBox(
                         width: 10,
                       ),
-                      SizedBox(
-                        width: size.width * 0.3,
-                        child: MyDropDownField(
-                            selectedItem: args.site,
-                            validator: (value) {
-                              if (value == null) {
-                                return 'Veuillez choisir une option.';
-                              }
-                              return null;
-                            },
-                            onChanged: (value) {
-                              selectedSite = value!;
-                              if (selectedSite != args.site ||
-                                  controller.text != args.displayName) {
-                                setState(() {
-                                  enableSave = true;
-                                });
-                              } else {
-                                setState(() {
-                                  enableSave = false;
-                                });
-                              }
-                            },
-                            items: siteItems,
-                            hintText: 'Selectionner le site'),
-                      ),
+                      (widget.editPost == 'administrateur')
+                          ? SizedBox(
+                              width: size.width * 0.3,
+                              child: MyDropDownField(
+                                  selectedItem: args.site,
+                                  validator: (value) {
+                                    if (value == null) {
+                                      return 'Veuillez choisir une option.';
+                                    }
+                                    return null;
+                                  },
+                                  onChanged: (value) {
+                                    selectedSite = value!;
+                                    if (selectedSite != args.site ||
+                                        controller.text != args.displayName) {
+                                      setState(() {
+                                        enableSave = true;
+                                      });
+                                    } else {
+                                      setState(() {
+                                        enableSave = false;
+                                      });
+                                    }
+                                  },
+                                  items: siteItems,
+                                  hintText: 'Selectionner le site'),
+                            )
+                          : Text(
+                              args.site,
+                              style: const TextStyle(
+                                  fontSize: 16, fontWeight: FontWeight.bold),
+                            ),
                     ],
                   ),
                   const SizedBox(

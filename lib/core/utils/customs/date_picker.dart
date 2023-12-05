@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:sews_projet/constants.dart';
+import 'package:sews_projet/core/utils/constants.dart';
 
 class AlwaysDisabledFocusNode extends FocusNode {
   @override

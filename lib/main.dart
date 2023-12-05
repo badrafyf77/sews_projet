@@ -5,7 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:sews_projet/view_model/blocs/auth_bloc/auth_bloc.dart';
 import 'package:sews_projet/view_model/blocs/excel_import_bloc/excel_import_bloc.dart';
-import 'package:sews_projet/constants.dart';
+import 'package:sews_projet/core/utils/constants.dart';
 import 'package:sews_projet/views/pages/add_with_excelfile.dart';
 import 'package:sews_projet/views/pages/edit_mode.dart';
 import 'package:sews_projet/views/pages/edit_user.dart';
@@ -99,6 +99,7 @@ class _MyAppState extends State<MyApp> {
           GetPage(
               name: EditUser.id,
               page: () => const EditUser(
+                editPost: '',
                     displayName: '',
                     site: '',
                   )),

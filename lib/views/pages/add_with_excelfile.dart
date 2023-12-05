@@ -1,5 +1,4 @@
 import 'dart:typed_data';
-
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
@@ -8,14 +7,13 @@ import 'package:excel/excel.dart';
 import 'package:flutter/material.dart';
 import 'package:sews_projet/model/models/models.dart';
 import 'package:sews_projet/view_model/blocs/excel_import_bloc/excel_import_bloc.dart';
-import 'package:sews_projet/views/widgets/button.dart';
-import 'package:sews_projet/views/widgets/date_picker.dart';
-import 'package:sews_projet/views/widgets/drop_down_field.dart';
-import 'package:sews_projet/views/widgets/loading_circle.dart';
-import 'package:sews_projet/constants.dart';
+import 'package:sews_projet/core/utils/customs/button.dart';
+import 'package:sews_projet/core/utils/customs/date_picker.dart';
+import 'package:sews_projet/core/utils/customs/drop_down_field.dart';
+import 'package:sews_projet/core/utils/customs/loading_circle.dart';
+import 'package:sews_projet/core/utils/constants.dart';
 import 'package:sews_projet/model/services/connectivity.dart';
-
-import '../widgets/custom_appbar.dart';
+import 'package:sews_projet/core/utils/customs/custom_appbar.dart';
 
 class AddExcelFilePage extends StatefulWidget {
   const AddExcelFilePage({super.key});

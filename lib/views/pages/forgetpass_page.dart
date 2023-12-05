@@ -2,14 +2,14 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
-import 'package:sews_projet/views/widgets/button.dart';
-import 'package:sews_projet/views/widgets/loading_circle.dart';
-import 'package:sews_projet/views/widgets/text_field.dart';
-import 'package:sews_projet/constants.dart';
+import 'package:sews_projet/core/utils/customs/button.dart';
+import 'package:sews_projet/core/utils/customs/loading_circle.dart';
+import 'package:sews_projet/core/utils/customs/text_field.dart';
+import 'package:sews_projet/core/utils/constants.dart';
 import 'package:sews_projet/views/pages/login_page.dart';
 import 'package:flutter_styled_toast/flutter_styled_toast.dart';
 import 'package:sews_projet/model/services/connectivity.dart';
-import '../widgets/custom_appbar.dart';
+import 'package:sews_projet/core/utils/customs/custom_appbar.dart';
 import '../../model/services/auth_api.dart';
 
 class Forgetpassword extends StatelessWidget {

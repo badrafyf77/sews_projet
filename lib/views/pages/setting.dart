@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:side_navigation/side_navigation.dart';
 
-import 'package:sews_projet/constants.dart';
+import 'package:sews_projet/core/utils/constants.dart';
 import 'package:sews_projet/model/models/models.dart';
 import 'package:sews_projet/model/services/auth_api.dart';
 import 'package:sews_projet/model/services/connectivity.dart';
@@ -13,12 +13,12 @@ import 'package:sews_projet/model/services/encrypt.dart';
 import 'package:sews_projet/views/pages/edit_user.dart';
 import 'package:sews_projet/views/pages/home_page.dart';
 import 'package:sews_projet/views/pages/login_page.dart';
-import 'package:sews_projet/views/widgets/button.dart';
-import 'package:sews_projet/views/widgets/custom_appbar.dart';
-import 'package:sews_projet/views/widgets/drop_down_field.dart';
-import 'package:sews_projet/views/widgets/line.dart';
-import 'package:sews_projet/views/widgets/loading_circle.dart';
-import 'package:sews_projet/views/widgets/text_field.dart';
+import 'package:sews_projet/core/utils/customs/button.dart';
+import 'package:sews_projet/core/utils/customs/custom_appbar.dart';
+import 'package:sews_projet/core/utils/customs/drop_down_field.dart';
+import 'package:sews_projet/core/utils/customs/line.dart';
+import 'package:sews_projet/core/utils/customs/loading_circle.dart';
+import 'package:sews_projet/core/utils/customs/text_field.dart';
 
 class SettingPage extends StatefulWidget {
   const SettingPage({
@@ -240,6 +240,7 @@ class _ManageUsersState extends State<ManageUsers> {
                             onTap: () async {
                               await Get.to(
                                 () => EditUser(
+                                  editPost: widget.userInfo.poste,
                                   displayName: usersList[index].displayName,
                                   site: usersList[index].site,
                                 ),
@@ -358,7 +359,7 @@ class _AddUserWidgetState extends State<AddUserWidget> {
 
     String? selectedSite;
 
-    String? selectedPost;
+    String? selectedPost = 'employé';
 
     return ListView(
       children: [
@@ -424,34 +425,40 @@ class _AddUserWidgetState extends State<AddUserWidget> {
                     const SizedBox(
                       width: 10,
                     ),
-                    SizedBox(
-                      width: widget.size.width * 0.3,
-                      child: MyDropDownField(
-                          validator: (value) {
-                            if (value == null) {
-                              return 'Veuillez choisir une option.';
-                            }
-                            return null;
-                          },
-                          onChanged: (value) {
-                            selectedPost = value;
-                          },
-                          items: postItems,
-                          hintText: 'Selectionner le poste'),
-                    ),
+                    (widget.userInfo.poste == 'administrateur')
+                        ? SizedBox(
+                            width: widget.size.width * 0.3,
+                            child: MyDropDownField(
+                                validator: (value) {
+                                  if (value == null) {
+                                    return 'Veuillez choisir une option.';
+                                  }
+                                  return null;
+                                },
+                                onChanged: (value) {
+                                  selectedPost = value;
+                                },
+                                items: postItems,
+                                hintText: 'Selectionner le poste'),
+                          )
+                        : const Text(
+                            'employé',
+                            style: TextStyle(
+                                fontSize: 16, fontWeight: FontWeight.bold),
+                          ),
                   ],
                 ),
                 const SizedBox(
                   height: 15,
                 ),
-                (widget.userInfo.poste == 'administrateur')
-                    ? Row(
-                        children: [
-                          const Text('Le site :'),
-                          const SizedBox(
-                            width: 10,
-                          ),
-                          SizedBox(
+                Row(
+                  children: [
+                    const Text('Le site :'),
+                    const SizedBox(
+                      width: 10,
+                    ),
+                    (widget.userInfo.poste == 'administrateur')
+                        ? SizedBox(
                             width: widget.size.width * 0.3,
                             child: MyDropDownField(
                                 validator: (value) {
@@ -465,22 +472,14 @@ class _AddUserWidgetState extends State<AddUserWidget> {
                                 },
                                 items: siteItems,
                                 hintText: 'Selectionner le site'),
-                          ),
-                        ],
-                      )
-                    : Row(
-                        children: [
-                          const Text('Le site:'),
-                          const SizedBox(
-                            width: 10,
-                          ),
-                          Text(
+                          )
+                        : Text(
                             widget.userInfo.site,
                             style: const TextStyle(
                                 fontSize: 16, fontWeight: FontWeight.bold),
-                          )
-                        ],
-                      ),
+                          ),
+                  ],
+                ),
                 const SizedBox(
                   height: 15,
                 ),

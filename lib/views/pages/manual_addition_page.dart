@@ -5,15 +5,15 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:sews_projet/model/models/models.dart';
-import 'package:sews_projet/views/widgets/custom_appbar.dart';
-import 'package:sews_projet/views/widgets/date_picker.dart';
-import 'package:sews_projet/views/widgets/drop_down_field.dart';
-import 'package:sews_projet/views/widgets/line.dart';
-import 'package:sews_projet/views/widgets/text_field.dart';
+import 'package:sews_projet/core/utils/customs/custom_appbar.dart';
+import 'package:sews_projet/core/utils/customs/date_picker.dart';
+import 'package:sews_projet/core/utils/customs/drop_down_field.dart';
+import 'package:sews_projet/core/utils/customs/line.dart';
+import 'package:sews_projet/core/utils/customs/text_field.dart';
 import 'package:sews_projet/model/services/connectivity.dart';
 import 'package:uuid/uuid.dart';
-import '../widgets/button.dart';
-import '../../constants.dart';
+import 'package:sews_projet/core/utils/customs/button.dart';
+import '../../core/utils/constants.dart';
 
 class ManualAdditionPage extends StatefulWidget {
   const ManualAdditionPage({super.key});
@@ -235,265 +235,269 @@ class _ManualAdditionPageState extends State<ManualAdditionPage> {
             const MyLine(),
             Expanded(
               child: ListView(
+                padding: EdgeInsets.zero,
                 children: [
                   Padding(
-                    padding: const EdgeInsets.all(15),
+                    padding: const EdgeInsets.symmetric(vertical: 10),
                     child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Form(
                           key: formKey,
-                          child: Column(
-                            children: [
-                              Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  const Padding(
-                                    padding: EdgeInsets.all(5),
-                                    child: Text(
-                                      'N° de série :',
-                                      style: TextStyle(
-                                        color: kPrimaryColor,
-                                        fontSize: 16,
-                                      ),
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    width: size.width * 0.4,
-                                    child: MyTextField(
-                                      validator: (value) {
-                                        if (value == null || value.isEmpty) {
-                                          return 'Entrer N° de série';
-                                        } else {
-                                          return null;
-                                        }
-                                      },
-                                      controller: controllerId,
-                                      label: 'N° de série',
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              const SizedBox(
-                                height: 6,
-                              ),
-                              Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  const Padding(
-                                    padding: EdgeInsets.all(5),
-                                    child: Text(
-                                      'Utilisateur :',
-                                      style: TextStyle(
-                                        color: kPrimaryColor,
-                                        fontSize: 16,
-                                      ),
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    width: size.width * 0.4,
-                                    child: MyTextField(
-                                      validator: (value) {
-                                        if (value == null || value.isEmpty) {
-                                          return 'Entrer utilisateur';
-                                        } else {
-                                          return null;
-                                        }
-                                      },
-                                      controller: controllerUser,
-                                      label: 'Utilisateur',
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              (args.poste == 'administrateur')
-                                  ? Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        const SizedBox(
-                                          height: 6,
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 15),
+                            child: Column(
+                              children: [
+                                Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    const Padding(
+                                      padding: EdgeInsets.all(5),
+                                      child: Text(
+                                        'N° de série :',
+                                        style: TextStyle(
+                                          color: kPrimaryColor,
+                                          fontSize: 16,
                                         ),
-                                        const Padding(
-                                          padding: EdgeInsets.all(5),
-                                          child: Text(
-                                            'Site :',
-                                            style: TextStyle(
-                                              color: kPrimaryColor,
-                                              fontSize: 16,
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      width: size.width * 0.4,
+                                      child: MyTextField(
+                                        validator: (value) {
+                                          if (value == null || value.isEmpty) {
+                                            return 'Entrer N° de série';
+                                          } else {
+                                            return null;
+                                          }
+                                        },
+                                        controller: controllerId,
+                                        label: 'N° de série',
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                const SizedBox(
+                                  height: 6,
+                                ),
+                                Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    const Padding(
+                                      padding: EdgeInsets.all(5),
+                                      child: Text(
+                                        'Utilisateur :',
+                                        style: TextStyle(
+                                          color: kPrimaryColor,
+                                          fontSize: 16,
+                                        ),
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      width: size.width * 0.4,
+                                      child: MyTextField(
+                                        validator: (value) {
+                                          if (value == null || value.isEmpty) {
+                                            return 'Entrer utilisateur';
+                                          } else {
+                                            return null;
+                                          }
+                                        },
+                                        controller: controllerUser,
+                                        label: 'Utilisateur',
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                (args.poste == 'administrateur')
+                                    ? Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          const SizedBox(
+                                            height: 6,
+                                          ),
+                                          const Padding(
+                                            padding: EdgeInsets.all(5),
+                                            child: Text(
+                                              'Site :',
+                                              style: TextStyle(
+                                                color: kPrimaryColor,
+                                                fontSize: 16,
+                                              ),
                                             ),
                                           ),
-                                        ),
-                                        SizedBox(
-                                          width: size.width * 0.4,
-                                          child: MyDropDownField(
-                                            validator: (value) {
-                                              if (value == null ||
-                                                  value.isEmpty) {
-                                                return 'Taper ici';
-                                              } else {
-                                                return null;
-                                              }
-                                            },
-                                            onChanged: (value) {
-                                              selectedSite = value;
-                                            },
-                                            items: siteItems,
-                                            hintText: 'site',
+                                          SizedBox(
+                                            width: size.width * 0.4,
+                                            child: MyDropDownField(
+                                              validator: (value) {
+                                                if (value == null ||
+                                                    value.isEmpty) {
+                                                  return 'Taper ici';
+                                                } else {
+                                                  return null;
+                                                }
+                                              },
+                                              onChanged: (value) {
+                                                selectedSite = value;
+                                              },
+                                              items: siteItems,
+                                              hintText: 'site',
+                                            ),
                                           ),
+                                        ],
+                                      )
+                                    : const SizedBox(),
+                                const SizedBox(
+                                  height: 6,
+                                ),
+                                Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    const Padding(
+                                      padding: EdgeInsets.all(5),
+                                      child: Text(
+                                        'Appareil :',
+                                        style: TextStyle(
+                                          color: kPrimaryColor,
+                                          fontSize: 16,
                                         ),
-                                      ],
-                                    )
-                                  : const SizedBox(),
-                              const SizedBox(
-                                height: 6,
-                              ),
-                              Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  const Padding(
-                                    padding: EdgeInsets.all(5),
-                                    child: Text(
-                                      'Appareil :',
-                                      style: TextStyle(
-                                        color: kPrimaryColor,
-                                        fontSize: 16,
                                       ),
                                     ),
-                                  ),
-                                  SizedBox(
-                                    width: size.width * 0.4,
-                                    child: MyDropDownField(
-                                      validator: (value) {
-                                        if (value == null || value.isEmpty) {
-                                          return 'Taper ici';
-                                        } else {
-                                          return null;
-                                        }
-                                      },
-                                      onChanged: (value) {
-                                        selectedAppareil = value;
-                                      },
-                                      items: appareilItems,
-                                      hintText: 'appareil',
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              const SizedBox(
-                                height: 6,
-                              ),
-                              Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  const Padding(
-                                    padding: EdgeInsets.all(5),
-                                    child: Text(
-                                      'Debut de location :',
-                                      style: TextStyle(
-                                        color: kPrimaryColor,
-                                        fontSize: 16,
-                                      ),
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    width: size.width * 0.4,
-                                    child: MyDatePicker(
-                                      onPressed: () async {
-                                        final value =
-                                            await showCalendarDatePicker2Dialog(
-                                          context: context,
-                                          config: config,
-                                          dialogSize: const Size(325, 400),
-                                          borderRadius:
-                                              BorderRadius.circular(15),
-                                          value: debutLocation,
-                                        );
-                                        if (value != null) {
-                                          if (value[0]!
-                                              .isBefore(finLocation[0]!)) {
-                                            setState(() {
-                                              debutLocation = value;
-                                            });
+                                    SizedBox(
+                                      width: size.width * 0.4,
+                                      child: MyDropDownField(
+                                        validator: (value) {
+                                          if (value == null || value.isEmpty) {
+                                            return 'Taper ici';
                                           } else {
-                                            if (context.mounted) {
-                                              myShowToast(
-                                                  context,
-                                                  'Date de debut de location ne doit pas etre superieur ou egale a la date de fin de location',
-                                                  Colors.red);
+                                            return null;
+                                          }
+                                        },
+                                        onChanged: (value) {
+                                          selectedAppareil = value;
+                                        },
+                                        items: appareilItems,
+                                        hintText: 'appareil',
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                const SizedBox(
+                                  height: 6,
+                                ),
+                                Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    const Padding(
+                                      padding: EdgeInsets.all(5),
+                                      child: Text(
+                                        'Debut de location :',
+                                        style: TextStyle(
+                                          color: kPrimaryColor,
+                                          fontSize: 16,
+                                        ),
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      width: size.width * 0.4,
+                                      child: MyDatePicker(
+                                        onPressed: () async {
+                                          final value =
+                                              await showCalendarDatePicker2Dialog(
+                                            context: context,
+                                            config: config,
+                                            dialogSize: const Size(325, 400),
+                                            borderRadius:
+                                                BorderRadius.circular(15),
+                                            value: debutLocation,
+                                          );
+                                          if (value != null) {
+                                            if (value[0]!
+                                                .isBefore(finLocation[0]!)) {
+                                              setState(() {
+                                                debutLocation = value;
+                                              });
+                                            } else {
+                                              if (context.mounted) {
+                                                myShowToast(
+                                                    context,
+                                                    'Date de debut de location ne doit pas etre superieur ou egale a la date de fin de location',
+                                                    Colors.red);
+                                              }
                                             }
                                           }
-                                        }
-                                      },
-                                      hintText: _getValueText(
-                                        config.calendarType,
-                                        debutLocation,
+                                        },
+                                        hintText: _getValueText(
+                                          config.calendarType,
+                                          debutLocation,
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                ],
-                              ),
-                              const SizedBox(
-                                height: 6,
-                              ),
-                              Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  const Padding(
-                                    padding: EdgeInsets.all(5),
-                                    child: Text(
-                                      'Fin de location :',
-                                      style: TextStyle(
-                                        color: kPrimaryColor,
-                                        fontSize: 16,
+                                  ],
+                                ),
+                                const SizedBox(
+                                  height: 6,
+                                ),
+                                Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    const Padding(
+                                      padding: EdgeInsets.all(5),
+                                      child: Text(
+                                        'Fin de location :',
+                                        style: TextStyle(
+                                          color: kPrimaryColor,
+                                          fontSize: 16,
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                  SizedBox(
-                                    width: size.width * 0.4,
-                                    child: MyDatePicker(
-                                      onPressed: () async {
-                                        final value =
-                                            await showCalendarDatePicker2Dialog(
-                                          context: context,
-                                          config: config,
-                                          dialogSize: const Size(325, 400),
-                                          borderRadius:
-                                              BorderRadius.circular(15),
-                                          value: finLocation,
-                                        );
-                                        if (value != null) {
-                                          if (value[0]!
-                                              .isAfter(debutLocation[0]!)) {
-                                            setState(() {
-                                              finLocation = value;
-                                            });
-                                          } else {
-                                            if (context.mounted) {
-                                              myShowToast(
-                                                  context,
-                                                  'Date de fin de location ne doit pas etre inferieure ou egale a la date de debut de location',
-                                                  Colors.red);
+                                    SizedBox(
+                                      width: size.width * 0.4,
+                                      child: MyDatePicker(
+                                        onPressed: () async {
+                                          final value =
+                                              await showCalendarDatePicker2Dialog(
+                                            context: context,
+                                            config: config,
+                                            dialogSize: const Size(325, 400),
+                                            borderRadius:
+                                                BorderRadius.circular(15),
+                                            value: finLocation,
+                                          );
+                                          if (value != null) {
+                                            if (value[0]!
+                                                .isAfter(debutLocation[0]!)) {
+                                              setState(() {
+                                                finLocation = value;
+                                              });
+                                            } else {
+                                              if (context.mounted) {
+                                                myShowToast(
+                                                    context,
+                                                    'Date de fin de location ne doit pas etre inferieure ou egale a la date de debut de location',
+                                                    Colors.red);
+                                              }
                                             }
                                           }
-                                        }
-                                      },
-                                      hintText: _getValueText(
-                                        config.calendarType,
-                                        finLocation,
+                                        },
+                                        hintText: _getValueText(
+                                          config.calendarType,
+                                          finLocation,
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                ],
-                              ),
-                            ],
+                                  ],
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                         Form(
@@ -674,6 +678,7 @@ class _ManualAdditionPageState extends State<ManualAdditionPage> {
                                         child: SizedBox(
                                           width: size.width * 0.5,
                                           child: ListView.builder(
+                                            padding: EdgeInsets.zero,
                                             itemCount: fields.length,
                                             itemBuilder: (context, index) {
                                               return Padding(
