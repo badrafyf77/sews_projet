@@ -195,7 +195,7 @@ class LoginPage extends StatelessWidget {
                                   arguments: emailController.text,
                                   transition: Transition.downToUp);
                             },
-                            text: 'oublier mot de passe?',
+                            text: 'mot de passe oublié?',
                             size: 14,
                           ),
                         ],

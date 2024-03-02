@@ -1249,24 +1249,25 @@ class DashboardWidget extends StatelessWidget {
               const SizedBox(
                 height: 20,
               ),
-              Row(
-                children: [
-                  Text(
-                    'Site:',
-                    style: TextStyle(fontSize: size.height * 0.024),
-                  ),
-                  const SizedBox(
-                    width: 15,
-                  ),
-                  Text(
-                    userInfo.site,
-                    style: TextStyle(
-                      fontSize: size.height * 0.024,
-                      fontWeight: FontWeight.bold,
+              if (userInfo.poste != 'administrateur')
+                Row(
+                  children: [
+                    Text(
+                      'Site:',
+                      style: TextStyle(fontSize: size.height * 0.024),
                     ),
-                  )
-                ],
-              ),
+                    const SizedBox(
+                      width: 15,
+                    ),
+                    Text(
+                      userInfo.site,
+                      style: TextStyle(
+                        fontSize: size.height * 0.024,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    )
+                  ],
+                ),
               SizedBox(
                 height: size.height * 0.1,
               ),
