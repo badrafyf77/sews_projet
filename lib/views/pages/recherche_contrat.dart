@@ -282,6 +282,290 @@ class _ContratRechercheState extends State<ContratRecherche> {
                                             ),
                                           if (editingMode)
                                             IconButton(
+                                              tooltip: 'Déplacer',
+                                              onPressed: () {
+                                                selectedIndexes = controller
+                                                    .getSelectedIndexPaths();
+                                                bool allowed = true;
+                                                bool isValide = true;
+                                                String initialSite =
+                                                    appareilList[0].site;
+
+                                                for (int i = 0;
+                                                    i < selectedIndexes.length;
+                                                    i++) {
+                                                  if (appareilList[
+                                                              selectedIndexes[
+                                                                  i]]
+                                                          .site !=
+                                                      args.site) {
+                                                    allowed = false;
+                                                  }
+                                                  if (initialSite !=
+                                                      appareilList[
+                                                              selectedIndexes[
+                                                                  i]]
+                                                          .site) {
+                                                    isValide = false;
+                                                  }
+                                                }
+                                                if (allowed ||
+                                                    args.poste ==
+                                                        'administrateur') {
+                                                  if (selectedIndexes.isEmpty ||
+                                                      isValide == false) {
+                                                    showDialog(
+                                                      context: context,
+                                                      builder: (BuildContext
+                                                          context) {
+                                                        return AlertDialog(
+                                                          title: const Text(''),
+                                                          content: SizedBox(
+                                                            height:
+                                                                size.height *
+                                                                    0.3,
+                                                            width: size.width *
+                                                                0.4,
+                                                            child: Column(
+                                                              children: [
+                                                                const SizedBox(
+                                                                  height: 30,
+                                                                ),
+                                                                Text(
+                                                                  isValide
+                                                                      ? 'Vous devez selectionner un element !!!'
+                                                                      : 'Vous devez selectionner des appareils sur même site !!!',
+                                                                  style:
+                                                                      const TextStyle(
+                                                                    color: Colors
+                                                                        .black,
+                                                                    fontSize:
+                                                                        20,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .bold,
+                                                                  ),
+                                                                ),
+                                                              ],
+                                                            ),
+                                                          ),
+                                                          actions: [
+                                                            TextButton(
+                                                              child: const Text(
+                                                                'retour',
+                                                                style:
+                                                                    TextStyle(
+                                                                  color:
+                                                                      kPrimaryColor,
+                                                                  fontSize: 16,
+                                                                ),
+                                                              ),
+                                                              onPressed: () {
+                                                                Navigator.of(
+                                                                        context)
+                                                                    .pop();
+                                                              },
+                                                            ),
+                                                          ],
+                                                        );
+                                                      },
+                                                    );
+                                                  } else {
+                                                    showDialog(
+                                                      context: context,
+                                                      builder: (BuildContext
+                                                          context) {
+                                                        return AlertDialog(
+                                                          title: const Text(
+                                                              'Déplacer'),
+                                                          content: SizedBox(
+                                                            height:
+                                                                size.height *
+                                                                    0.3,
+                                                            width: size.width *
+                                                                0.4,
+                                                            child: Column(
+                                                              children: [
+                                                                Column(
+                                                                  children: [
+                                                                    const SizedBox(
+                                                                      height:
+                                                                          30,
+                                                                    ),
+                                                                    Text(
+                                                                      selectedIndexes.length ==
+                                                                              1
+                                                                          ? 'Déplacer un element'
+                                                                          : 'Déplacer ${selectedIndexes.length} elements',
+                                                                      style:
+                                                                          const TextStyle(
+                                                                        color: Colors
+                                                                            .black,
+                                                                        fontSize:
+                                                                            20,
+                                                                        fontWeight:
+                                                                            FontWeight.bold,
+                                                                      ),
+                                                                    ),
+                                                                  ],
+                                                                ),
+                                                                const Padding(
+                                                                  padding:
+                                                                      EdgeInsets
+                                                                          .all(
+                                                                              8),
+                                                                  child: Text(
+                                                                    'le Site',
+                                                                    style:
+                                                                        TextStyle(
+                                                                      color:
+                                                                          kPrimaryColor,
+                                                                      fontSize:
+                                                                          16,
+                                                                    ),
+                                                                  ),
+                                                                ),
+                                                                SizedBox(
+                                                                  width:
+                                                                      size.width *
+                                                                          0.35,
+                                                                  child:
+                                                                      MyDropDownField(
+                                                                    onChanged:
+                                                                        (value) {
+                                                                      initialSite =
+                                                                          value!;
+                                                                    },
+                                                                    items:
+                                                                        siteItems,
+                                                                    hintText:
+                                                                        'Site',
+                                                                    selectedItem:
+                                                                        initialSite,
+                                                                  ),
+                                                                ),
+                                                              ],
+                                                            ),
+                                                          ),
+                                                          actions: [
+                                                            TextButton(
+                                                              child: const Text(
+                                                                'concel',
+                                                                style:
+                                                                    TextStyle(
+                                                                  color:
+                                                                      kPrimaryColor,
+                                                                  fontSize: 16,
+                                                                ),
+                                                              ),
+                                                              onPressed: () {
+                                                                Navigator.of(
+                                                                        context)
+                                                                    .pop();
+                                                              },
+                                                            ),
+                                                            TextButton(
+                                                              child: const Text(
+                                                                'continue',
+                                                                style:
+                                                                    TextStyle(
+                                                                  color:
+                                                                      kPrimaryColor,
+                                                                  fontSize: 16,
+                                                                ),
+                                                              ),
+                                                              onPressed:
+                                                                  () async {
+                                                                if (await connectivityResult() ==
+                                                                    ConnectivityResult
+                                                                        .none) {
+                                                                  if (context
+                                                                      .mounted) {
+                                                                    myShowToast(
+                                                                        context,
+                                                                        'Pas de connexion internet',
+                                                                        Colors
+                                                                            .grey);
+                                                                  }
+                                                                } else {
+                                                                  for (int i =
+                                                                          0;
+                                                                      i <
+                                                                          selectedIndexes
+                                                                              .length;
+                                                                      i++) {
+                                                                    await sewsDatabase
+                                                                        .document(
+                                                                            appareilList[i].id)
+                                                                        .update({
+                                                                      'a3':
+                                                                          initialSite,
+                                                                    });
+                                                                  }
+                                                                  var id =
+                                                                      const Uuid()
+                                                                          .v4();
+                                                                  historique
+                                                                      .document(
+                                                                          id)
+                                                                      .set({
+                                                                    'Type':
+                                                                        'Modification',
+                                                                    'userNom': args
+                                                                        .displayName,
+                                                                    'site': args
+                                                                        .site,
+                                                                    'poste': args
+                                                                        .poste,
+                                                                    'Nombre de pieces':
+                                                                        selectedIndexes
+                                                                            .length,
+                                                                    'Date':
+                                                                        DateTime
+                                                                            .now(),
+                                                                    'Time': DateFormat
+                                                                            .jm()
+                                                                        .format(
+                                                                            DateTime.now())
+                                                                        .toLowerCase(),
+                                                                    'Icon':
+                                                                        'update.png',
+                                                                    'Id': id,
+                                                                  });
+                                                                  exitEditingMode();
+                                                                  mysetState();
+                                                                  if (context
+                                                                      .mounted) {
+                                                                    Navigator.pop(
+                                                                        context);
+                                                                    myShowToast(
+                                                                        context,
+                                                                        'success',
+                                                                        Colors
+                                                                            .green);
+                                                                  }
+                                                                }
+                                                              },
+                                                            ),
+                                                          ],
+                                                        );
+                                                      },
+                                                    );
+                                                  }
+                                                } else {
+                                                  myShowToast(
+                                                      context,
+                                                      'vous ne pouvez pas supprimer car vous n\'avez pas l\'autorisation, Essayez de sélectionner un appareil de votre site',
+                                                      Colors.red);
+                                                }
+                                              },
+                                              icon: const Icon(
+                                                Icons.move_up,
+                                                color: Colors.white,
+                                              ),
+                                            ),
+                                          if (editingMode)
+                                            IconButton(
                                               onPressed: () {
                                                 selectedIndexes = controller
                                                     .getSelectedIndexPaths();

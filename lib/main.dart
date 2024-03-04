@@ -32,7 +32,7 @@ void main() async {
   Firestore.initialize(projectId);
   runApp(const MyApp());
   doWhenWindowReady(() {
-    const initialSize = Size(800, 550);
+    const initialSize = Size(900, 550);
     appWindow.minSize = initialSize;
     appWindow.size = initialSize;
     appWindow.alignment = Alignment.center;
@@ -99,7 +99,7 @@ class _MyAppState extends State<MyApp> {
           GetPage(
               name: EditUser.id,
               page: () => const EditUser(
-                editPost: '',
+                    editPost: '',
                     displayName: '',
                     site: '',
                   )),
